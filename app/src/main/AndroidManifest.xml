@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Medi_Android">
         <activity
+            android:name=".ResetPassword"
+            android:exported="true" />
+        <activity
+            android:name=".Dashboard"
+            android:exported="true" />
+        <activity
             android:name=".Register"
             android:exported="true" />
         <activity

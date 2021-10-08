@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
@@ -43,7 +44,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         editEmail = (EditText) findViewById(R.id.sign_up_email);
         editPassword = (EditText) findViewById(R.id.sign_up_pw);
 
-        progressBar =(ProgressBar) findViewById(R.id.progressBar);
+        progressBar =(ProgressBar) findViewById(R.id.register_progressBar);
     }
 
     @Override
@@ -63,17 +64,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         String password = editPassword.getText().toString().trim();
 
         if(email.isEmpty()){
-            editEmail.setError("Email is required");
+            editEmail.setError("Email is required!");
             editEmail.requestFocus();
             return;
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            editEmail.setError("Please provide a valid email!!!");
+            editEmail.setError("Invalid email format!");
             editEmail.requestFocus();
             return;
         }
         if(password.isEmpty()){
-            editPassword.setError("Password is required");
+            editPassword.setError("Password is required!");
             editPassword.requestFocus();
             return;
         }
@@ -97,7 +98,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(Register.this, "User has been registered successfully!!", Toast.LENGTH_LONG).show();
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        user.sendEmailVerification();
+                                        Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(Register.this, MainActivity.class));
                                     } else {
                                         Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
                                     }
