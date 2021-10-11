@@ -1,1 +1,1 @@
-# medi_app
+# MediApp
