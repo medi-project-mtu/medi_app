@@ -1,1 +1,1 @@
-# stefan-feature medi_app
+# medi_app
