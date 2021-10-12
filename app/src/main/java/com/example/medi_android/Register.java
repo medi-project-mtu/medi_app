@@ -9,15 +9,23 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
@@ -25,8 +33,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private FirebaseAuth mAuth;
     private EditText editEmail, editPassword;
     private Button registerButton;
+    private ImageButton googleRegisterButton;
     private TextView loginRedirect;
     private ProgressBar progressBar;
+    private GoogleSignInClient mGoogleSignInClient;
+    private final static int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +52,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         registerButton = (Button) findViewById(R.id.sign_up_button);
         registerButton.setOnClickListener(this);
 
+        googleRegisterButton = (ImageButton) findViewById(R.id.google_register_button);
+        googleRegisterButton.setOnClickListener(this);
+
         editEmail = (EditText) findViewById(R.id.sign_up_email);
         editPassword = (EditText) findViewById(R.id.sign_up_pw);
 
         progressBar =(ProgressBar) findViewById(R.id.register_progressBar);
+        requestGoogleSignIn();
     }
 
+    private void requestGoogleSignIn(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -56,7 +79,54 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             case R.id.sign_up_button:
                 registerUser();
                 break;
+            case R.id.google_register_button:
+                registerGoogle();
+                break;
         }
+    }
+    private void registerGoogle() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+
+
+            } catch (ApiException e) {
+                Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            String email = account.getEmail();
+
+                            User user = new User(email);
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user);
+
+                            startActivity(new Intent(Register.this, Dashboard.class));
+                        } else {
+                            Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     private void registerUser(){
@@ -101,6 +171,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                         user.sendEmailVerification();
                                         Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                        FirebaseAuth.getInstance().signOut();
                                         startActivity(new Intent(Register.this, MainActivity.class));
                                     } else {
                                         Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();

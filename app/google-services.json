@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "607842716640",
+    "firebase_url": "https://medi-group-project-default-rtdb.firebaseio.com",
     "project_id": "medi-group-project",
     "storage_bucket": "medi-group-project.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "607842716640-3sovqt0ml8vvu7gcah2q57glgfeeflfa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medi_android",
+            "certificate_hash": "3ecb8e027053e520e1ac79b1558f60fe7ab2c5e6"
+          }
+        },
         {
           "client_id": "607842716640-qr9noc65kncv9g8mss455pgn2vpiqnmn.apps.googleusercontent.com",
           "client_type": 3
