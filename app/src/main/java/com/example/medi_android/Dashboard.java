@@ -20,9 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class Dashboard extends AppCompatActivity {
+public class Dashboard extends AppCompatActivity implements View.OnClickListener {
 
-    private Button logout;
+    private Button logout,medical_history,medi_ai_interface,payment,support;
 
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -32,6 +32,18 @@ public class Dashboard extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        medical_history = (Button)findViewById(R.id.medical_history);
+        medical_history.setOnClickListener(this);
+
+        medi_ai_interface = (Button)findViewById(R.id.medi_ai_interface);
+        medi_ai_interface.setOnClickListener(this);
+
+        payment = (Button)findViewById(R.id.payment);
+        payment.setOnClickListener(this);
+
+        support = (Button)findViewById(R.id.support);
+        support.setOnClickListener(this);
 
         logout = (Button) findViewById(R.id.log_out);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -66,5 +78,22 @@ public class Dashboard extends AppCompatActivity {
                 Toast.makeText(Dashboard.this, "Something wrong happened!", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.medical_history:
+                startActivity(new Intent(this, MedicalHistory.class));
+                break;
+            case R.id.medi_ai_interface:
+                startActivity(new Intent(this, MediAiInterface.class));
+                break;
+            case R.id.payment:
+                startActivity(new Intent(this, Payment.class));
+                break;
+            case R.id.support:
+                startActivity(new Intent(this, Support.class));
+                break;
+        }
     }
 }

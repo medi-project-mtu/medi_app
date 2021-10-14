@@ -49,6 +49,58 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/medical_history"
+        android:layout_width="253dp"
+        android:layout_height="65dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Medical History"
+        android:textColor="#000000"
+        app:cornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/medi_ai_interface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dashboard_email" />
+
+    <Button
+        android:id="@+id/medi_ai_interface"
+        android:layout_width="253dp"
+        android:layout_height="65dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Medi-AI Interface"
+        android:textColor="#000000"
+        app:cornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/payment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medical_history" />
+
+    <Button
+        android:id="@+id/payment"
+        android:layout_width="253dp"
+        android:layout_height="65dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Payment"
+        android:textColor="#000000"
+        app:cornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/support"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/medi_ai_interface" />
+
+    <Button
+        android:id="@+id/support"
+        android:layout_width="253dp"
+        android:layout_height="65dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Support"
+        android:textColor="#000000"
+        app:cornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/log_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/payment" />
+
     <TextView
         android:id="@+id/dashboard_email"
         android:layout_width="wrap_content"
