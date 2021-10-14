@@ -26,6 +26,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView signup, forgotPW;
     private EditText editEmail, editPassword;
     private Button loginButton;
-    private ImageButton googleSignInButton;
+//    private ImageButton googleSignInButton;
+    private SignInButton googleSignInButton;
 
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editPassword = (EditText) findViewById(R.id.log_in_pw);
         progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
 
-        googleSignInButton = (ImageButton) findViewById(R.id.google_sign_in_button);
+        googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
