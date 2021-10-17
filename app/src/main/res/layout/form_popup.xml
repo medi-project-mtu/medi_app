@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2a324b"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
     <EditText
-        android:id="@+id/form_popup_fname"
+        android:id="@+id/form_popup_name"
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:layout_marginTop="50dp"
         android:background="#FDFDFD"
         android:ems="10"
-        android:hint="First Name"
+        android:hint="Full Name"
         android:inputType="textPersonName"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -25,79 +27,84 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_setup_text" />
 
     <EditText
-        android:id="@+id/form_popup_lname"
-        android:layout_width="270dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:background="#FFFFFF"
-        android:ems="10"
-        android:hint="Last Name"
-        android:inputType="textPersonName"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_fname" />
-
-    <EditText
         android:id="@+id/form_popup_dob"
         android:layout_width="270dp"
         android:layout_height="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="30dp"
         android:background="#FFFFFF"
         android:ems="10"
+        android:focusable="false"
         android:hint="Date of Birth"
         android:inputType="none"
-        android:focusable="false"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textColorHint="#888888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_phone" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_gender" />
 
     <EditText
-        android:id="@+id/form_popup_phone"
+        android:id="@+id/form_popup_height"
         android:layout_width="270dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="30dp"
         android:background="#FFFFFF"
         android:ems="10"
-        android:hint="Phone Number"
-        android:inputType="phone"
+        android:hint="Height (cm)"
+        android:inputType="numberDecimal"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textColorHint="#888888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_lname" />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_name" />
+
+    <EditText
+        android:id="@+id/form_popup_weight"
+        android:layout_width="270dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="30dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="Weight (KG)"
+        android:inputType="numberDecimal"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColorHint="#888888"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/form_popup_height" />
 
     <Button
         android:id="@+id/form_popup_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="#FF0000"
         android:text="Cancel"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/form_popup_save"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_picker_button" />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
 
     <Button
         android:id="@+id/form_popup_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="#FF0000"
         android:text="Save"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/form_popup_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/date_picker_button" />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
 
     <TextView
         android:id="@+id/profile_setup_text"
@@ -113,17 +120,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/date_picker_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="Select Date"
-        android:textColor="#2A324B"
+    <Spinner
+        android:id="@+id/spinner_gender"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:background="#FFFFFF"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
+        app:layout_constraintTop_toBottomOf="@id/form_popup_weight" />
 
     <ProgressBar
         android:id="@+id/form_progressBar"

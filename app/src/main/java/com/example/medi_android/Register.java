@@ -9,10 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +43,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class Register extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class Register extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
 
     private FirebaseAuth mAuth;
     private EditText editEmail, editPassword;
@@ -55,8 +58,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private EditText popup_firstName, popup_lastname, popup_dob, popup_phone;
+    private EditText popup_name, popup_height, popup_weight, popup_dob;
+    private Spinner spinner_gender;
     private Button popUpSave, popUpCancel, datePickerButton;
+
+    private User user;
 
 
     @Override
@@ -213,14 +219,20 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     public void createFormPopUp(String email, String password){
         dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
-        popup_firstName = (EditText) formPopUpView.findViewById(R.id.form_popup_fname);
-        popup_lastname = (EditText) formPopUpView.findViewById(R.id.form_popup_lname);
+        popup_name = (EditText) formPopUpView.findViewById(R.id.form_popup_name);
         popup_dob = (EditText) formPopUpView.findViewById(R.id.form_popup_dob);
-        popup_phone = (EditText) formPopUpView.findViewById(R.id.form_popup_phone);
+        popup_height = (EditText) formPopUpView.findViewById(R.id.form_popup_height);
+        popup_weight = (EditText) formPopUpView.findViewById(R.id.form_popup_weight);
 
         popUpSave = (Button) formPopUpView.findViewById(R.id.form_popup_save);
         popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
-        datePickerButton = (Button) formPopUpView.findViewById(R.id.date_picker_button);
+
+        spinner_gender = (Spinner) formPopUpView.findViewById(R.id.spinner_gender);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_gender.setAdapter(adapter);
+        spinner_gender.setOnItemSelectedListener(this);
 
         formProgressBar = (ProgressBar) formPopUpView.findViewById(R.id.form_progressBar);
 
@@ -228,7 +240,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         dialog = dialogBuilder.create();
         dialog.show();
 
-        datePickerButton.setOnClickListener(new View.OnClickListener() {
+        popup_dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
@@ -244,11 +256,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    String fname = popup_firstName.getText().toString().trim();
-                                    String lname = popup_lastname.getText().toString().trim();
-                                    String dob = popup_dob.getText().toString().trim();
-                                    String phone = popup_phone.getText().toString().trim();
-                                    User user = new User(email, fname, lname, dob, phone);
+                                    user.setName(popup_name.getText().toString().trim());
+                                    user.setDob(popup_dob.getText().toString().trim());
+                                    user.setHeight(popup_height.getText().toString().trim());
+                                    user.setWeight(popup_weight.getText().toString().trim());
+                                    user.setEmail(email);
+
                                     FirebaseDatabase.getInstance().getReference("Users")
                                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -267,7 +280,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                         }
                                     });
                                 } else {
-                                    Toast.makeText(Register.this, "Failed to register user! firebase prob?", Toast.LENGTH_LONG).show();
+                                    // could be user acc email already exists
+                                    Toast.makeText(Register.this, "User email already exists.", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(Register.this, MainActivity.class));
+                                    formProgressBar.setVisibility(View.GONE);
                                 }
                             }
                         });
@@ -285,6 +301,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void registerUser(){
+        user = new User();
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
@@ -312,4 +329,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         createFormPopUp(email, password);
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(parent.getId() == R.id.spinner_gender){
+            String gender = parent.getItemAtPosition(position).toString();
+            user.setGender(gender);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        user.setGender("Prefer not to Say");
+    }
 }
