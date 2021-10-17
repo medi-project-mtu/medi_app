@@ -38,7 +38,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
+import java.util.Calendar;
+
+public class Register extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
     private FirebaseAuth mAuth;
     private EditText editEmail, editPassword;
@@ -53,7 +55,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText popup_firstName, popup_lastname, popup_dob, popup_phone;
-    private Button popUpSave, popUpCancel;
+    private Button popUpSave, popUpCancel, datePickerButton;
 
 
     @Override
@@ -189,20 +191,46 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 });
     }
 
+    private void showDatePickerDialog(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                this,
+                this,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        );
+        datePickerDialog.show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+        month += 1;
+        String date = dayOfMonth + "/" + month + "/" + year;
+        popup_dob.setText(date);
+    }
+
     public void createFormPopUp(String email, String password){
         dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
         popup_firstName = (EditText) formPopUpView.findViewById(R.id.form_popup_fname);
         popup_lastname = (EditText) formPopUpView.findViewById(R.id.form_popup_lname);
-        popup_dob = (EditText) formPopUpView.findViewById(R.id.form_up_dob);
+        popup_dob = (EditText) formPopUpView.findViewById(R.id.form_popup_dob);
         popup_phone = (EditText) formPopUpView.findViewById(R.id.form_popup_phone);
 
         popUpSave = (Button) formPopUpView.findViewById(R.id.form_popup_save);
         popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
+        datePickerButton = (Button) formPopUpView.findViewById(R.id.date_picker_button);
 
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
         dialog.show();
+
+        datePickerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
 
         popUpSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,4 +306,5 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         createFormPopUp(email, password);
     }
+
 }

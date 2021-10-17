@@ -41,20 +41,21 @@
         app:layout_constraintTop_toBottomOf="@+id/form_popup_fname" />
 
     <EditText
-        android:id="@+id/form_up_dob"
+        android:id="@+id/form_popup_dob"
         android:layout_width="270dp"
         android:layout_height="40dp"
         android:layout_marginTop="32dp"
         android:background="#FFFFFF"
         android:ems="10"
         android:hint="Date of Birth"
-        android:inputType="date"
+        android:inputType="none"
+        android:focusable="false"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textColorHint="#888888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_lname" />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_phone" />
 
     <EditText
         android:id="@+id/form_popup_phone"
@@ -70,35 +71,33 @@
         android:textColorHint="#888888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_up_dob" />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_lname" />
 
     <Button
         android:id="@+id/form_popup_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:backgroundTint="#FF0000"
         android:text="Cancel"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/form_popup_save"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_phone" />
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_button" />
 
     <Button
         android:id="@+id/form_popup_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:backgroundTint="#FF0000"
         android:text="Save"
         android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/form_popup_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_phone" />
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_button" />
 
     <TextView
         android:id="@+id/profile_setup_text"
@@ -118,12 +117,12 @@
         android:id="@+id/date_picker_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Select DOB"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="Select Date"
+        android:textColor="#2A324B"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_phone"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
