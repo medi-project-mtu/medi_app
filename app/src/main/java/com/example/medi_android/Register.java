@@ -51,6 +51,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private TextView loginRedirect;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
+    private ProgressBar formProgressBar;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -221,6 +222,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
         datePickerButton = (Button) formPopUpView.findViewById(R.id.date_picker_button);
 
+        formProgressBar = (ProgressBar) formPopUpView.findViewById(R.id.form_progressBar);
+
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
         dialog.show();
@@ -235,6 +238,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         popUpSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                formProgressBar.setVisibility(View.VISIBLE);
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -256,6 +260,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                                 Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
                                                 FirebaseAuth.getInstance().signOut();
                                                 startActivity(new Intent(Register.this, MainActivity.class));
+                                                formProgressBar.setVisibility(View.GONE);
                                             } else {
                                                 Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
                                             }
