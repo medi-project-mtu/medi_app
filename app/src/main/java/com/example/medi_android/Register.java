@@ -1,16 +1,17 @@
 package com.example.medi_android;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +47,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private LoginButton facebookRegisterButton;
     private CallbackManager mCallbackManager;
     private TextView loginRedirect;
-    private ProgressBar progressBar;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
+
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private EditText popup_firstName, popup_lastname, popup_dob, popup_phone;
+    private Button popUpSave, popUpCancel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +75,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         editEmail = (EditText) findViewById(R.id.sign_up_email);
         editPassword = (EditText) findViewById(R.id.sign_up_pw);
 
-        progressBar =(ProgressBar) findViewById(R.id.register_progressBar);
         requestGoogleSignIn();
         mCallbackManager = CallbackManager.Factory.create();
         facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
@@ -184,6 +189,68 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 });
     }
 
+    public void createFormPopUp(String email, String password){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
+        popup_firstName = (EditText) formPopUpView.findViewById(R.id.form_popup_fname);
+        popup_lastname = (EditText) formPopUpView.findViewById(R.id.form_popup_lname);
+        popup_dob = (EditText) formPopUpView.findViewById(R.id.form_up_dob);
+        popup_phone = (EditText) formPopUpView.findViewById(R.id.form_popup_phone);
+
+        popUpSave = (Button) formPopUpView.findViewById(R.id.form_popup_save);
+        popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
+
+        dialogBuilder.setView(formPopUpView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        popUpSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    String fname = popup_firstName.getText().toString().trim();
+                                    String lname = popup_lastname.getText().toString().trim();
+                                    String dob = popup_dob.getText().toString().trim();
+                                    String phone = popup_phone.getText().toString().trim();
+                                    User user = new User(email, fname, lname, dob, phone);
+                                    FirebaseDatabase.getInstance().getReference("Users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                user.sendEmailVerification();
+                                                Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                                startActivity(new Intent(Register.this, MainActivity.class));
+                                            } else {
+                                                Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(Register.this, "Failed to register user! firebase prob?", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+
+            }
+        });
+
+        popUpCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //define cancel btn
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void registerUser(){
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
@@ -209,36 +276,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            User user = new User(email);
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                        user.sendEmailVerification();
-                                        Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
-                                        FirebaseAuth.getInstance().signOut();
-                                        startActivity(new Intent(Register.this, MainActivity.class));
-                                    } else {
-                                        Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
-                                    }
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            });
-                        } else {
-                            Toast.makeText(Register.this, "Failed to register user! firebase prob?", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+        createFormPopUp(email, password);
     }
 }
