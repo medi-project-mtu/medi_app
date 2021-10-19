@@ -38,7 +38,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -147,7 +149,23 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                createPopUpForm(account, null, null, PROVIDER_GOOGLE);
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                mAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
+                                    if (isNewUser){
+                                        createPopUpForm(account, null, null, PROVIDER_GOOGLE);
+                                    } else {
+                                        startActivity(new Intent(Register.this, Dashboard.class));
+                                    }
+                                } else {
+                                    Toast.makeText(Register.this, "Something wrong with Google Sign-In", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             } catch (ApiException e) {
                 Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
             }
