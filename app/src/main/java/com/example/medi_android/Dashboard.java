@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Dashboard extends AppCompatActivity implements View.OnClickListener {
 
-    private Button logout,medical_history,medi_ai_interface,payment,support;
+    private Button logout,medical_history,medi_ai_interface,payment,support,rating;
 
     private FirebaseUser user;
     private DatabaseReference reference;
@@ -35,6 +35,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
 
         medical_history = (Button)findViewById(R.id.medical_history);
         medical_history.setOnClickListener(this);
+
+        rating = (Button) findViewById(R.id.rating_button);
+        rating.setOnClickListener(this);
 
         medi_ai_interface = (Button)findViewById(R.id.medi_ai_interface);
         medi_ai_interface.setOnClickListener(this);
@@ -93,6 +96,9 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
                 break;
             case R.id.support:
                 startActivity(new Intent(this, Support.class));
+                break;
+            case R.id.rating_button:
+                startActivity(new Intent(this, Ratings.class));
                 break;
         }
     }
