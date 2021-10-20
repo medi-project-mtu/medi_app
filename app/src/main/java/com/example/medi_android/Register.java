@@ -168,9 +168,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == POPUP_SETUP){
-            Toast.makeText(Register.this, "hallelujah", Toast.LENGTH_SHORT).show();
-        }
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -310,6 +307,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                          user.setHeight(profileHeight);
                                          user.setWeight(profileWeight);
                                          user.setEmail(email);
+                                         user.setRole();
 
                                          FirebaseDatabase.getInstance().getReference("Users")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -321,7 +319,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                                      user.sendEmailVerification();
                                                      Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
                                                      FirebaseAuth.getInstance().signOut();
-                                                     startActivity(new Intent(Register.this, Dashboard.class));
+                                                     startActivity(new Intent(Register.this, MainActivity.class));
                                                      formProgressBar.setVisibility(View.GONE);
                                                  } else {
                                                      Log.w(TAG, "Google SignIn Error", task.getException());
@@ -345,6 +343,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                          user.setHeight(profileHeight);
                                          user.setWeight(profileWeight);
                                          user.setEmail(account.getEmail());
+                                         user.setRole();
 
                                          FirebaseDatabase.getInstance().getReference("Users")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
