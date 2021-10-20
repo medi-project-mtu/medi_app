@@ -8,6 +8,7 @@ public class User {
     public String height;
     public String weight;
     public Review review;
+    public String role;
 
     public User(){
 
@@ -15,6 +16,14 @@ public class User {
 
     public User(String email){
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole() {
+        this.role = "Patient";
     }
 
     public String getEmail() {
@@ -65,11 +74,11 @@ public class User {
         this.weight = weight;
     }
 
-    public  Review getReview(){
+    public Review getReview(){
         return review;
 
     }
-    public void  setReview(Review review){
+    public void setReview(Review review){
         this.review =review;
     }
 }

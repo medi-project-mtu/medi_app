@@ -1,5 +1,7 @@
 package com.example.medi_android;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,13 +35,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
@@ -54,13 +60,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private TextView loginRedirect;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
+    private final static int PROVIDER_GOOGLE = 1;
+    private final static int PROVIDER_EMAIL= 0;
+    private final static int POPUP_SETUP = 555;
+
     private ProgressBar formProgressBar;
 
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText popup_name, popup_height, popup_weight, popup_dob;
     private Spinner spinner_gender;
-    private Button popUpSave, popUpCancel, datePickerButton;
+    private Button popUpSave, popUpCancel;
 
     private User user;
 
@@ -85,6 +95,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         editPassword = (EditText) findViewById(R.id.sign_up_pw);
 
         requestGoogleSignIn();
+        if(getIntent().getBooleanExtra("Profile Setup", false)){
+            registerGoogle();
+        }
         mCallbackManager = CallbackManager.Factory.create();
         facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
         facebookRegisterButton.setReadPermissions("email", "public_profile");
@@ -129,9 +142,26 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 break;
         }
     }
+
     private void registerGoogle() {
+        user = new User();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            startActivity(new Intent(Register.this, Dashboard.class));
+                        } else {
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -141,11 +171,25 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
 
-
+                //here i check if this email is new or not
+                //if the email has no signInMethods, it is new, else it exists
+                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if(task.getResult().getSignInMethods().size() == 0){
+                            createPopUpForm(account, null, null, PROVIDER_GOOGLE);
+                        } else {
+                            firebaseAuthWithGoogle(account);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } catch (ApiException e) {
                 Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -175,33 +219,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 });
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String email = account.getEmail();
-
-                            User user = new User(email);
-
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user);
-
-                            startActivity(new Intent(Register.this, Dashboard.class));
-                        } else {
-                            Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
     private void showDatePickerDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -216,9 +235,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         popup_dob.setText(date);
     }
 
-    public void createFormPopUp(String email, String password){
+    public void createPopUpForm(GoogleSignInAccount account, String email, String password, int provider){
         dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
+
         popup_name = (EditText) formPopUpView.findViewById(R.id.form_popup_name);
         popup_dob = (EditText) formPopUpView.findViewById(R.id.form_popup_dob);
         popup_height = (EditText) formPopUpView.findViewById(R.id.form_popup_height);
@@ -248,47 +268,96 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         });
 
         popUpSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                formProgressBar.setVisibility(View.VISIBLE);
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    user.setName(popup_name.getText().toString().trim());
-                                    user.setDob(popup_dob.getText().toString().trim());
-                                    user.setHeight(popup_height.getText().toString().trim());
-                                    user.setWeight(popup_weight.getText().toString().trim());
-                                    user.setEmail(email);
+             @Override
+             public void onClick(View view) {
+                 String profileName = popup_name.getText().toString().trim();
+                 String profileDOB = popup_dob.getText().toString().trim();
+                 String profileHeight = popup_height.getText().toString().trim();
+                 String profileWeight = popup_weight.getText().toString().trim();
 
-                                    FirebaseDatabase.getInstance().getReference("Users")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                                user.sendEmailVerification();
-                                                Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
-                                                FirebaseAuth.getInstance().signOut();
-                                                startActivity(new Intent(Register.this, MainActivity.class));
-                                                formProgressBar.setVisibility(View.GONE);
-                                            } else {
-                                                Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
-                                            }
-                                        }
-                                    });
-                                } else {
-                                    // could be user acc email already exists
-                                    Toast.makeText(Register.this, "User email already exists.", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(Register.this, MainActivity.class));
-                                    formProgressBar.setVisibility(View.GONE);
-                                }
-                            }
-                        });
+                 if (profileName.isEmpty()) {
+                     popup_name.setError("Name is required!");
+                     popup_name.requestFocus();
+                     return;
+                 }
+                 if (profileDOB.isEmpty()) {
+                     popup_dob.setError("Date of Birth is required!");
+                     popup_dob.requestFocus();
+                     return;
+                 }
+                 if (profileHeight.isEmpty()) {
+                     popup_height.setError("Height is required!");
+                     popup_height.requestFocus();
+                     return;
+                 }
+                 if (profileWeight.isEmpty()) {
+                     popup_weight.setError("Weight is required!");
+                     popup_weight.requestFocus();
+                     return;
+                 }
+                 formProgressBar.setVisibility(View.VISIBLE);
+                 if (provider == PROVIDER_EMAIL) {
+                     mAuth.createUserWithEmailAndPassword(email, password)
+                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                     if (task.isSuccessful()) {
+                                         user.setName(profileName);
+                                         user.setDob(profileDOB);
+                                         user.setHeight(profileHeight);
+                                         user.setWeight(profileWeight);
+                                         user.setEmail(email);
+                                         user.setRole();
 
-            }
+                                         FirebaseDatabase.getInstance().getReference("Users")
+                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                 .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                             @Override
+                                             public void onComplete(@NonNull Task<Void> task) {
+                                                 if (task.isSuccessful()) {
+                                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                     user.sendEmailVerification();
+                                                     Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                                     FirebaseAuth.getInstance().signOut();
+                                                     startActivity(new Intent(Register.this, MainActivity.class));
+                                                     formProgressBar.setVisibility(View.GONE);
+                                                 } else {
+                                                     Log.w(TAG, "Google SignIn Error", task.getException());
+                                                 }
+                                             }
+                                         });
+                                     } else {
+                                         Log.w(TAG, "Google SignIn Error", task.getException());
+                                     }
+                                 }
+                             });
+                 } else if (provider == PROVIDER_GOOGLE) {
+                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                     mAuth.signInWithCredential(credential)
+                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                     if (task.isSuccessful()) {
+                                         user.setName(profileName);
+                                         user.setDob(profileDOB);
+                                         user.setHeight(profileHeight);
+                                         user.setWeight(profileWeight);
+                                         user.setEmail(account.getEmail());
+                                         user.setRole();
+
+                                         FirebaseDatabase.getInstance().getReference("Users")
+                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                                 .setValue(user);
+
+                                     } else {
+                                         Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
+                                     }
+                                     startActivity(new Intent(Register.this, Dashboard.class));
+                                     formProgressBar.setVisibility(View.GONE);
+                                 }
+                             });
+                 }
+             }
         });
 
         popUpCancel.setOnClickListener(new View.OnClickListener() {
@@ -301,7 +370,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void registerUser(){
-        user = new User();
+        user = new User(); //initialize new user
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
@@ -326,7 +395,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             return;
         }
 
-        createFormPopUp(email, password);
+        //here i check if this email is new or not
+        //if the email has no signInMethods, it is new, else it exists
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                if(task.getResult().getSignInMethods().size() == 0){
+                    createPopUpForm(null, email, password, PROVIDER_EMAIL);
+                } else {
+                    Toast.makeText(Register.this, "User email already exist", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Register.this, MainActivity.class));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
