@@ -1,5 +1,7 @@
 package com.example.medi_android;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,6 +35,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -58,6 +62,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private final static int RC_SIGN_IN = 123;
     private final static int PROVIDER_GOOGLE = 1;
     private final static int PROVIDER_EMAIL= 0;
+    private final static int POPUP_SETUP = 555;
 
     private ProgressBar formProgressBar;
 
@@ -90,6 +95,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         editPassword = (EditText) findViewById(R.id.sign_up_pw);
 
         requestGoogleSignIn();
+        if(getIntent().getBooleanExtra("Profile Setup", false)){
+            registerGoogle();
+        }
         mCallbackManager = CallbackManager.Factory.create();
         facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
         facebookRegisterButton.setReadPermissions("email", "public_profile");
@@ -141,31 +149,50 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            startActivity(new Intent(Register.this, Dashboard.class));
+                        } else {
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                });
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == POPUP_SETUP){
+            Toast.makeText(Register.this, "hallelujah", Toast.LENGTH_SHORT).show();
+        }
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                mAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    boolean isNewUser = task.getResult().getAdditionalUserInfo().isNewUser();
-                                    if (isNewUser){
-                                        createPopUpForm(account, null, null, PROVIDER_GOOGLE);
-                                    } else {
-                                        startActivity(new Intent(Register.this, Dashboard.class));
-                                    }
-                                } else {
-                                    Toast.makeText(Register.this, "Something wrong with Google Sign-In", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+
+                //here i check if this email is new or not
+                //if the email has no signInMethods, it is new, else it exists
+                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                        if(task.getResult().getSignInMethods().size() == 0){
+                            createPopUpForm(account, null, null, PROVIDER_GOOGLE);
+                        } else {
+                            firebaseAuthWithGoogle(account);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
+                    }
+                });
             } catch (ApiException e) {
                 Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -196,9 +223,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void showDatePickerDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                this,
-                this,
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -296,18 +321,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                                      user.sendEmailVerification();
                                                      Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
                                                      FirebaseAuth.getInstance().signOut();
-                                                     startActivity(new Intent(Register.this, MainActivity.class));
+                                                     startActivity(new Intent(Register.this, Dashboard.class));
                                                      formProgressBar.setVisibility(View.GONE);
                                                  } else {
-                                                     Toast.makeText(Register.this, "Failed to register user!", Toast.LENGTH_LONG).show();
+                                                     Log.w(TAG, "Google SignIn Error", task.getException());
                                                  }
                                              }
                                          });
                                      } else {
-                                         // could be user acc email already exists
-                                         Toast.makeText(Register.this, "User email already exists.", Toast.LENGTH_LONG).show();
-                                         startActivity(new Intent(Register.this, MainActivity.class));
-                                         formProgressBar.setVisibility(View.GONE);
+                                         Log.w(TAG, "Google SignIn Error", task.getException());
                                      }
                                  }
                              });
@@ -331,7 +353,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                      } else {
                                          Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
                                      }
-                                     startActivity(new Intent(Register.this, MainActivity.class));
+                                     startActivity(new Intent(Register.this, Dashboard.class));
                                      formProgressBar.setVisibility(View.GONE);
                                  }
                              });
@@ -349,7 +371,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void registerUser(){
-        user = new User();
+        user = new User(); //initialize new user
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
@@ -374,7 +396,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             return;
         }
 
-        createPopUpForm(null, email, password, PROVIDER_EMAIL);
+        //here i check if this email is new or not
+        //if the email has no signInMethods, it is new, else it exists
+        mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                if(task.getResult().getSignInMethods().size() == 0){
+                    createPopUpForm(null, email, password, PROVIDER_EMAIL);
+                } else {
+                    Toast.makeText(Register.this, "User email already exist", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Register.this, MainActivity.class));
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
