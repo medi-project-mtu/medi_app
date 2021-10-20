@@ -7,6 +7,7 @@ public class User {
     public String gender;
     public String height;
     public String weight;
+    public Review review;
     public String role;
 
     public User(){
@@ -71,5 +72,13 @@ public class User {
 
     public void setWeight(String weight) {
         this.weight = weight;
+    }
+
+    public Review getReview(){
+        return review;
+
+    }
+    public void setReview(Review review){
+        this.review =review;
     }
 }

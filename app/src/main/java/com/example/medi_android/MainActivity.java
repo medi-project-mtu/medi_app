@@ -39,7 +39,7 @@ import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView signup, forgotPW;
     private EditText editEmail, editPassword;
     private Button loginButton;
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if(user!=null){
+        if (user != null) {
             startActivity(new Intent(MainActivity.this, Dashboard.class));
         }
     }
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         forgotPW = (TextView) findViewById(R.id.forgot_pw);
         forgotPW.setOnClickListener(this);
 
-        loginButton = (Button)findViewById(R.id.log_in_button);
+        loginButton = (Button) findViewById(R.id.log_in_button);
         loginButton.setOnClickListener(this);
 
         editEmail = (EditText) findViewById(R.id.log_in_email);
@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-    private void requestGoogleSignIn(){
+    private void requestGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -174,10 +173,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
             } catch (ApiException e) {
-                Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
+
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
@@ -191,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.d(TAG, "signInWithCredential:success");
                             String email = mAuth.getCurrentUser().getEmail();
                             User user = new User(email);
+
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user);
@@ -204,9 +205,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
     }
+  
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.sign_up_redirect:
                 startActivity(new Intent(this, Register.class));
                 break;
@@ -222,21 +224,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void loginUser(){
+    private void loginUser() {
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
-        if (email.isEmpty()){
-           editEmail.setError("Email is required!");
-           editEmail.requestFocus();
-           return;
+        if (email.isEmpty()) {
+            editEmail.setError("Email is required!");
+            editEmail.requestFocus();
+            return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editEmail.setError("Invalid email format!");
             editEmail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editPassword.setError("Password is required!");
             editPassword.requestFocus();
             return;
@@ -246,16 +248,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if(user.isEmailVerified()){
                         startActivity(new Intent(MainActivity.this, Dashboard.class));
-                    }else{
+                    } else {
                         user.sendEmailVerification();
                         Toast.makeText(MainActivity.this, "Account not verified, verification link resent to email", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
                     }
-                }else{
+                } else {
                     Toast.makeText(MainActivity.this, "Failed to login! Check your credentials!", Toast.LENGTH_LONG).show();
                     progressBar.setVisibility(View.GONE);
                 }
