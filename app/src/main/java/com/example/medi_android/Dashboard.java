@@ -60,7 +60,7 @@ public class Dashboard extends AppCompatActivity implements View.OnClickListener
         });
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference = FirebaseDatabase.getInstance().getReference("Patient");
         userID = user.getUid();
 
         final TextView emailTextView = (TextView) findViewById(R.id.dashboard_email);

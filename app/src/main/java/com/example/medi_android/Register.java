@@ -307,9 +307,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                          user.setHeight(profileHeight);
                                          user.setWeight(profileWeight);
                                          user.setEmail(email);
-                                         user.setRole();
 
-                                         FirebaseDatabase.getInstance().getReference("Users")
+                                         FirebaseDatabase.getInstance().getReference("Patient")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                  .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                              @Override
@@ -343,9 +342,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                          user.setHeight(profileHeight);
                                          user.setWeight(profileWeight);
                                          user.setEmail(account.getEmail());
-                                         user.setRole();
 
-                                         FirebaseDatabase.getInstance().getReference("Users")
+                                         FirebaseDatabase.getInstance().getReference("Patient")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                                  .setValue(user);
 
