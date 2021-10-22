@@ -3,7 +3,7 @@
     <style name="Theme.Medi_Android" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#2A324B</item>
-        <item name="colorPrimaryVariant">#2A324B</item>
+        <item name="colorPrimaryVariant">#191E30</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#2A324B</item>
