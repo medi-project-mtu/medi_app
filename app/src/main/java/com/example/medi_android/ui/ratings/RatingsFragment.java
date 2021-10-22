@@ -61,7 +61,7 @@ public class RatingsFragment extends Fragment {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("Users")
+                FirebaseDatabase.getInstance().getReference("Patient")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .child("review")
                         .addListenerForSingleValueEvent(new ValueEventListener() {
