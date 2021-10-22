@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2A324B"
-    tools:context=".Ratings">
-
+    tools:context=".ui.ratings.RatingsFragment">
 
     <TextView
         android:id="@+id/payment_text"

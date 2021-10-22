@@ -1,4 +1,4 @@
-package com.example.medi_android.ui.slideshow;
+package com.example.medi_android.ui.contacts;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,23 +13,27 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.medi_android.R;
-import com.example.medi_android.databinding.FragmentSlideshowBinding;
+import com.example.medi_android.databinding.FragmentContactsBinding;
 
-public class SlideshowFragment extends Fragment {
+public class ContactsFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
-    private FragmentSlideshowBinding binding;
+    private ContactsViewModel contactsViewModel;
+    private FragmentContactsBinding binding;
+
+    public static ContactsFragment newInstance() {
+        return new ContactsFragment();
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
+        contactsViewModel =
+                new ViewModelProvider(this).get(ContactsViewModel.class);
 
-        binding = FragmentSlideshowBinding.inflate(inflater, container, false);
+        binding = FragmentContactsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        final TextView textView = binding.textContacts;
+        contactsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
@@ -38,9 +42,4 @@ public class SlideshowFragment extends Fragment {
         return root;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
 }

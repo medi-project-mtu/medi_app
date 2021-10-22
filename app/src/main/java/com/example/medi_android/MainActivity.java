@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
-            startActivity(new Intent(MainActivity.this, Dashboard.class));
+            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
         }
     }
 
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            startActivity(new Intent(MainActivity.this, Dashboard.class));
+                            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user);
-                            startActivity(new Intent(MainActivity.this, Dashboard.class));
+                            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     if(user.isEmailVerified()){
-                        startActivity(new Intent(MainActivity.this, Dashboard.class));
+                        startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(MainActivity.this, "Account not verified, verification link resent to email", Toast.LENGTH_LONG).show();

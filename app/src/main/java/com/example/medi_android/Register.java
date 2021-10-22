@@ -156,7 +156,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            startActivity(new Intent(Register.this, Dashboard.class));
+                            startActivity(new Intent(Register.this, DashboardDrawer.class));
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
@@ -209,7 +209,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user);
-                            startActivity(new Intent(Register.this, Dashboard.class));
+                            startActivity(new Intent(Register.this, DashboardDrawer.class));
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(Register.this, "Authentication failed.",
@@ -350,7 +350,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                      } else {
                                          Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
                                      }
-                                     startActivity(new Intent(Register.this, Dashboard.class));
+                                     startActivity(new Intent(Register.this, DashboardDrawer.class));
                                      formProgressBar.setVisibility(View.GONE);
                                  }
                              });

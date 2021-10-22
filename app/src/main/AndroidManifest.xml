@@ -17,25 +17,7 @@
             android:label="@string/title_activity_dashboard_drawer"
             android:theme="@style/Theme.Medi_Android.NoActionBar" />
         <activity
-            android:name=".Ratings"
-            android:exported="true" />
-        <activity
-            android:name=".Support"
-            android:exported="true" />
-        <activity
-            android:name=".Payment"
-            android:exported="true" />
-        <activity
-            android:name=".MediAiInterface"
-            android:exported="true" />
-        <activity
-            android:name=".MedicalHistory"
-            android:exported="true" />
-        <activity
             android:name=".ResetPassword"
-            android:exported="true" />
-        <activity
-            android:name=".Dashboard"
             android:exported="true" />
         <activity
             android:name=".Register"

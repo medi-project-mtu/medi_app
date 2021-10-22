@@ -1,11 +1,15 @@
 package com.example.medi_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
+import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,7 +18,6 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
 
 public class DashboardDrawer extends AppCompatActivity {
 
@@ -41,12 +44,19 @@ public class DashboardDrawer extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_contacts, R.id.nav_ratings)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_dashboard_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+            startActivity(new Intent(DashboardDrawer.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            finish();
+            return true;
+        });
     }
 
     @Override

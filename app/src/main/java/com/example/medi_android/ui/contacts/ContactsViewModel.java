@@ -1,16 +1,15 @@
-package com.example.medi_android.ui.gallery;
+package com.example.medi_android.ui.contacts;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class GalleryViewModel extends ViewModel {
-
+public class ContactsViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public GalleryViewModel() {
+    public ContactsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is contacts fragment");
     }
 
     public LiveData<String> getText() {
