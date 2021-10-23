@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.example.medi_android.DashboardDrawer;
 import com.example.medi_android.R;
 import com.example.medi_android.Review;
-import com.example.medi_android.databinding.FragmentHomeBinding;
 import com.example.medi_android.databinding.FragmentRatingsBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
