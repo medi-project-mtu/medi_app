@@ -14,8 +14,7 @@
         <activity
             android:name=".DashboardDrawer"
             android:exported="false"
-            android:label="@string/title_activity_dashboard_drawer"
-            android:theme="@style/Theme.Medi_Android.NoActionBar" />
+            android:label="@string/title_activity_dashboard_drawer"/>
         <activity
             android:name=".ResetPassword"
             android:exported="true" />

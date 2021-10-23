@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.medi_android.R;
-import com.example.medi_android.User;
+import com.example.medi_android.Patient;
 import com.example.medi_android.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,9 +60,9 @@ public class HomeFragment extends Fragment {
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-                if(userProfile != null){
-                    String name = userProfile.name;
+                Patient patientProfile = snapshot.getValue(Patient.class);
+                if(patientProfile != null){
+                    String name = patientProfile.getName();
 
                     homeUsernameTextView.setText("Welcome " + name);
                 }

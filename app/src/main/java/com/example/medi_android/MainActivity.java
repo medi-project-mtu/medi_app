@@ -190,11 +190,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             String email = mAuth.getCurrentUser().getEmail();
-                            User user = new User(email);
+                            Patient patient = new Patient(email);
 
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user);
+                                    .setValue(patient);
                             startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                         } else {
                             // If sign in fails, display a message to the user.

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -42,12 +43,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Register extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
 
@@ -70,9 +75,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private AlertDialog dialog;
     private EditText popup_name, popup_height, popup_weight, popup_dob;
     private Spinner spinner_gender;
+    private Spinner spinner_gp;
     private Button popUpSave, popUpCancel;
 
-    private User user;
+    private Patient patient;
 
 
     @Override
@@ -144,7 +150,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void registerGoogle() {
-        user = new User();
+        patient = new Patient();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -205,10 +211,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             String email = mAuth.getCurrentUser().getEmail();
-                            User user = new User(email);
+                            Patient patient = new Patient(email);
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user);
+                                    .setValue(patient);
                             startActivity(new Intent(Register.this, DashboardDrawer.class));
                         } else {
                             // If sign in fails, display a message to the user.
@@ -248,11 +254,18 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
 
         spinner_gender = (Spinner) formPopUpView.findViewById(R.id.spinner_gender);
+        spinner_gp = (Spinner) formPopUpView.findViewById(R.id.spinner_gp);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_gender.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapter_gender = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
+        adapter_gender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_gender.setAdapter(adapter_gender);
         spinner_gender.setOnItemSelectedListener(this);
+
+        List<GP> gp_list = getGPList();
+        ArrayAdapter<GP> adapter_gp = new ArrayAdapter<GP>(this, android.R.layout.simple_spinner_item, gp_list);
+        adapter_gp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_gp.setAdapter(adapter_gp);
+        spinner_gp.setOnItemSelectedListener(this);
 
         formProgressBar = (ProgressBar) formPopUpView.findViewById(R.id.form_progressBar);
 
@@ -302,15 +315,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                  @Override
                                  public void onComplete(@NonNull Task<AuthResult> task) {
                                      if (task.isSuccessful()) {
-                                         user.setName(profileName);
-                                         user.setDob(profileDOB);
-                                         user.setHeight(profileHeight);
-                                         user.setWeight(profileWeight);
-                                         user.setEmail(email);
+                                         patient.setName(profileName);
+                                         patient.setDob(profileDOB);
+                                         patient.setHeight(profileHeight);
+                                         patient.setWeight(profileWeight);
+                                         patient.setEmail(email);
 
                                          FirebaseDatabase.getInstance().getReference("Patient")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                 .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                 .setValue(patient).addOnCompleteListener(new OnCompleteListener<Void>() {
                                              @Override
                                              public void onComplete(@NonNull Task<Void> task) {
                                                  if (task.isSuccessful()) {
@@ -337,15 +350,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                  @Override
                                  public void onComplete(@NonNull Task<AuthResult> task) {
                                      if (task.isSuccessful()) {
-                                         user.setName(profileName);
-                                         user.setDob(profileDOB);
-                                         user.setHeight(profileHeight);
-                                         user.setWeight(profileWeight);
-                                         user.setEmail(account.getEmail());
+                                         patient.setName(profileName);
+                                         patient.setDob(profileDOB);
+                                         patient.setHeight(profileHeight);
+                                         patient.setWeight(profileWeight);
+                                         patient.setEmail(account.getEmail());
 
                                          FirebaseDatabase.getInstance().getReference("Patient")
                                                  .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                 .setValue(user);
+                                                 .setValue(patient);
 
                                      } else {
                                          Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
@@ -367,8 +380,34 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         });
     }
 
+    private List<GP> getGPList() {
+        List<GP> gpList = new ArrayList<>();
+
+        GP placeholder = new GP();
+        placeholder.setName("Select a GP");
+        gpList.add(placeholder);
+
+        FirebaseDatabase.getInstance().getReference("Gp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot gpSnapshot: snapshot.getChildren()){
+                    GP gp = gpSnapshot.getValue(GP.class);
+                    assert gp != null;
+                    gp.setUid(gpSnapshot.getKey());
+                    gpList.add(gp);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return gpList;
+    }
+
     private void registerUser(){
-        user = new User(); //initialize new user
+        patient = new Patient(); //initialize new patient
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
@@ -415,14 +454,33 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(parent.getId() == R.id.spinner_gender){
-            String gender = parent.getItemAtPosition(position).toString();
-            user.setGender(gender);
+        switch (parent.getId()){
+            case R.id.spinner_gender:
+                String gender = parent.getItemAtPosition(position).toString();
+                if(gender.equals("Select gender")){
+                    TextView errorTextGender = (TextView)spinner_gender.getSelectedView();
+                    errorTextGender.setTextColor(Color.GRAY);
+                    errorTextGender.setText("Select gender");//changes the selected item text to this
+                    return;
+                }
+                patient.setGender(gender);
+                break;
+
+            case R.id.spinner_gp:
+                GP gp = (GP) parent.getItemAtPosition(position);
+                if (gp.getName().equals("Select a GP")){
+                    TextView errorTextGP = (TextView)spinner_gp.getSelectedView();
+                    errorTextGP.setTextColor(Color.GRAY);
+                    errorTextGP.setText("Select a GP");//changes the selected item text to this
+                    return;
+                }
+                patient.setGpUid(gp.getUid());
+                break;
+
         }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-        user.setGender("Prefer not to Say");
     }
 }

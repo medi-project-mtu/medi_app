@@ -1,19 +1,29 @@
 package com.example.medi_android;
 
-public class User {
-    public String email;
-    public String name;
-    public String dob;
-    public String gender;
-    public String height;
-    public String weight;
-    public Review review;
+public class Patient {
+    private String email;
+    private String name;
+    private String dob;
+    private String gender;
+    private String height;
+    private String weight;
+    private Review review;
+    private String gpUid;
 
-    public User(){
+
+    public String getGpUid() {
+        return gpUid;
+    }
+
+    public void setGpUid(String gpUid) {
+        this.gpUid = gpUid;
+    }
+
+    public Patient(){
 
     }
 
-    public User(String email){
+    public Patient(String email){
         this.email = email;
     }
 
@@ -31,6 +41,11 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public String getDob() {

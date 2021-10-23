@@ -43,7 +43,7 @@
         android:textColorHint="#888888"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_gender" />
+        app:layout_constraintTop_toBottomOf="@id/form_popup_weight" />
 
     <EditText
         android:id="@+id/form_popup_height"
@@ -93,7 +93,7 @@
         app:layout_constraintEnd_toStartOf="@+id/form_popup_save"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_gp" />
 
     <Button
         android:id="@+id/form_popup_save"
@@ -108,7 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/form_popup_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/form_popup_dob" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_gp" />
 
     <TextView
         android:id="@+id/profile_setup_text"
@@ -134,7 +134,19 @@
         android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/form_popup_weight" />
+        app:layout_constraintTop_toBottomOf="@id/form_popup_dob" />
+
+    <Spinner
+        android:id="@+id/spinner_gp"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_input"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_gender" />
 
     <ProgressBar
         android:id="@+id/form_progressBar"
