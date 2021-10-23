@@ -21,6 +21,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class DashboardDrawer extends AppCompatActivity {
@@ -41,8 +42,6 @@ public class DashboardDrawer extends AppCompatActivity {
         binding.appBarDashboardDrawer.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 createMDPopupForm();
             }
         });

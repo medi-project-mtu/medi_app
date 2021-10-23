@@ -19,6 +19,7 @@ import com.example.medi_android.DashboardDrawer;
 import com.example.medi_android.R;
 import com.example.medi_android.Review;
 import com.example.medi_android.databinding.FragmentRatingsBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +40,11 @@ public class RatingsFragment extends Fragment {
         context = getActivity();
 
         binding = FragmentRatingsBinding.inflate(inflater, container, false);
+
+        //set fab visibility off
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+
         View root = binding.getRoot();
 
 
