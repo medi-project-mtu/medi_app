@@ -7,13 +7,21 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
 import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -30,6 +38,9 @@ public class DashboardDrawer extends AppCompatActivity {
     private ActivityDashboardDrawerBinding binding;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
+    private FirebaseUser user;
+    private DatabaseReference reference;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +58,13 @@ public class DashboardDrawer extends AppCompatActivity {
         });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
+
+        // set user name and email and the nav sider drawer
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        reference = FirebaseDatabase.getInstance().getReference("Patient");
+        userID = user.getUid();
+        setUserProfileToNavSideBar(navigationView);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -78,6 +96,31 @@ public class DashboardDrawer extends AppCompatActivity {
             builder.setMessage("Are you sure you want to log out?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
             return true;
+        });
+    }
+
+    private void setUserProfileToNavSideBar(NavigationView navigationView) {
+        View hView = navigationView.getHeaderView(0);
+        TextView nav_username = (TextView) hView.findViewById(R.id.navside_username);
+        TextView nav_email = (TextView) hView.findViewById(R.id.navside_email);
+
+        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Patient patientProfile = snapshot.getValue(Patient.class);
+                if(patientProfile != null){
+                    String name = patientProfile.getName();
+                    String email = patientProfile.getEmail();
+
+                    nav_username.setText(name);
+                    nav_email.setText(email);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(DashboardDrawer.this, "Something wrong happened!", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
