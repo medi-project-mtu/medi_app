@@ -10,6 +10,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -50,6 +51,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -74,8 +77,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText popup_name, popup_height, popup_weight, popup_dob;
-    private Spinner spinner_gender;
-    private Spinner spinner_gp;
+    private Spinner spinner_gender, spinner_gp, spinner_insurance;
     private Button popUpSave, popUpCancel;
 
     private Patient patient;
@@ -255,17 +257,26 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
         spinner_gender = (Spinner) formPopUpView.findViewById(R.id.spinner_gender);
         spinner_gp = (Spinner) formPopUpView.findViewById(R.id.spinner_gp);
+        spinner_insurance = (Spinner) formPopUpView.findViewById(R.id.spinner_insurance);
 
         ArrayAdapter<CharSequence> adapter_gender = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
         adapter_gender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_gender.setAdapter(adapter_gender);
         spinner_gender.setOnItemSelectedListener(this);
 
-        List<GP> gp_list = getGPList();
-        ArrayAdapter<GP> adapter_gp = new ArrayAdapter<GP>(this, android.R.layout.simple_spinner_item, gp_list);
+        List<GP> gpList = getGPList();
+        ArrayAdapter<GP> adapter_gp = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, gpList);
         adapter_gp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_gp.setAdapter(adapter_gp);
         spinner_gp.setOnItemSelectedListener(this);
+
+        List<Insurance> insurancesList = getInsuranceList();
+        ArrayAdapter<Insurance> adapter_insurance = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, insurancesList);
+        adapter_insurance.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_insurance.setAdapter(adapter_insurance);
+        spinner_insurance.setOnItemSelectedListener(this);
+
+
 
         formProgressBar = (ProgressBar) formPopUpView.findViewById(R.id.form_progressBar);
 
@@ -380,6 +391,32 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         });
     }
 
+    private List<Insurance> getInsuranceList() {
+        List<Insurance> insuranceList = new ArrayList<>();
+
+        Insurance placeholder = new Insurance();
+        placeholder.setName("Select an Insurance");
+        insuranceList.add(placeholder);
+
+        FirebaseDatabase.getInstance().getReference("Insurance").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot insuranceSnapshot: snapshot.getChildren()){
+                    Insurance insurance = insuranceSnapshot.getValue(Insurance.class);
+                    assert insurance != null;
+                    insurance.setId(insuranceSnapshot.getKey());
+                    insuranceList.add(insurance);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return insuranceList;
+    }
+
     private List<GP> getGPList() {
         List<GP> gpList = new ArrayList<>();
 
@@ -459,8 +496,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 String gender = parent.getItemAtPosition(position).toString();
                 if(gender.equals("Select gender")){
                     TextView errorTextGender = (TextView)spinner_gender.getSelectedView();
+                    errorTextGender.setError("Select gender");
                     errorTextGender.setTextColor(Color.GRAY);
-                    errorTextGender.setText("Select gender");//changes the selected item text to this
                     return;
                 }
                 patient.setGender(gender);
@@ -470,13 +507,23 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 GP gp = (GP) parent.getItemAtPosition(position);
                 if (gp.getName().equals("Select a GP")){
                     TextView errorTextGP = (TextView)spinner_gp.getSelectedView();
+                    errorTextGP.setError("Select a GP");
                     errorTextGP.setTextColor(Color.GRAY);
-                    errorTextGP.setText("Select a GP");//changes the selected item text to this
                     return;
                 }
                 patient.setGpUid(gp.getUid());
                 break;
 
+            case R.id.spinner_insurance:
+                Insurance insurance = (Insurance) parent.getItemAtPosition(position);
+                if(insurance.getName().equals("Select an Insurance")){
+                    TextView errorTextInsurance = (TextView) spinner_insurance.getSelectedView();
+                    errorTextInsurance.setError("Select an Insurance");
+                    errorTextInsurance.setTextColor(Color.GRAY);
+                    return;
+                }
+                patient.setInsuranceId(insurance.getId());
+                break;
         }
     }
 

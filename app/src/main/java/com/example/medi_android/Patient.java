@@ -9,7 +9,15 @@ public class Patient {
     private String weight;
     private Review review;
     private String gpUid;
+    private String insuranceId;
 
+    public String getInsuranceId() {
+        return insuranceId;
+    }
+
+    public void setInsuranceId(String insuranceId) {
+        this.insuranceId = insuranceId;
+    }
 
     public String getGpUid() {
         return gpUid;
@@ -20,7 +28,6 @@ public class Patient {
     }
 
     public Patient(){
-
     }
 
     public Patient(String email){

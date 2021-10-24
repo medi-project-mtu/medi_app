@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#2a324b"
+    android:background="#2A324B"
     android:orientation="vertical"
     android:paddingStart="20dp"
     android:paddingEnd="20dp">
@@ -13,7 +13,7 @@
         android:id="@+id/form_popup_name"
         android:layout_width="270dp"
         android:layout_height="40dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/custom_input"
         android:ems="10"
         android:hint="Full Name"
@@ -41,6 +41,7 @@
         android:paddingEnd="20dp"
         android:textColor="@color/black"
         android:textColorHint="#888888"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/form_popup_weight" />
@@ -93,7 +94,7 @@
         app:layout_constraintEnd_toStartOf="@+id/form_popup_save"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_gp" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_insurance" />
 
     <Button
         android:id="@+id/form_popup_save"
@@ -108,7 +109,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/form_popup_cancel"
-        app:layout_constraintTop_toBottomOf="@id/spinner_gp" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_insurance" />
 
     <TextView
         android:id="@+id/profile_setup_text"
@@ -147,6 +148,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinner_gender" />
+
+    <Spinner
+        android:id="@+id/spinner_insurance"
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/custom_input"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_gp" />
 
     <ProgressBar
         android:id="@+id/form_progressBar"
