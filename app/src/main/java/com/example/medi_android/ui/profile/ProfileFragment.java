@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import com.example.medi_android.R;
 import com.example.medi_android.Patient;
 import com.example.medi_android.databinding.FragmentProfileBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,8 +38,6 @@ public class ProfileFragment extends Fragment {
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-
         return root;
     }
 
@@ -50,6 +49,10 @@ public class ProfileFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
+
+        //set fab visibility on
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Patient");

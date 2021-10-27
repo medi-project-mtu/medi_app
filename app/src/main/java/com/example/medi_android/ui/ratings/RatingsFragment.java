@@ -41,9 +41,6 @@ public class RatingsFragment extends Fragment {
 
         binding = FragmentRatingsBinding.inflate(inflater, container, false);
 
-        //set fab visibility off
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
 
         View root = binding.getRoot();
 
@@ -59,6 +56,10 @@ public class RatingsFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
+
+        //set fab visibility off
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
         Button submit = (Button) context.findViewById(R.id.submit_review_btn);
         ratingBar= context.findViewById(R.id.ratingBar);
