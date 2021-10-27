@@ -10,7 +10,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.medi_android.ProfileRecyclerViewAdapter;
 import com.example.medi_android.R;
 import com.example.medi_android.Patient;
 import com.example.medi_android.databinding.FragmentProfileBinding;
@@ -23,13 +26,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ProfileFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdapter.ItemClickListener {
 
     private FragmentProfileBinding binding;
-    Activity context;
+    private Activity context;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
+    private ProfileRecyclerViewAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +65,9 @@ public class ProfileFragment extends Fragment {
         reference = FirebaseDatabase.getInstance().getReference("Patient");
         userID = user.getUid();
 
+        List<String> profileDataTitle = new ArrayList<>();
+        List<String> profileDataContent = new ArrayList<>();
+
         final TextView usernameTextView = (TextView) context.findViewById(R.id.username_title);
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -65,9 +75,23 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Patient patientProfile = snapshot.getValue(Patient.class);
                 if(patientProfile != null){
-                    String name = patientProfile.getName();
+                    usernameTextView.setText(patientProfile.getName());
 
-                    usernameTextView.setText(name);
+                    profileDataTitle.add("Gender");
+                    profileDataTitle.add("Date of Birth (dd/MM/yyyy)");
+                    profileDataTitle.add("Age");
+                    profileDataTitle.add("Height (cm)");
+                    profileDataTitle.add("Weight (kg)");
+                    profileDataContent.add(patientProfile.getGender());
+                    profileDataContent.add(patientProfile.getDob());
+                    profileDataContent.add(patientProfile.getAge());
+                    profileDataContent.add(patientProfile.getHeight());
+                    profileDataContent.add(patientProfile.getWeight());
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
+                    RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
+                    recyclerView.setLayoutManager(mLayoutManager);
+                    adapter = new ProfileRecyclerViewAdapter(context, profileDataTitle, profileDataContent);
+                    recyclerView.setAdapter(adapter);
                 }
             }
 
@@ -76,6 +100,11 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(context, "Something wrong happened!", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
 
     }
 }
