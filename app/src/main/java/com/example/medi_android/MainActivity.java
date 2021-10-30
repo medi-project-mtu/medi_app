@@ -147,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == POPUP_SETUP){
-            Toast.makeText(MainActivity.this, "popopopo", Toast.LENGTH_SHORT).show();
-        }
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {

@@ -35,10 +35,6 @@ public class ContactsFragment extends Fragment {
     private String userID, gpNr, gpEm, insEm, insNr;
     private FirebaseUser user;
 
-    public static ContactsFragment newInstance() {
-        return new ContactsFragment();
-    }
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         context = getActivity();
