@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -109,6 +110,7 @@ public class RatingsFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference("Patient")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("review").setValue(review);
+        Toast.makeText(context, "Review Submitted", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(context, DashboardDrawer.class));
     }
 
