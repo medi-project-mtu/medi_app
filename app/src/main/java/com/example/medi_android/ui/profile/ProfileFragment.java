@@ -37,6 +37,7 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
     private DatabaseReference reference;
     private String userID;
     private ProfileRecyclerViewAdapter adapter;
+    private TextView usernameTextView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,21 +46,6 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    public void onStart() {
-        super.onStart();
-
-        //set fab visibility on
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Patient");
@@ -68,7 +54,7 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
         List<String> profileDataTitle = new ArrayList<>();
         List<String> profileDataContent = new ArrayList<>();
 
-        final TextView usernameTextView = (TextView) context.findViewById(R.id.username_title);
+        usernameTextView = (TextView) root.findViewById(R.id.username_title);
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -100,6 +86,21 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
                 Toast.makeText(context, "Something wrong happened!", Toast.LENGTH_LONG).show();
             }
         });
+        return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        //set fab visibility on
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
 
     }
 

@@ -41,27 +41,6 @@ public class ContactsFragment extends Fragment {
 
         binding = FragmentContactsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        return root;
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    public void dial(String phoneNr) {
-        startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + phoneNr)));
-
-    }
-
-    public void sendEmail(String email) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:" + email));
-        startActivity(intent);
-    }
-
-    public void onStart() {
-        super.onStart();
-
-        //set fab visibility off
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
@@ -69,19 +48,16 @@ public class ContactsFragment extends Fragment {
         userReference = FirebaseDatabase.getInstance().getReference("Patient").child(userID);
         insuranceReference = FirebaseDatabase.getInstance().getReference("Insurance");
 
-
-        gpName = (TextView) context.findViewById(R.id.contactGpName);
-        gpEmail = (TextView) context.findViewById(R.id.contactGpEmail);
+        gpName = (TextView) root.findViewById(R.id.contactGpName);
+        gpEmail = (TextView) root.findViewById(R.id.contactGpEmail);
         gpEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendEmail(gpEm);
-
             }
         });
 
-
-        gpPhoneNr = (TextView) context.findViewById(R.id.contactGpPhoneNr);
+        gpPhoneNr = (TextView) root.findViewById(R.id.contactGpPhoneNr);
         gpPhoneNr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,10 +65,9 @@ public class ContactsFragment extends Fragment {
             }
         });
 
-
-        insName = (TextView) context.findViewById(R.id.contactInsuranceName);
-        insEmail = (TextView) context.findViewById(R.id.contactInsuranceEmail);
-        insPhoneNr = (TextView) context.findViewById(R.id.contactInsurancePhoneNr);
+        insName = (TextView) root.findViewById(R.id.contactInsuranceName);
+        insEmail = (TextView) root.findViewById(R.id.contactInsuranceEmail);
+        insPhoneNr = (TextView) root.findViewById(R.id.contactInsurancePhoneNr);
         insEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,8 +97,6 @@ public class ContactsFragment extends Fragment {
                         gpNr = snapshot.child(patientProfile.getGpUid()).child("phone").getValue(String.class);
                         gpPhoneNr.setText(gpNr);
                         gpPhoneNr.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-
-
                     }
 
                     @Override
@@ -157,6 +130,26 @@ public class ContactsFragment extends Fragment {
 
             }
         });
+        return root;
+    }
 
+    @SuppressLint("QueryPermissionsNeeded")
+    public void dial(String phoneNr) {
+        startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + phoneNr)));
+
+    }
+
+    public void sendEmail(String email) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + email));
+        startActivity(intent);
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        //set fab visibility off
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
     }
 }
