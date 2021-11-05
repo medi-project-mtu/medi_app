@@ -34,19 +34,42 @@ public class ContactsFragment extends Fragment {
     private DatabaseReference gpReference, userReference, insuranceReference;
     private String userID, gpNr, gpEm, insEm, insNr;
     private FirebaseUser user;
+    private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         context = getActivity();
 
         binding = FragmentContactsBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         userID = user.getUid();
         gpReference = FirebaseDatabase.getInstance().getReference("Gp");
         userReference = FirebaseDatabase.getInstance().getReference("Patient").child(userID);
         insuranceReference = FirebaseDatabase.getInstance().getReference("Insurance");
+
+        return root;
+    }
+
+    @SuppressLint("QueryPermissionsNeeded")
+    public void dial(String phoneNr) {
+        startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + phoneNr)));
+
+    }
+
+    public void sendEmail(String email) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:" + email));
+        startActivity(intent);
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        //set fab visibility off
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
         gpName = (TextView) root.findViewById(R.id.contactGpName);
         gpEmail = (TextView) root.findViewById(R.id.contactGpEmail);
@@ -130,26 +153,5 @@ public class ContactsFragment extends Fragment {
 
             }
         });
-        return root;
-    }
-
-    @SuppressLint("QueryPermissionsNeeded")
-    public void dial(String phoneNr) {
-        startActivity(new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:" + phoneNr)));
-
-    }
-
-    public void sendEmail(String email) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:" + email));
-        startActivity(intent);
-    }
-
-    public void onStart() {
-        super.onStart();
-
-        //set fab visibility off
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
     }
 }

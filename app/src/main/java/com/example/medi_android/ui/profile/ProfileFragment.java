@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
     private String userID;
     private ProfileRecyclerViewAdapter adapter;
     private TextView usernameTextView;
+    private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,11 +46,27 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
         context = getActivity();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Patient");
         userID = user.getUid();
+
+        return root;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    public void onStart() {
+        super.onStart();
+
+        //set fab visibility on
+        FloatingActionButton fab = context.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
 
         List<String> profileDataTitle = new ArrayList<>();
         List<String> profileDataContent = new ArrayList<>();
@@ -86,22 +103,6 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
                 Toast.makeText(context, "Something wrong happened!", Toast.LENGTH_LONG).show();
             }
         });
-        return root;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    public void onStart() {
-        super.onStart();
-
-        //set fab visibility on
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
-
     }
 
     @Override

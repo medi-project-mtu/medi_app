@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
-    private final static int POPUP_SETUP = 555;
     private CallbackManager mCallbackManager;
     private static final String TAG = "FacebookLogin";
     private LoginButton facebook_log_in_button;
