@@ -20,8 +20,8 @@
     <string name="ratings">Ratings</string>
     <string name="submit_rating">submit rating</string>
     <string name="describe_your_experience_optional">Describe your experience (optional)</string>
-    <string name="your_gp_contact_details">Your Gp Contact Details</string>
-    <string name="your_insurance_contact_details">Your Insurance Contact Details</string>
+    <string name="your_gp_contact_details">Gp Contacts</string>
+    <string name="your_insurance_contact_details">Insurance Contacts</string>
     <string name="name">Name:</string>
     <string name="email">Email:</string>
     <string name="phone_nr">Phone Nr:</string>

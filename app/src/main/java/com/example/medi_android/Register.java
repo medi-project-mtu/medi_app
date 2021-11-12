@@ -93,33 +93,37 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         editEmail = findViewById(R.id.sign_up_email);
         editPassword = findViewById(R.id.sign_up_pw);
 
-        requestGoogleSignIn();
+        initGoogleSignIn();
         if(getIntent().getBooleanExtra("Profile Setup", false)){
             registerGoogle();
         }
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
-        facebookRegisterButton.setReadPermissions("email", "public_profile");
-        facebookRegisterButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onError(@NonNull FacebookException e) {
-                Toast.makeText(Register.this, "facebook:on-error", Toast.LENGTH_SHORT).show();
-
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(Register.this, "facebook: on-cancel", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-        });
+//        initFBSignIn();
     }
 
-    private void requestGoogleSignIn(){
+//    private void initFBSignIn(){
+//        mCallbackManager = CallbackManager.Factory.create();
+//        LoginButton facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
+//        facebookRegisterButton.setReadPermissions("email", "public_profile");
+//        facebookRegisterButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onError(@NonNull FacebookException e) {
+//                Toast.makeText(Register.this, "facebook:on-error", Toast.LENGTH_SHORT).show();
+//
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                Toast.makeText(Register.this, "facebook: on-cancel", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//            }
+//        });
+//    }
+
+    private void initGoogleSignIn(){
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -151,14 +155,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private void firebaseAuthWithGoogle(GoogleSignInAccount account){
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            startActivity(new Intent(Register.this, DashboardDrawer.class));
-                        } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        }
+                .addOnCompleteListener(Register.this, task -> {
+                    if (task.isSuccessful()){
+                        startActivity(new Intent(Register.this, DashboardDrawer.class));
+                    } else {
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
                     }
                 });
     }
@@ -174,21 +175,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
                 //here i check if this email is new or not
                 //if the email has no signInMethods, it is new, else it exists
-                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                        if(task.getResult().getSignInMethods().size() == 0){
-                            createPopUpForm(account, null, null, PROVIDER_GOOGLE);
-                        } else {
-                            firebaseAuthWithGoogle(account);
-                        }
+                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(task1 -> {
+                    if(task1.getResult().getSignInMethods().size() == 0){
+                        createPopUpForm(account, null, null, PROVIDER_GOOGLE);
+                    } else {
+                        firebaseAuthWithGoogle(account);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }).addOnFailureListener(e -> Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show());
             } catch (ApiException e) {
                 Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -198,22 +191,19 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private void handleFacebookAccessToken(AccessToken token) {
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            String email = mAuth.getCurrentUser().getEmail();
-                            Patient patient = new Patient(email);
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(patient);
-                            startActivity(new Intent(Register.this, DashboardDrawer.class));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(Register.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        String email = mAuth.getCurrentUser().getEmail();
+                        Patient patient = new Patient(email);
+                        FirebaseDatabase.getInstance().getReference("Users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .setValue(patient);
+                        startActivity(new Intent(Register.this, DashboardDrawer.class));
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(Register.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -272,107 +262,90 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         dialog = dialogBuilder.create();
         dialog.show();
 
-        popup_dob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePickerDialog();
+        popup_dob.setOnClickListener(view -> showDatePickerDialog());
+
+        popUpSave.setOnClickListener(view -> {
+            String profileName = popup_name.getText().toString().trim();
+            String profileDOB = popup_dob.getText().toString().trim();
+            String profileHeight = popup_height.getText().toString().trim();
+            String profileWeight = popup_weight.getText().toString().trim();
+
+            if (profileName.isEmpty()) {
+                popup_name.setError("Name is required!");
+                popup_name.requestFocus();
+                return;
+            }
+            if (profileDOB.isEmpty()) {
+                popup_dob.setError("Date of Birth is required!");
+                popup_dob.requestFocus();
+                return;
+            }
+            if (profileHeight.isEmpty()) {
+                popup_height.setError("Height is required!");
+                popup_height.requestFocus();
+                return;
+            }
+            if (profileWeight.isEmpty()) {
+                popup_weight.setError("Weight is required!");
+                popup_weight.requestFocus();
+                return;
+            }
+            if (provider == PROVIDER_EMAIL) {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                patient.setName(profileName);
+                                patient.setDob(profileDOB);
+                                patient.setHeight(profileHeight);
+                                patient.setWeight(profileWeight);
+                                patient.setEmail(email);
+
+                                FirebaseDatabase.getInstance().getReference("Patient")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(patient).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                            user.sendEmailVerification();
+                                            Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                            FirebaseAuth.getInstance().signOut();
+                                            startActivity(new Intent(Register.this, MainActivity.class));
+                                        } else {
+                                            Log.w(TAG, "Google SignIn Error", task.getException());
+                                        }
+                                    }
+                                });
+                            } else {
+                                Log.w(TAG, "Google SignIn Error", task.getException());
+                            }
+                        });
+            } else if (provider == PROVIDER_GOOGLE) {
+                AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+                mAuth.signInWithCredential(credential)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                patient.setName(profileName);
+                                patient.setDob(profileDOB);
+                                patient.setHeight(profileHeight);
+                                patient.setWeight(profileWeight);
+                                patient.setEmail(account.getEmail());
+
+                                FirebaseDatabase.getInstance().getReference("Patient")
+                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .setValue(patient);
+
+                            } else {
+                                Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
+                            }
+                            startActivity(new Intent(Register.this, DashboardDrawer.class));
+                        });
             }
         });
 
-        popUpSave.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 String profileName = popup_name.getText().toString().trim();
-                 String profileDOB = popup_dob.getText().toString().trim();
-                 String profileHeight = popup_height.getText().toString().trim();
-                 String profileWeight = popup_weight.getText().toString().trim();
-
-                 if (profileName.isEmpty()) {
-                     popup_name.setError("Name is required!");
-                     popup_name.requestFocus();
-                     return;
-                 }
-                 if (profileDOB.isEmpty()) {
-                     popup_dob.setError("Date of Birth is required!");
-                     popup_dob.requestFocus();
-                     return;
-                 }
-                 if (profileHeight.isEmpty()) {
-                     popup_height.setError("Height is required!");
-                     popup_height.requestFocus();
-                     return;
-                 }
-                 if (profileWeight.isEmpty()) {
-                     popup_weight.setError("Weight is required!");
-                     popup_weight.requestFocus();
-                     return;
-                 }
-                 if (provider == PROVIDER_EMAIL) {
-                     mAuth.createUserWithEmailAndPassword(email, password)
-                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                 @Override
-                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                     if (task.isSuccessful()) {
-                                         patient.setName(profileName);
-                                         patient.setDob(profileDOB);
-                                         patient.setHeight(profileHeight);
-                                         patient.setWeight(profileWeight);
-                                         patient.setEmail(email);
-
-                                         FirebaseDatabase.getInstance().getReference("Patient")
-                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                 .setValue(patient).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                             @Override
-                                             public void onComplete(@NonNull Task<Void> task) {
-                                                 if (task.isSuccessful()) {
-                                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                                     user.sendEmailVerification();
-                                                     Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
-                                                     FirebaseAuth.getInstance().signOut();
-                                                     startActivity(new Intent(Register.this, MainActivity.class));
-                                                 } else {
-                                                     Log.w(TAG, "Google SignIn Error", task.getException());
-                                                 }
-                                             }
-                                         });
-                                     } else {
-                                         Log.w(TAG, "Google SignIn Error", task.getException());
-                                     }
-                                 }
-                             });
-                 } else if (provider == PROVIDER_GOOGLE) {
-                     AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-                     mAuth.signInWithCredential(credential)
-                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                 @Override
-                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                     if (task.isSuccessful()) {
-                                         patient.setName(profileName);
-                                         patient.setDob(profileDOB);
-                                         patient.setHeight(profileHeight);
-                                         patient.setWeight(profileWeight);
-                                         patient.setEmail(account.getEmail());
-
-                                         FirebaseDatabase.getInstance().getReference("Patient")
-                                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                                 .setValue(patient);
-
-                                     } else {
-                                         Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
-                                     }
-                                     startActivity(new Intent(Register.this, DashboardDrawer.class));
-                                 }
-                             });
-                 }
-             }
-        });
-
-        popUpCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //define cancel btn
-                dialog.dismiss();
-            }
+        popUpCancel.setOnClickListener(view -> {
+            //define cancel btn
+            dialog.dismiss();
         });
     }
 
@@ -466,12 +439,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                     startActivity(new Intent(Register.this, MainActivity.class));
                 }
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).addOnFailureListener(e -> Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show());
     }
 
     @Override

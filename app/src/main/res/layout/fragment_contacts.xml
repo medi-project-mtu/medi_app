@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2A324B"
+    android:padding="30dp"
     tools:context=".ui.contacts.ContactsFragment">
 
     <TextView
@@ -21,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textColor="#E34747"
+        android:textColor="#b23a48"
         app:layout_constraintBottom_toBottomOf="@+id/insurance_phone_textview"
         app:layout_constraintStart_toEndOf="@+id/insurance_phone_textview" />
 
@@ -30,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textColor="#E34747"
+        android:textColor="#b23a48"
         app:layout_constraintBottom_toBottomOf="@+id/insurance_email_textview"
         app:layout_constraintStart_toEndOf="@+id/insurance_email_textview" />
 
@@ -38,7 +39,7 @@
         android:id="@+id/insurance_phone_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:text="@string/phone_nr"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
@@ -53,7 +54,7 @@
         android:id="@+id/insurance_email_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="50dp"
         android:text="@string/email"
         android:textColor="#FFFFFF"
@@ -69,7 +70,7 @@
         android:id="@+id/insurance_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/name"
         android:textColor="#FFFFFF"
@@ -83,12 +84,12 @@
 
     <TextView
         android:id="@+id/gp_details_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:text="@string/your_gp_contact_details"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/gp_name_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.23"
@@ -98,11 +99,11 @@
 
     <TextView
         android:id="@+id/insurance_details_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/your_insurance_contact_details"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/insurance_name_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -113,14 +114,14 @@
         android:id="@+id/gp_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:text="@string/name"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/gp_phone_textview"
         app:layout_constraintEnd_toStartOf="@+id/contactGpName"
-        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintHorizontal_bias="0.89"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gp_details_title" />
@@ -139,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textColor="#E34747"
+        android:textColor="#b23a48"
         app:layout_constraintBottom_toBottomOf="@+id/gp_phone_textview"
         app:layout_constraintStart_toEndOf="@+id/gp_phone_textview" />
 
@@ -148,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:textColor="#E34747"
+        android:textColor="#b23a48"
         app:layout_constraintBottom_toBottomOf="@+id/gp_email_textview"
         app:layout_constraintStart_toEndOf="@+id/gp_email_textview" />
 
@@ -156,7 +157,7 @@
         android:id="@+id/gp_email_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:text="@string/email"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
@@ -171,7 +172,7 @@
         android:id="@+id/gp_phone_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="20dp"
         android:text="@string/phone_nr"
         android:textColor="#FFFFFF"
         android:textSize="16sp"

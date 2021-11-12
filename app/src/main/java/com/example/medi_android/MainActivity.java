@@ -41,15 +41,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText editEmail, editPassword;
-
     private FirebaseAuth mAuth;
-    private ProgressBar progressBar;
 
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
     private CallbackManager mCallbackManager;
     private static final String TAG = "FacebookLogin";
-
 
     @Override
     protected void onStart() {
@@ -78,38 +75,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         editEmail = findViewById(R.id.log_in_email);
         editPassword = findViewById(R.id.log_in_pw);
-        progressBar = findViewById(R.id.login_progressBar);
 
         SignInButton googleSignInButton = findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
 
-        mCallbackManager = CallbackManager.Factory.create();
-        LoginButton facebook_log_in_button = findViewById(R.id.facebook_sign_in_button);
-        facebook_log_in_button.setReadPermissions("email", "public_profile");
-        facebook_log_in_button.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d(TAG, "facebook:onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d(TAG, "facebook:onError", error);
-            }
-        });
-        requestGoogleSignIn();
+        initGoogleSignIn();
+//        initFBSignIn();
     }
 
+//    private void initFBSignIn(){
+//        mCallbackManager = CallbackManager.Factory.create();
+//        LoginButton facebook_log_in_button = findViewById(R.id.facebook_sign_in_button);
+//        facebook_log_in_button.setReadPermissions("email", "public_profile");
+//        facebook_log_in_button.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+//                handleFacebookAccessToken(loginResult.getAccessToken());
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                Log.d(TAG, "facebook:onCancel");
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//                Log.d(TAG, "facebook:onError", error);
+//            }
+//        });
+//    }
 
-    private void requestGoogleSignIn() {
+
+    private void initGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -126,77 +126,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void firebaseAuthWithGoogle(GoogleSignInAccount account){
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
-                        } else {
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        }
+                .addOnCompleteListener(MainActivity.this, task -> {
+                    if (task.isSuccessful()){
+                        startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
+                    } else {
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
                     }
                 });
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                        if(task.getResult().getSignInMethods().size() == 0){
-                            Intent intent = new Intent(MainActivity.this, Register.class);
-                            intent.putExtra("Profile Setup", true);
-                            startActivity(intent);
-                        } else {
-                            firebaseAuthWithGoogle(account);
-                        }
+                mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(task1 -> {
+                    if(task1.getResult().getSignInMethods().size() == 0){
+                        Intent intent = new Intent(MainActivity.this, Register.class);
+                        intent.putExtra("Profile Setup", true);
+                        startActivity(intent);
+                    } else {
+                        firebaseAuthWithGoogle(account);
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                }).addOnFailureListener(e -> Toast.makeText(MainActivity.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show());
             } catch (ApiException e) {
                 Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            String email = mAuth.getCurrentUser().getEmail();
-                            Patient patient = new Patient(email);
-
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(patient);
-                            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
+//    private void handleFacebookAccessToken(AccessToken token) {
+//        Log.d(TAG, "handleFacebookAccessToken:" + token);
+//
+//        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d(TAG, "signInWithCredential:success");
+//                            String email = mAuth.getCurrentUser().getEmail();
+//                            Patient patient = new Patient(email);
+//
+//                            FirebaseDatabase.getInstance().getReference("Users")
+//                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+//                                    .setValue(patient);
+//                            startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+//                            Toast.makeText(MainActivity.this, "Authentication failed.",
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+//    }
   
     @Override
     public void onClick(View view) {
@@ -235,7 +224,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             editPassword.requestFocus();
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -247,11 +235,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         user.sendEmailVerification();
                         Toast.makeText(MainActivity.this, "Account not verified, verification link resent to email", Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Failed to login! Check your credentials!", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
                 }
             }
         });

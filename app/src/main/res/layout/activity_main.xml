@@ -15,7 +15,7 @@
         android:id="@+id/log_in_title1"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="@string/medi_check"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -50,6 +50,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/ic_email"
+        android:drawableTint="#888888"
         android:ems="10"
         android:hint="@string/email1"
         android:inputType="textEmailAddress"
@@ -70,6 +71,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/ic_lock"
+        android:drawableTint="#888888"
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
@@ -99,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#FF0000"
+        android:backgroundTint="#b23a48"
         android:text="@string/log_in"
         android:textColor="#FFFFFF"
         app:cornerRadius="40dp"
@@ -113,34 +115,34 @@
         android:id="@+id/dont_have_acc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="30dp"
         android:text="@string/don_t_have_an_account"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sign_up_redirect"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/facebook_sign_in_button" />
+        app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button" />
 
     <TextView
         android:id="@+id/sign_up_redirect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="30dp"
         android:text="@string/sign_up"
-        android:textColor="#FF0000"
+        android:textColor="#b23a48"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/dont_have_acc"
-        app:layout_constraintTop_toBottomOf="@+id/facebook_sign_in_button" />
+        app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_sign_in_button"
-        android:layout_width="256dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/facebook_sign_in_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -150,7 +152,7 @@
         android:id="@+id/login_text_or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="100dp"
         android:text="@string/or"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/google_sign_in_button"
@@ -158,29 +160,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_in_button" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_sign_in_button"
-        android:layout_width="250dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/dont_have_acc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button" />
-
-    <ProgressBar
-        android:id="@+id/login_progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
