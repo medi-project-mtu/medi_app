@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#2A324B"
+    android:orientation="vertical"
+    android:padding="50dp"
     tools:context=".Register">
 
     <com.google.android.gms.common.SignInButton
@@ -13,9 +14,11 @@
         android:layout_width="256dp"
         android:layout_height="37dp"
         android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/facebook_sign_up_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sign_up_or">
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_or">
 
     </com.google.android.gms.common.SignInButton>
 
@@ -26,21 +29,25 @@
         android:layout_marginTop="120dp"
         android:text="@string/or"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/google_sign_up_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_pw" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_button" />
 
     <TextView
         android:id="@+id/sign_up_title1"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:text="@string/medi_check"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="48sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_title2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,33 +61,37 @@
         android:textColor="#FFFFFF"
         android:textSize="48sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_email"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_title1" />
 
 
     <EditText
         android:id="@+id/sign_up_email"
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
         android:background="@drawable/custom_input"
         android:drawableEnd="@drawable/ic_email"
         android:ems="10"
-        android:hint="@string/email"
+        android:hint="@string/email1"
         android:inputType="textEmailAddress"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:textColor="#000000"
         android:textColorHint="#888888"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_pw"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_title2" />
 
 
     <EditText
         android:id="@+id/sign_up_pw"
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/custom_input"
@@ -92,20 +103,24 @@
         android:paddingEnd="20dp"
         android:textColor="#000000"
         android:textColorHint="#888888"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_email" />
 
     <Button
         android:id="@+id/sign_up_button"
-        android:layout_width="270dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="40dp"
         android:backgroundTint="#FF0000"
         android:text="@string/sign_up"
         android:textColor="#FFFFFF"
         app:cornerRadius="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_up_or"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sign_up_pw" />
 
@@ -116,10 +131,11 @@
         android:layout_marginTop="24dp"
         android:text="@string/already_have_an_account"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/log_in_text"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/facebook_sign_up_button" />
+        app:layout_constraintTop_toBottomOf="@+id/facebook_sign_up_button" />
 
     <TextView
         android:id="@+id/log_in_text"
@@ -128,17 +144,20 @@
         android:layout_marginTop="24dp"
         android:text="@string/log_in"
         android:textColor="#FF0000"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/already_have_an_acc"
-        app:layout_constraintTop_toBottomOf="@id/facebook_sign_up_button" />
+        app:layout_constraintTop_toBottomOf="@+id/facebook_sign_up_button" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebook_sign_up_button"
         android:layout_width="250dp"
         android:layout_height="29dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/already_have_an_acc"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_sign_up_button" />
 

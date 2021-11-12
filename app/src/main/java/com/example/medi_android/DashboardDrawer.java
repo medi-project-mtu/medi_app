@@ -53,14 +53,8 @@ public class DashboardDrawer extends AppCompatActivity {
         FloatingActionButton heartDiseaseFAB = findViewById(R.id.heart_disease_fab);
 
         diabetesFAB.setOnClickListener(view -> createDiabetesPopupForm());
-
-        alzheimersFAB.setOnClickListener(view -> {
-
-        });
-
-        heartDiseaseFAB.setOnClickListener(view -> {
-
-        });
+        alzheimersFAB.setOnClickListener(view -> createAlzheimersPopupform());
+        heartDiseaseFAB.setOnClickListener(view -> createHeartDiseasePopupForm());
 
 
         DrawerLayout drawer = binding.drawerLayout;
@@ -128,12 +122,52 @@ public class DashboardDrawer extends AppCompatActivity {
         });
     }
 
+    private void createHeartDiseasePopupForm() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View formPopUpView = getLayoutInflater().inflate(R.layout.heart_disease_data_form_popup, null);
+        Button popUpSave = formPopUpView.findViewById(R.id.heart_disease_form_popup_save);
+        Button popUpCancel = formPopUpView.findViewById(R.id.heart_disease_form_popup_cancel);
+
+        popUpSave.setOnClickListener(view -> {
+            Toast.makeText(this, "Heart Disease Data saved", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        popUpCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
+        dialogBuilder.setView(formPopUpView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
+    private void createAlzheimersPopupform() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View formPopUpView = getLayoutInflater().inflate(R.layout.alzheimers_data_form_popup, null);
+        Button popUpSave = formPopUpView.findViewById(R.id.alzheimers_form_popup_save);
+        Button popUpCancel = formPopUpView.findViewById(R.id.alzheimers_form_popup_cancel);
+
+        popUpSave.setOnClickListener(view -> {
+            Toast.makeText(this, "Alzheimer's Data saved", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        popUpCancel.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
+
+        dialogBuilder.setView(formPopUpView);
+        dialog = dialogBuilder.create();
+        dialog.show();
+    }
+
     private void createDiabetesPopupForm() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.diabetes_data_form_popup, null);
 
-        Button popUpSave = formPopUpView.findViewById(R.id.md_form_popup_save);
-        Button popUpCancel = formPopUpView.findViewById(R.id.md_form_popup_cancel);
+        Button popUpSave = formPopUpView.findViewById(R.id.diabetes_form_popup_save);
+        Button popUpCancel = formPopUpView.findViewById(R.id.diabetes_form_popup_cancel);
 
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
