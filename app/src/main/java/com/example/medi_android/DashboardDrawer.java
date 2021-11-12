@@ -3,15 +3,25 @@ package com.example.medi_android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+
 import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
 import com.facebook.login.LoginManager;
-import com.google.android.material.snackbar.Snackbar;
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,24 +31,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 
 public class DashboardDrawer extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityDashboardDrawerBinding binding;
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
-    private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
 
@@ -46,21 +43,31 @@ public class DashboardDrawer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityDashboardDrawerBinding.inflate(getLayoutInflater());
+        com.example.medi_android.databinding.ActivityDashboardDrawerBinding binding = ActivityDashboardDrawerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarDashboardDrawer.toolbar);
-        binding.appBarDashboardDrawer.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createMDPopupForm();
-            }
+
+        FloatingActionButton diabetesFAB = findViewById(R.id.diabetes_fab);
+        FloatingActionButton alzheimersFAB = findViewById(R.id.alzheimers_fab);
+        FloatingActionButton heartDiseaseFAB = findViewById(R.id.heart_disease_fab);
+
+        diabetesFAB.setOnClickListener(view -> createDiabetesPopupForm());
+
+        alzheimersFAB.setOnClickListener(view -> {
+
         });
+
+        heartDiseaseFAB.setOnClickListener(view -> {
+
+        });
+
+
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
 
         // set user name and email and the nav sider drawer
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Patient");
         userID = user.getUid();
         setUserProfileToNavSideBar(navigationView);
@@ -76,20 +83,17 @@ public class DashboardDrawer extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
         navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
 
-            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    switch (which) {
-                        case DialogInterface.BUTTON_POSITIVE:
-                            FirebaseAuth.getInstance().signOut();
-                            LoginManager.getInstance().logOut();
-                            startActivity(new Intent(DashboardDrawer.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                            finish();
-                            break;
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        startActivity(new Intent(DashboardDrawer.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                        finish();
+                        break;
 
-                        case DialogInterface.BUTTON_NEGATIVE:
-                            break;
-                    }
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -101,8 +105,8 @@ public class DashboardDrawer extends AppCompatActivity {
 
     private void setUserProfileToNavSideBar(NavigationView navigationView) {
         View hView = navigationView.getHeaderView(0);
-        TextView nav_username = (TextView) hView.findViewById(R.id.navside_username);
-        TextView nav_email = (TextView) hView.findViewById(R.id.navside_email);
+        TextView nav_username = hView.findViewById(R.id.navside_username);
+        TextView nav_email = hView.findViewById(R.id.navside_email);
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -124,30 +128,32 @@ public class DashboardDrawer extends AppCompatActivity {
         });
     }
 
-    private void createMDPopupForm() {
-        dialogBuilder = new AlertDialog.Builder(this);
-        final View formPopUpView = getLayoutInflater().inflate(R.layout.medical_data_form_popup, null);
+    private void createDiabetesPopupForm() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final View formPopUpView = getLayoutInflater().inflate(R.layout.diabetes_data_form_popup, null);
 
-        Button popUpSave = (Button) formPopUpView.findViewById(R.id.md_form_popup_save);
-        Button popUpCancel = (Button) formPopUpView.findViewById(R.id.md_form_popup_cancel);
+        Button popUpSave = formPopUpView.findViewById(R.id.md_form_popup_save);
+        Button popUpCancel = formPopUpView.findViewById(R.id.md_form_popup_cancel);
 
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
         dialog.show();
 
-        popUpSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        popUpSave.setOnClickListener(view -> {
+            EditText pregnanciesET = findViewById(R.id.pregnancy_editText);
+            EditText glucoseET = findViewById(R.id.glucose_editText);
+            EditText bloodPressureET = findViewById(R.id.bloodPressure_editText);
+            EditText skinThicknessET = findViewById(R.id.skinThickness_editText);
+            EditText insulinET = findViewById(R.id.insulin_editText);
+            EditText bmiET = findViewById(R.id.BMI_editText);
+            EditText dpfET = findViewById(R.id.diabetesPedigreeFunction_editText);
+            EditText ageET = findViewById(R.id.age_editText);
 
-            }
+            Toast.makeText(this, "diabetes data saved", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
 
-        popUpCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        popUpCancel.setOnClickListener(view -> dialog.dismiss());
     }
 
     @Override

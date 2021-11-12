@@ -20,7 +20,6 @@ import com.example.medi_android.DashboardDrawer;
 import com.example.medi_android.R;
 import com.example.medi_android.Review;
 import com.example.medi_android.databinding.FragmentRatingsBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,49 +58,45 @@ public class RatingsFragment extends Fragment {
         super.onStart();
 
         //set fab visibility off
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+        com.github.clans.fab.FloatingActionMenu floatingActionMenu = context.findViewById(R.id.fab);
+        floatingActionMenu.setVisibility(View.GONE);
 
-        Button submit = (Button) context.findViewById(R.id.submit_review_btn);
+        Button submit = context.findViewById(R.id.submit_review_btn);
         ratingBar= context.findViewById(R.id.ratingBar);
-        ratingText = (EditText) context.findViewById(R.id.ratingTextView);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        ratingText = context.findViewById(R.id.ratingTextView);
+        submit.setOnClickListener(view ->
                 FirebaseDatabase.getInstance().getReference("Patient")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child("review")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.getValue() == null) {
-                                    createReview();
-                                } else {
-                                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            switch (which) {
-                                                case DialogInterface.BUTTON_POSITIVE:
-                                                    createReview();
-                                                    break;
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("review")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.getValue() == null) {
+                            createReview();
+                        } else {
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    switch (which) {
+                                        case DialogInterface.BUTTON_POSITIVE:
+                                            createReview();
+                                            break;
 
-                                                case DialogInterface.BUTTON_NEGATIVE:
-                                                    break;
-                                            }
-                                        }
-                                    };
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                                    builder.setMessage("You already have left a review. Do you wish to update it ?").setPositiveButton("Yes", dialogClickListener)
-                                            .setNegativeButton("No", dialogClickListener).show();
+                                        case DialogInterface.BUTTON_NEGATIVE:
+                                            break;
+                                    }
                                 }
-                            }
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                            };
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("You already have left a review. Do you wish to update it ?").setPositiveButton("Yes", dialogClickListener)
+                                    .setNegativeButton("No", dialogClickListener).show();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
-                        });
-            }
-        });
+                    }
+                }));
 
     }
 

@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import com.example.medi_android.Patient;
 import com.example.medi_android.R;
 import com.example.medi_android.databinding.FragmentContactsBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -68,41 +67,21 @@ public class ContactsFragment extends Fragment {
         super.onStart();
 
         //set fab visibility off
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
+        com.github.clans.fab.FloatingActionMenu floatingActionMenu = context.findViewById(R.id.fab);
+        floatingActionMenu.setVisibility(View.GONE);
 
-        gpName = (TextView) root.findViewById(R.id.contactGpName);
-        gpEmail = (TextView) root.findViewById(R.id.contactGpEmail);
-        gpEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail(gpEm);
-            }
-        });
+        gpName = root.findViewById(R.id.contactGpName);
+        gpEmail = root.findViewById(R.id.contactGpEmail);
+        gpEmail.setOnClickListener(v -> sendEmail(gpEm));
 
-        gpPhoneNr = (TextView) root.findViewById(R.id.contactGpPhoneNr);
-        gpPhoneNr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dial(gpNr);
-            }
-        });
+        gpPhoneNr = root.findViewById(R.id.contactGpPhoneNr);
+        gpPhoneNr.setOnClickListener(v -> dial(gpNr));
 
-        insName = (TextView) root.findViewById(R.id.contactInsuranceName);
-        insEmail = (TextView) root.findViewById(R.id.contactInsuranceEmail);
-        insPhoneNr = (TextView) root.findViewById(R.id.contactInsurancePhoneNr);
-        insEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail(insEm);
-            }
-        });
-        insPhoneNr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dial(insNr);
-            }
-        });
+        insName = root.findViewById(R.id.contactInsuranceName);
+        insEmail = root.findViewById(R.id.contactInsuranceEmail);
+        insPhoneNr = root.findViewById(R.id.contactInsurancePhoneNr);
+        insEmail.setOnClickListener(v -> sendEmail(insEm));
+        insPhoneNr.setOnClickListener(v -> dial(insNr));
 
         userReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

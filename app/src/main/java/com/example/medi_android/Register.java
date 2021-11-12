@@ -61,24 +61,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     private FirebaseAuth mAuth;
     private EditText editEmail, editPassword;
-    private Button registerButton;
-    private SignInButton googleRegisterButton;
-    private LoginButton facebookRegisterButton;
     private CallbackManager mCallbackManager;
-    private TextView loginRedirect;
     private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
     private final static int PROVIDER_GOOGLE = 1;
     private final static int PROVIDER_EMAIL= 0;
-    private final static int POPUP_SETUP = 555;
 
-    private ProgressBar formProgressBar;
-
-    private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private EditText popup_name, popup_height, popup_weight, popup_dob;
     private Spinner spinner_gender, spinner_gp, spinner_insurance;
-    private Button popUpSave, popUpCancel;
 
     private Patient patient;
 
@@ -90,24 +81,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
         mAuth = FirebaseAuth.getInstance();
 
-        loginRedirect = (TextView) findViewById(R.id.log_in_text);
+        TextView loginRedirect = findViewById(R.id.log_in_text);
         loginRedirect.setOnClickListener(this);
 
-        registerButton = (Button) findViewById(R.id.sign_up_button);
+        Button registerButton = findViewById(R.id.sign_up_button);
         registerButton.setOnClickListener(this);
 
-        googleRegisterButton = (SignInButton) findViewById(R.id.google_sign_up_button);
+        SignInButton googleRegisterButton = findViewById(R.id.google_sign_up_button);
         googleRegisterButton.setOnClickListener(this);
 
-        editEmail = (EditText) findViewById(R.id.sign_up_email);
-        editPassword = (EditText) findViewById(R.id.sign_up_pw);
+        editEmail = findViewById(R.id.sign_up_email);
+        editPassword = findViewById(R.id.sign_up_pw);
 
         requestGoogleSignIn();
         if(getIntent().getBooleanExtra("Profile Setup", false)){
             registerGoogle();
         }
         mCallbackManager = CallbackManager.Factory.create();
-        facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
+        LoginButton facebookRegisterButton = findViewById(R.id.facebook_sign_up_button);
         facebookRegisterButton.setReadPermissions("email", "public_profile");
         facebookRegisterButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -244,20 +235,20 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     }
 
     public void createPopUpForm(GoogleSignInAccount account, String email, String password, int provider){
-        dialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
 
-        popup_name = (EditText) formPopUpView.findViewById(R.id.form_popup_name);
-        popup_dob = (EditText) formPopUpView.findViewById(R.id.form_popup_dob);
-        popup_height = (EditText) formPopUpView.findViewById(R.id.form_popup_height);
-        popup_weight = (EditText) formPopUpView.findViewById(R.id.form_popup_weight);
+        popup_name = formPopUpView.findViewById(R.id.form_popup_name);
+        popup_dob = formPopUpView.findViewById(R.id.form_popup_dob);
+        popup_height = formPopUpView.findViewById(R.id.form_popup_height);
+        popup_weight = formPopUpView.findViewById(R.id.form_popup_weight);
 
-        popUpSave = (Button) formPopUpView.findViewById(R.id.form_popup_save);
-        popUpCancel = (Button) formPopUpView.findViewById(R.id.form_popup_cancel);
+        Button popUpSave = formPopUpView.findViewById(R.id.form_popup_save);
+        Button popUpCancel = formPopUpView.findViewById(R.id.form_popup_cancel);
 
-        spinner_gender = (Spinner) formPopUpView.findViewById(R.id.spinner_gender);
-        spinner_gp = (Spinner) formPopUpView.findViewById(R.id.spinner_gp);
-        spinner_insurance = (Spinner) formPopUpView.findViewById(R.id.spinner_insurance);
+        spinner_gender = formPopUpView.findViewById(R.id.spinner_gender);
+        spinner_gp = formPopUpView.findViewById(R.id.spinner_gp);
+        spinner_insurance = formPopUpView.findViewById(R.id.spinner_insurance);
 
         ArrayAdapter<CharSequence> adapter_gender = ArrayAdapter.createFromResource(this, R.array.gender, android.R.layout.simple_spinner_item);
         adapter_gender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -276,9 +267,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         spinner_insurance.setAdapter(adapter_insurance);
         spinner_insurance.setOnItemSelectedListener(this);
 
-
-
-        formProgressBar = (ProgressBar) formPopUpView.findViewById(R.id.form_progressBar);
 
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
@@ -319,7 +307,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                      popup_weight.requestFocus();
                      return;
                  }
-                 formProgressBar.setVisibility(View.VISIBLE);
                  if (provider == PROVIDER_EMAIL) {
                      mAuth.createUserWithEmailAndPassword(email, password)
                              .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -343,7 +330,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                                      Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
                                                      FirebaseAuth.getInstance().signOut();
                                                      startActivity(new Intent(Register.this, MainActivity.class));
-                                                     formProgressBar.setVisibility(View.GONE);
                                                  } else {
                                                      Log.w(TAG, "Google SignIn Error", task.getException());
                                                  }
@@ -375,7 +361,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                          Toast.makeText(Register.this, "Cannot login via Google", Toast.LENGTH_LONG).show();
                                      }
                                      startActivity(new Intent(Register.this, DashboardDrawer.class));
-                                     formProgressBar.setVisibility(View.GONE);
                                  }
                              });
                  }

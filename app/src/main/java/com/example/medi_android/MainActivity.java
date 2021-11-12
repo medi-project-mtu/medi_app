@@ -40,10 +40,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView signup, forgotPW;
     private EditText editEmail, editPassword;
-    private Button loginButton;
-    private SignInButton googleSignInButton;
 
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
@@ -52,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final static int RC_SIGN_IN = 123;
     private CallbackManager mCallbackManager;
     private static final String TAG = "FacebookLogin";
-    private LoginButton facebook_log_in_button;
 
 
     @Override
@@ -71,26 +67,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        signup = (TextView) findViewById(R.id.sign_up_redirect);
+        TextView signup = findViewById(R.id.sign_up_redirect);
         signup.setOnClickListener(this);
 
-        forgotPW = (TextView) findViewById(R.id.forgot_pw);
+        TextView forgotPW = findViewById(R.id.forgot_pw);
         forgotPW.setOnClickListener(this);
 
-        loginButton = (Button) findViewById(R.id.log_in_button);
+        Button loginButton = findViewById(R.id.log_in_button);
         loginButton.setOnClickListener(this);
 
-        editEmail = (EditText) findViewById(R.id.log_in_email);
-        editPassword = (EditText) findViewById(R.id.log_in_pw);
-        progressBar = (ProgressBar) findViewById(R.id.login_progressBar);
+        editEmail = findViewById(R.id.log_in_email);
+        editPassword = findViewById(R.id.log_in_pw);
+        progressBar = findViewById(R.id.login_progressBar);
 
-        googleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
+        SignInButton googleSignInButton = findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
 
         mCallbackManager = CallbackManager.Factory.create();
-        facebook_log_in_button = findViewById(R.id.facebook_sign_in_button);
+        LoginButton facebook_log_in_button = findViewById(R.id.facebook_sign_in_button);
         facebook_log_in_button.setReadPermissions("email", "public_profile");
         facebook_log_in_button.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override

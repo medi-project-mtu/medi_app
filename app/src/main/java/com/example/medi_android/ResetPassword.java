@@ -19,9 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ResetPassword extends AppCompatActivity {
 
     private EditText emailEditText;
-    private Button resetPWButton;
-    private ProgressBar progressBar;
-
     FirebaseAuth auth;
 
     @Override
@@ -29,9 +26,8 @@ public class ResetPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
-        emailEditText = (EditText) findViewById(R.id.reset_pw_email);
-        resetPWButton = (Button) findViewById(R.id.reset_pw_button);
-        progressBar = (ProgressBar) findViewById(R.id.reset_pw_progressBar);
+        emailEditText = findViewById(R.id.reset_pw_email);
+        Button resetPWButton = findViewById(R.id.reset_pw_button);
 
         auth = FirebaseAuth.getInstance();
 
@@ -56,17 +52,14 @@ public class ResetPassword extends AppCompatActivity {
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
         auth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(ResetPassword.this, "Password reset link sent to your email", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(ResetPassword.this, MainActivity.class));
-                    progressBar.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(ResetPassword.this, "Try again, something went wrong", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.GONE);
                 }
             }
         });

@@ -1,14 +1,18 @@
 package com.example.medi_android.ui.profile;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medi_android.ProfileRecyclerViewAdapter;
 import com.example.medi_android.R;
 import com.example.medi_android.Patient;
+import com.example.medi_android.TestDiabetesAI;
 import com.example.medi_android.databinding.FragmentProfileBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,15 +70,16 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
         super.onStart();
 
         //set fab visibility on
-        FloatingActionButton fab = context.findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
+        com.github.clans.fab.FloatingActionMenu floatingActionMenu = context.findViewById(R.id.fab);
+        floatingActionMenu.setVisibility(View.VISIBLE);
 
         List<String> profileDataTitle = new ArrayList<>();
         List<String> profileDataContent = new ArrayList<>();
 
-        usernameTextView = (TextView) root.findViewById(R.id.username_title);
+        usernameTextView = root.findViewById(R.id.username_title);
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Patient patientProfile = snapshot.getValue(Patient.class);
@@ -90,7 +96,7 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
                     profileDataContent.add(patientProfile.getAge());
                     profileDataContent.add(patientProfile.getHeight());
                     profileDataContent.add(patientProfile.getWeight());
-                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,2);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
                     recyclerView.setLayoutManager(mLayoutManager);
                     adapter = new ProfileRecyclerViewAdapter(context, profileDataTitle, profileDataContent);

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,60 +9,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2A324B"
+        android:background="#2a324b"
         android:orientation="vertical"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
 
         <TextView
-            android:id="@+id/profile_setup_text"
+            android:id="@+id/medical_data_setup_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="@string/profile_setup"
+            android:text="@string/diabetes"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="48sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/form_popup_name"
+            android:id="@+id/pregnancy_editText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:hint="@string/full_name"
-            android:inputType="textPersonName"
+            android:hint="@string/pregnancy_times"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textColor="@color/black"
             android:textColorHint="#888888" />
 
+
         <EditText
-            android:id="@+id/form_popup_dob"
+            android:id="@+id/glucose_editText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:focusable="false"
-            android:hint="@string/date_of_birth"
-            android:inputType="none"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="#888888"
-            android:textSize="18sp" />
-
-        <EditText
-            android:id="@+id/form_popup_height"
-            android:layout_width="match_parent"
-            android:layout_height="41dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/height_cm"
+            android:hint="@string/glucose"
             android:inputType="numberDecimal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
@@ -69,64 +55,107 @@
             android:textColorHint="#888888" />
 
         <EditText
-            android:id="@+id/form_popup_weight"
+            android:id="@+id/bloodPressure_editText"
             android:layout_width="match_parent"
-            android:layout_height="41dp"
+            android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:hint="@string/weight_kg"
+            android:hint="@string/blood_pressure"
             android:inputType="numberDecimal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textColor="@color/black"
             android:textColorHint="#888888" />
 
-        <Spinner
-            android:id="@+id/spinner_gender"
+        <EditText
+            android:id="@+id/skinThickness_editText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/skin_thickness"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp" />
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
 
-        <Spinner
-            android:id="@+id/spinner_gp"
+        <EditText
+            android:id="@+id/insulin_editText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/insulin"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp" />
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
 
-        <Spinner
-            android:id="@+id/spinner_insurance"
+        <EditText
+            android:id="@+id/BMI_editText"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/bmi"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp" />
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/diabetesPedigreeFunction_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/diabetes_pedigree_function"
+            android:inputType="numberDecimal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/age_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/age"
+            android:inputType="numberDecimal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
 
         <Button
-            android:id="@+id/form_popup_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="#FF0000"
-            android:text="@string/save"
-            android:textColor="#FFFFFF" />
-
-        <Button
-            android:id="@+id/form_popup_cancel"
+            android:id="@+id/md_form_popup_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="#FF0000"
+            android:text="@string/save"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/md_form_popup_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#FF0000"
             android:text="@string/cancel"
             android:textColor="#FFFFFF" />
-    </LinearLayout>
 
+    </LinearLayout>
 </ScrollView>
