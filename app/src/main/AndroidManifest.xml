@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.medi_android">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,16 +17,24 @@
             android:exported="false" />
         <activity
             android:name=".DashboardDrawer"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="false"
             android:label="@string/title_activity_dashboard_drawer" />
         <activity
             android:name=".ResetPassword"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="true" />
         <activity
             android:name=".Register"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
