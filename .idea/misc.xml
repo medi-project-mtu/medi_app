@@ -28,8 +28,14 @@
         <entry key="..\:/Medi_Android/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Medi_Android/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Medi_Android/app/src/main/res/layout/activity_reset_password.xml" value="0.3729166666666667" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14444444444444443" />
         <entry key="..\:/medi_app/app/src/main/res/drawable/custom_input.xml" value="0.403125" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.14444444444444443" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable/ic_baseline_contacts_24.xml" value="0.14444444444444443" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.14444444444444443" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.14444444444444443" />
         <entry key="..\:/medi_app/app/src/main/res/drawable/ic_email.xml" value="0.403125" />
+        <entry key="..\:/medi_app/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14444444444444443" />
         <entry key="..\:/medi_app/app/src/main/res/drawable/ic_lock.xml" value="0.403125" />
         <entry key="..\:/medi_app/app/src/main/res/drawable/ic_menu_slideshow.xml" value="0.403125" />
         <entry key="..\:/medi_app/app/src/main/res/drawable/popup_bg.xml" value="0.35" />
@@ -60,6 +66,7 @@
         <entry key="..\:/medi_app/app/src/main/res/layout/nav_header_dashboard_drawer.xml" value="0.26766304347826086" />
         <entry key="..\:/medi_app/app/src/main/res/layout/navigation_action.xml" value="0.2875" />
         <entry key="..\:/medi_app/app/src/main/res/layout/recyclerview_row.xml" value="0.2222222222222222" />
+        <entry key="..\:/medi_app/app/src/main/res/layout/switch_menu.xml" value="0.1819078947368421" />
         <entry key="..\:/medi_app/app/src/main/res/menu/activity_main_drawer.xml" value="0.2875" />
         <entry key="..\:/medi_app/app/src/main/res/menu/dashboard_drawer.xml" value="0.2875" />
         <entry key="..\:/medi_app/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.403125" />

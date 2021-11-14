@@ -86,7 +86,6 @@
         android:id="@+id/gp_details_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="@string/your_gp_contact_details"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
