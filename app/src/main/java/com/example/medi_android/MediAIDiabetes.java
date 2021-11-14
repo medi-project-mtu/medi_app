@@ -1,5 +1,6 @@
 package com.example.medi_android;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,6 +37,9 @@ public class MediAIDiabetes extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.diabetesToolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 //        getDiabetesModel();
 //        3,111,90,12,78,28.4,0.495,29, pred: 0.987
