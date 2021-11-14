@@ -3,7 +3,6 @@ package com.example.medi_android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,9 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class DashboardDrawer extends AppCompatActivity {
@@ -208,27 +204,20 @@ public class DashboardDrawer extends AppCompatActivity {
             FirebaseDatabase.getInstance().getReference("Patient")
                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .child("age")
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            diabetesData.setAge(Float.parseFloat(snapshot.getValue().toString()));
-                            Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
-                            intent.putExtra("inputs", diabetesData);
-                            startActivity(intent);
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        diabetesData.setAge(Float.parseFloat(task.getResult().getValue().toString()));
+                        Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
+                        intent.putExtra("inputs", diabetesData);
+                        startActivity(intent);
 
-                            FirebaseDatabase.getInstance().getReference("Patient")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .child("diabetes")
-                                    .setValue(diabetesData);
+                        FirebaseDatabase.getInstance().getReference("Patient")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("diabetes")
+                                .setValue(diabetesData);
 
-                            Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
+                        Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
                     });
         });
 
