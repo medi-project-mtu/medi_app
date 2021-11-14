@@ -33,7 +33,7 @@ public class MediAIDiabetes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medi_aidiabetes);
-        ArrayList<Float>inputs = (ArrayList<Float>) getIntent().getSerializableExtra("inputs");
+        DiabetesData inputs = (DiabetesData) getIntent().getSerializableExtra("inputs");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.diabetesToolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +60,7 @@ public class MediAIDiabetes extends AppCompatActivity {
         diabetesAI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ai_result_tv.setText(String.valueOf(inputs));
+                ai_result_tv.setText(inputs.toString());
 //                doAIMagic();
 //                try {
 //                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);

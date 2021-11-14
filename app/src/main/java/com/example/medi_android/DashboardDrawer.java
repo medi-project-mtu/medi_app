@@ -22,6 +22,8 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
 import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -179,7 +181,6 @@ public class DashboardDrawer extends AppCompatActivity {
         EditText insulinET = diabetesFormPopUpView.findViewById(R.id.insulin_editText);
         EditText bmiET = diabetesFormPopUpView.findViewById(R.id.BMI_editText);
         EditText dpfET = diabetesFormPopUpView.findViewById(R.id.diabetesPedigreeFunction_editText);
-        EditText ageET = diabetesFormPopUpView.findViewById(R.id.age_editText);
 
         dialogBuilder.setView(diabetesFormPopUpView);
         dialog = dialogBuilder.create();
@@ -193,24 +194,42 @@ public class DashboardDrawer extends AppCompatActivity {
             if(checkEmptyField(insulinET)) return;
             if(checkEmptyField(bmiET)) return;
             if(checkEmptyField(dpfET)) return;
-            if(checkEmptyField(ageET)) return;
 
-            ArrayList<Float> diabetesRawInputs = new ArrayList<>();
-            diabetesRawInputs.add(Float.parseFloat(pregnanciesET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(glucoseET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(bloodPressureET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(skinThicknessET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(insulinET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(bmiET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(dpfET.getText().toString()));
-            diabetesRawInputs.add(Float.parseFloat(ageET.getText().toString()));
+            DiabetesData diabetesData = new DiabetesData();
 
-            Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
-            intent.putExtra("inputs", diabetesRawInputs);
-            startActivity(intent);
+            diabetesData.setPregnancies(Float.parseFloat(pregnanciesET.getText().toString()));
+            diabetesData.setGlucose(Float.parseFloat(glucoseET.getText().toString()));
+            diabetesData.setBloodPressure(Float.parseFloat(bloodPressureET.getText().toString()));
+            diabetesData.setSkinThickness(Float.parseFloat(skinThicknessET.getText().toString()));
+            diabetesData.setInsulin(Float.parseFloat(insulinET.getText().toString()));
+            diabetesData.setBmi(Float.parseFloat(bmiET.getText().toString()));
+            diabetesData.setDiabetesPedigreeFunction(Float.parseFloat(dpfET.getText().toString()));
 
-            Toast.makeText(this, "diabetes data saved", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            FirebaseDatabase.getInstance().getReference("Patient")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("age")
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            diabetesData.setAge(Float.parseFloat(snapshot.getValue().toString()));
+                            Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
+                            intent.putExtra("inputs", diabetesData);
+                            startActivity(intent);
+
+                            FirebaseDatabase.getInstance().getReference("Patient")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child("diabetes")
+                                    .setValue(diabetesData);
+
+                            Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         });
 
         popUpCancel.setOnClickListener(view -> dialog.dismiss());

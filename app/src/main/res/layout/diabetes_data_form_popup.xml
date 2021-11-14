@@ -124,20 +124,6 @@
             android:textColor="@color/black"
             android:textColorHint="#888888" />
 
-        <EditText
-            android:id="@+id/age_editText"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/age"
-            android:inputType="number"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="#888888" />
-
         <Button
             android:id="@+id/diabetes_form_popup_save"
             android:layout_width="match_parent"

@@ -290,20 +290,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
                                 FirebaseDatabase.getInstance().getReference("Patient")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(patient).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                            user.sendEmailVerification();
-                                            Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
-                                            FirebaseAuth.getInstance().signOut();
-                                            startActivity(new Intent(Register.this, MainActivity.class));
-                                        } else {
-                                            Log.w(TAG, "Google SignIn Error", task.getException());
-                                        }
-                                    }
-                                });
+                                        .setValue(patient).addOnCompleteListener(task1 -> {
+                                            if (task1.isSuccessful()) {
+                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                                user.sendEmailVerification();
+                                                Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                                FirebaseAuth.getInstance().signOut();
+                                                startActivity(new Intent(Register.this, MainActivity.class));
+                                            } else {
+                                                Log.w(TAG, "Google SignIn Error", task1.getException());
+                                            }
+                                        });
                             } else {
                                 Log.w(TAG, "Google SignIn Error", task.getException());
                             }
