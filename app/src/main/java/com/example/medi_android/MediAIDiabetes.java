@@ -1,6 +1,7 @@
 package com.example.medi_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,20 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.medi_android.ml.Model;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.modeldownloader.CustomModel;
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions;
 import com.google.firebase.ml.modeldownloader.DownloadType;
 import com.google.firebase.ml.modeldownloader.FirebaseModelDownloader;
 
-import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -35,8 +31,11 @@ public class MediAIDiabetes extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_medi_ai_diabetes);
+        setContentView(R.layout.activity_medi_aidiabetes);
         ArrayList<Float>inputs = (ArrayList<Float>) getIntent().getSerializableExtra("inputs");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.diabetesToolbar);
+        setSupportActionBar(toolbar);
 
 //        getDiabetesModel();
 //        3,111,90,12,78,28.4,0.495,29, pred: 0.987

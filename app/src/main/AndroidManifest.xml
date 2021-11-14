@@ -13,29 +13,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Medi_Android">
         <activity
+            android:name=".MediAIAlzheimers"
+            android:parentActivityName=".DashboardDrawer"
+            android:exported="false" />
+        <activity
+            android:name=".MediAIHeartDisease"
+            android:parentActivityName=".DashboardDrawer"
+            android:exported="false" />
+        <activity
             android:name=".MediAIDiabetes"
+            android:parentActivityName=".DashboardDrawer"
             android:exported="false" />
         <activity
             android:name=".DashboardDrawer"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
             android:exported="false"
-            android:label="@string/title_activity_dashboard_drawer" />
+            android:label="@string/title_activity_dashboard_drawer"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ResetPassword"
+            android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:exported="true" />
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".Register"
+            android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:exported="true" />
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"
-            android:exported="true">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
