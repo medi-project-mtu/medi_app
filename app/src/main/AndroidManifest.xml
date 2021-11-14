@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Medi_Android">
         <activity
-            android:name=".TestDiabetesAI"
+            android:name=".MediAIDiabetes"
             android:exported="false" />
         <activity
             android:name=".DashboardDrawer"

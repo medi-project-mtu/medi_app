@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.medi_android.ml.Model;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.modeldownloader.CustomModel;
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions;
@@ -24,11 +22,10 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-public class TestDiabetesAI extends AppCompatActivity {
+public class MediAIDiabetes extends AppCompatActivity {
 
     private Button diabetesAI;
     private Interpreter interpreter;
@@ -38,7 +35,9 @@ public class TestDiabetesAI extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_diabetes_ai);
+        setContentView(R.layout.activity_medi_ai_diabetes);
+        ArrayList<Float>inputs = (ArrayList<Float>) getIntent().getSerializableExtra("inputs");
+
 //        getDiabetesModel();
 //        3,111,90,12,78,28.4,0.495,29, pred: 0.987
 //        17,163,72,41,114,40.9,0.817,47, 1.0
@@ -58,42 +57,43 @@ public class TestDiabetesAI extends AppCompatActivity {
         diabetesAI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ai_result_tv.setText(String.valueOf(inputs));
 //                doAIMagic();
-                try {
-                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);
-                    byteBuffer.putFloat(0,4);
-                    byteBuffer.putFloat(1,154f);
-                    byteBuffer.putFloat(2,62f);
-                    byteBuffer.putFloat(3,31);
-                    byteBuffer.putFloat(4,284f);
-                    byteBuffer.putFloat(5,32.8f);
-                    byteBuffer.putFloat(6,0.237f);
-                    byteBuffer.putFloat(7,23);
-
-
-
-
-                    Model model = Model.newInstance(TestDiabetesAI.this);
-
-                    // Creates inputs for reference.
-                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
-                    inputFeature0.loadBuffer(byteBuffer);
-
-                    // Runs model inference and gets result.
-                    Model.Outputs outputs = model.process(inputFeature0);
-//                    float[] outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
-                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-                    System.out.println(outputFeature0.toString());
-                    System.out.println(outputFeature0.getFloatValue(0));
-                    System.out.println(Arrays.toString(outputFeature0.getShape()));
-//                    System.out.println(outputFeature0[0]);
-//                    ai_result_tv.setText(Float.toString(outputFeature0[0]));
-
-                    // Releases model resources if no longer used.
-                    model.close();
-                } catch (IOException e) {
-                    // TODO Handle the exception
-                }
+//                try {
+//                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);
+//                    byteBuffer.putFloat(0,4);
+//                    byteBuffer.putFloat(1,154f);
+//                    byteBuffer.putFloat(2,62f);
+//                    byteBuffer.putFloat(3,31);
+//                    byteBuffer.putFloat(4,284f);
+//                    byteBuffer.putFloat(5,32.8f);
+//                    byteBuffer.putFloat(6,0.237f);
+//                    byteBuffer.putFloat(7,23);
+//
+//
+//
+//
+//                    Model model = Model.newInstance(MediAIDiabetes.this);
+//
+//                    // Creates inputs for reference.
+//                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
+//                    inputFeature0.loadBuffer(byteBuffer);
+//
+//                    // Runs model inference and gets result.
+//                    Model.Outputs outputs = model.process(inputFeature0);
+////                    float[] outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
+//                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+//                    System.out.println(outputFeature0.toString());
+//                    System.out.println(outputFeature0.getFloatValue(0));
+//                    System.out.println(Arrays.toString(outputFeature0.getShape()));
+////                    System.out.println(outputFeature0[0]);
+////                    ai_result_tv.setText(Float.toString(outputFeature0[0]));
+//
+//                    // Releases model resources if no longer used.
+//                    model.close();
+//                } catch (IOException e) {
+//                    // TODO Handle the exception
+//                }
 
             }
 

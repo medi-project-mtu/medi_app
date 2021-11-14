@@ -166,7 +166,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+//        mCallbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -270,26 +270,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             String profileHeight = popup_height.getText().toString().trim();
             String profileWeight = popup_weight.getText().toString().trim();
 
-            if (profileName.isEmpty()) {
-                popup_name.setError("Name is required!");
-                popup_name.requestFocus();
-                return;
-            }
-            if (profileDOB.isEmpty()) {
-                popup_dob.setError("Date of Birth is required!");
-                popup_dob.requestFocus();
-                return;
-            }
-            if (profileHeight.isEmpty()) {
-                popup_height.setError("Height is required!");
-                popup_height.requestFocus();
-                return;
-            }
-            if (profileWeight.isEmpty()) {
-                popup_weight.setError("Weight is required!");
-                popup_weight.requestFocus();
-                return;
-            }
+            if(checkEmptyField(popup_name)) return;
+            if(checkEmptyField(popup_dob)) return;
+            if(checkEmptyField(popup_height)) return;
+            if(checkEmptyField(popup_weight)) return;
+            if (spinner_gender.getSelectedItem().toString().equals("Select gender")) return;
+            if (spinner_gp.getSelectedItem().toString().equals("Select a GP")) return;
+            if (spinner_insurance.getSelectedItem().toString().equals("Select an Insurance")) return;
+
             if (provider == PROVIDER_EMAIL) {
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(task -> {
@@ -347,6 +335,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             //define cancel btn
             dialog.dismiss();
         });
+    }
+
+    private boolean checkEmptyField(EditText field) {
+        if (field.getText().toString().trim().isEmpty()) {
+            field.setError("This field is required!");
+            field.requestFocus();
+            return true;
+        }
+        return false;
     }
 
     private List<Insurance> getInsuranceList() {

@@ -1,13 +1,11 @@
 package com.example.medi_android.ui.profile;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.medi_android.ProfileRecyclerViewAdapter;
 import com.example.medi_android.R;
 import com.example.medi_android.Patient;
-import com.example.medi_android.TestDiabetesAI;
 import com.example.medi_android.databinding.FragmentProfileBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

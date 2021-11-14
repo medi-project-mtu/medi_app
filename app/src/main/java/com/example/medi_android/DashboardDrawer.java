@@ -3,7 +3,7 @@ package com.example.medi_android;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +30,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DashboardDrawer extends AppCompatActivity {
@@ -164,30 +167,62 @@ public class DashboardDrawer extends AppCompatActivity {
 
     private void createDiabetesPopupForm() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final View formPopUpView = getLayoutInflater().inflate(R.layout.diabetes_data_form_popup, null);
+        final View diabetesFormPopUpView = getLayoutInflater().inflate(R.layout.diabetes_data_form_popup, null);
 
-        Button popUpSave = formPopUpView.findViewById(R.id.diabetes_form_popup_save);
-        Button popUpCancel = formPopUpView.findViewById(R.id.diabetes_form_popup_cancel);
+        Button popUpSave = diabetesFormPopUpView.findViewById(R.id.diabetes_form_popup_save);
+        Button popUpCancel = diabetesFormPopUpView.findViewById(R.id.diabetes_form_popup_cancel);
 
-        dialogBuilder.setView(formPopUpView);
+        EditText pregnanciesET = diabetesFormPopUpView.findViewById(R.id.pregnancy_editText);
+        EditText glucoseET = diabetesFormPopUpView.findViewById(R.id.glucose_editText);
+        EditText bloodPressureET = diabetesFormPopUpView.findViewById(R.id.bloodPressure_editText);
+        EditText skinThicknessET = diabetesFormPopUpView.findViewById(R.id.skinThickness_editText);
+        EditText insulinET = diabetesFormPopUpView.findViewById(R.id.insulin_editText);
+        EditText bmiET = diabetesFormPopUpView.findViewById(R.id.BMI_editText);
+        EditText dpfET = diabetesFormPopUpView.findViewById(R.id.diabetesPedigreeFunction_editText);
+        EditText ageET = diabetesFormPopUpView.findViewById(R.id.age_editText);
+
+        dialogBuilder.setView(diabetesFormPopUpView);
         dialog = dialogBuilder.create();
         dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            EditText pregnanciesET = findViewById(R.id.pregnancy_editText);
-            EditText glucoseET = findViewById(R.id.glucose_editText);
-            EditText bloodPressureET = findViewById(R.id.bloodPressure_editText);
-            EditText skinThicknessET = findViewById(R.id.skinThickness_editText);
-            EditText insulinET = findViewById(R.id.insulin_editText);
-            EditText bmiET = findViewById(R.id.BMI_editText);
-            EditText dpfET = findViewById(R.id.diabetesPedigreeFunction_editText);
-            EditText ageET = findViewById(R.id.age_editText);
+            if(checkEmptyField(pregnanciesET)) return;
+            if(checkEmptyField(glucoseET)) return;
+            if(checkEmptyField(bloodPressureET)) return;
+            if(checkEmptyField(skinThicknessET)) return;
+            if(checkEmptyField(insulinET)) return;
+            if(checkEmptyField(bmiET)) return;
+            if(checkEmptyField(dpfET)) return;
+            if(checkEmptyField(ageET)) return;
+
+            ArrayList<Float> diabetesRawInputs = new ArrayList<>();
+            diabetesRawInputs.add(Float.parseFloat(pregnanciesET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(glucoseET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(bloodPressureET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(skinThicknessET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(insulinET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(bmiET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(dpfET.getText().toString()));
+            diabetesRawInputs.add(Float.parseFloat(ageET.getText().toString()));
+
+            Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
+            intent.putExtra("inputs", diabetesRawInputs);
+            startActivity(intent);
 
             Toast.makeText(this, "diabetes data saved", Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
 
         popUpCancel.setOnClickListener(view -> dialog.dismiss());
+    }
+
+    private boolean checkEmptyField(EditText field) {
+        if (field.getText().toString().isEmpty()) {
+            field.setError("This field is required!");
+            field.requestFocus();
+            return true;
+        }
+        return false;
     }
 
 

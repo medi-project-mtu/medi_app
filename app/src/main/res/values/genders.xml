@@ -4,6 +4,5 @@
         <item>Select gender</item>
         <item>Male</item>
         <item>Female</item>
-        <item>Prefer not to Say</item>
     </string-array>
 </resources>
