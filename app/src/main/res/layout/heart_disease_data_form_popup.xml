@@ -19,11 +19,167 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="@string/diabetes"
+            android:text="Heart Disease"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="48sp"
             android:textStyle="bold" />
+
+
+        <EditText
+            android:id="@+id/hd_cp_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Chest-pain type"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_trestbps_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Resting Blood Pressure"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_chol_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Serum Cholesterol"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_fbs_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Fasting Blood Sugar"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_restecg_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Resting ECG"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_thalach_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Max heart rate achieved"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_exang_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Exercise induced angina"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_oldpeak_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="ST depression induced"
+            android:inputType="numberDecimal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_slope_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Peak exercise ST segment"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_ca_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Major vessels number"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/hd_thal_editText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="Thal"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
 
         <Button
             android:id="@+id/heart_disease_form_popup_save"
