@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2a324b"
+        android:background="#2A324B"
         android:orientation="vertical"
         android:paddingStart="30dp"
         android:paddingEnd="30dp">
@@ -19,11 +19,111 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="@string/diabetes"
+            android:text="@string/alzheimers"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="48sp"
             android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_dominant_hand"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/dominant_hand"
+            android:inputType="text"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_education_level"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/education_level"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_socioeconomic_status"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/socioeconomic_status"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_mini_mental_state_examination"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/mini_mental_state_examination"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_clinical_demantia_rating"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/clinical_dementia_rating"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_estimated_total_intracranial_volume"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/estimated_total_intracranial_volume"
+            android:inputType="number"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
+
+        <EditText
+            android:id="@+id/alzheimers_form_popup_normalize_whole_brain_volume"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/custom_input"
+            android:ems="10"
+            android:hint="@string/normalize_whole_brain_volume"
+            android:inputType="numberDecimal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888888" />
+
 
         <Button
             android:id="@+id/alzheimers_form_popup_save"
@@ -43,6 +143,6 @@
             android:backgroundTint="#b23a48"
             android:text="@string/cancel"
             android:textColor="#FFFFFF" />
-
     </LinearLayout>
+
 </ScrollView>

@@ -52,5 +52,13 @@
     <string name="sign_up">Sign Up</string>
     <string name="or">OR</string>
     <string name="email1">Email</string>
+    <string name="alzheimers" >Alzheimers</string>
+    <string name="dominant_hand" >Dominant Hand</string>
+    <string name="education_level" >Education Level</string>
+    <string name="socioeconomic_status" >Socioeconomic Status</string>
+    <string name="mini_mental_state_examination" >Mini Mental State Examination</string>
+    <string name="clinical_dementia_rating" >Clinical Dementia Rating</string>
+    <string name="estimated_total_intracranial_volume" >Estimated Total Intracranial Volume</string>
+    <string name="normalize_whole_brain_volume" >Normalize Whole Brain Volume</string>
 
 </resources>
