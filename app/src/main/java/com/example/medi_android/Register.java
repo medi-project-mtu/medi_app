@@ -446,8 +446,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                     errorTextGender.setError("Select gender");
                     errorTextGender.setTextColor(Color.GRAY);
                     return;
+                } else if (gender.equals("Male")) {
+                    patient.setGender("1");
+                } else if (gender.equals("Femail")){
+                    patient.setGender("0");
                 }
-                patient.setGender(gender);
                 break;
 
             case R.id.spinner_gp:

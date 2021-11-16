@@ -4,6 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#2a324b"
     tools:context=".MediAIAlzheimers">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/diabetesToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="Medi-AI: Alzheimer's"
+        app:titleTextColor="@color/white"
+        app:popupTheme="@style/Theme.Medi_Android.PopupOverlay" />
+
+    <Button
+        android:id="@+id/alzheimers_ai_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Give me results"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/alzheimers_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alzheimers_ai_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

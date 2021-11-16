@@ -22,7 +22,7 @@
         app:popupTheme="@style/Theme.Medi_Android.PopupOverlay" />
 
     <Button
-        android:id="@+id/diabetes_ai"
+        android:id="@+id/diabetes_ai_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Give me results"
@@ -33,12 +33,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/ai_result"
+        android:id="@+id/diabetes_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diabetes_ai" />
+        app:layout_constraintTop_toBottomOf="@+id/diabetes_ai_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

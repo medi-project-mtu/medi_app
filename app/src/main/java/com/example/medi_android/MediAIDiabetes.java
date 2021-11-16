@@ -10,23 +10,28 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.medi_android.ml.Model;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.modeldownloader.CustomModel;
 import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions;
 import com.google.firebase.ml.modeldownloader.DownloadType;
 import com.google.firebase.ml.modeldownloader.FirebaseModelDownloader;
 
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MediAIDiabetes extends AppCompatActivity {
 
-    private Button diabetesAI;
+    private Button diabetesAIBtn;
     private Interpreter interpreter;
-    private TextView ai_result_tv;
+    private TextView diabetesResultTV;
     private float result;
 
     @Override
@@ -55,48 +60,48 @@ public class MediAIDiabetes extends AppCompatActivity {
 //        4,154,62,31,284,32.8,0.237,23,0 pred: 0.987
 
 //        3,170,64,37,225,34.5,0.356,30,1, pred: 0.985
-        ai_result_tv = findViewById(R.id.ai_result);
-        diabetesAI = findViewById(R.id.diabetes_ai);
-        diabetesAI.setOnClickListener(new View.OnClickListener() {
+        diabetesResultTV = findViewById(R.id.diabetes_result);
+        diabetesAIBtn = findViewById(R.id.diabetes_ai_btn);
+        diabetesAIBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ai_result_tv.setText(inputs.toString());
+//                ai_result_tv.setText(inputs.toString());
 //                doAIMagic();
-//                try {
-//                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);
-//                    byteBuffer.putFloat(0,4);
-//                    byteBuffer.putFloat(1,154f);
-//                    byteBuffer.putFloat(2,62f);
-//                    byteBuffer.putFloat(3,31);
-//                    byteBuffer.putFloat(4,284f);
-//                    byteBuffer.putFloat(5,32.8f);
-//                    byteBuffer.putFloat(6,0.237f);
-//                    byteBuffer.putFloat(7,23);
-//
-//
-//
-//
-//                    Model model = Model.newInstance(MediAIDiabetes.this);
-//
-//                    // Creates inputs for reference.
-//                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
-//                    inputFeature0.loadBuffer(byteBuffer);
-//
-//                    // Runs model inference and gets result.
-//                    Model.Outputs outputs = model.process(inputFeature0);
-////                    float[] outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
+                try {
+                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);
+                    byteBuffer.putFloat(inputs.pregnancies);
+                    byteBuffer.putFloat(inputs.glucose);
+                    byteBuffer.putFloat(inputs.bloodPressure);
+                    byteBuffer.putFloat(inputs.skinThickness);
+                    byteBuffer.putFloat(inputs.insulin);
+                    byteBuffer.putFloat(inputs.bmi);
+                    byteBuffer.putFloat(inputs.diabetesPedigreeFunction);
+                    byteBuffer.putFloat(inputs.age);
+
+
+
+
+                    Model model = Model.newInstance(MediAIDiabetes.this);
+
+                    // Creates inputs for reference.
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
+                    inputFeature0.loadBuffer(byteBuffer);
+
+                    // Runs model inference and gets result.
+                    Model.Outputs outputs = model.process(inputFeature0);
+                    float[] outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
 //                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 //                    System.out.println(outputFeature0.toString());
 //                    System.out.println(outputFeature0.getFloatValue(0));
 //                    System.out.println(Arrays.toString(outputFeature0.getShape()));
-////                    System.out.println(outputFeature0[0]);
-////                    ai_result_tv.setText(Float.toString(outputFeature0[0]));
-//
-//                    // Releases model resources if no longer used.
-//                    model.close();
-//                } catch (IOException e) {
-//                    // TODO Handle the exception
-//                }
+//                    System.out.println(outputFeature0[0]);
+                    diabetesResultTV.setText(Float.toString(outputFeature0[0]));
+
+                    // Releases model resources if no longer used.
+                    model.close();
+                } catch (IOException e) {
+                    // TODO Handle the exception
+                }
 
             }
 

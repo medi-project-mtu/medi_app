@@ -2,6 +2,7 @@ package com.example.medi_android;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -31,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.A;
 
 
 public class DashboardDrawer extends AppCompatActivity {
@@ -134,9 +138,7 @@ public class DashboardDrawer extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        popUpCancel.setOnClickListener(view -> {
-            dialog.dismiss();
-        });
+        popUpCancel.setOnClickListener(view -> dialog.dismiss());
 
         dialogBuilder.setView(formPopUpView);
         dialog = dialogBuilder.create();
@@ -145,22 +147,70 @@ public class DashboardDrawer extends AppCompatActivity {
 
     private void createAlzheimersPopupform() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final View formPopUpView = getLayoutInflater().inflate(R.layout.alzheimers_data_form_popup, null);
-        Button popUpSave = formPopUpView.findViewById(R.id.alzheimers_form_popup_save);
-        Button popUpCancel = formPopUpView.findViewById(R.id.alzheimers_form_popup_cancel);
+        final View alzheimersFormPopUpView = getLayoutInflater().inflate(R.layout.alzheimers_data_form_popup, null);
 
-        popUpSave.setOnClickListener(view -> {
-            Toast.makeText(this, "Alzheimer's Data saved", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
-        });
+        Button popUpSave = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_save);
+        Button popUpCancel = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_cancel);
 
-        popUpCancel.setOnClickListener(view -> {
-            dialog.dismiss();
-        });
+        EditText dominantHandET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_dominant_hand);
+        EditText eduLevelET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_education_level);
+        EditText socioStatusET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_socioeconomic_status);
+        EditText mmseET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_mini_mental_state_examination);
+        EditText cdrET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_clinical_demantia_rating);
+        EditText etivET= alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_estimated_total_intracranial_volume);
+        EditText nwbvET= alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_normalize_whole_brain_volume);
 
-        dialogBuilder.setView(formPopUpView);
+        dialogBuilder.setView(alzheimersFormPopUpView);
         dialog = dialogBuilder.create();
         dialog.show();
+
+        popUpSave.setOnClickListener(view -> {
+            if (checkEmptyField(dominantHandET)) return;
+            if (checkEmptyField(eduLevelET)) return;
+            if (checkEmptyField(socioStatusET)) return;
+            if (checkEmptyField(mmseET)) return;
+            if (checkEmptyField(cdrET)) return;
+            if (checkEmptyField(etivET)) return;
+            if (checkEmptyField(nwbvET)) return;
+
+            AlzheimersData alzheimersData = new AlzheimersData();
+            alzheimersData.setDominantHand(Float.parseFloat(dominantHandET.getText().toString()));
+            alzheimersData.setEducationLevel(Float.parseFloat(eduLevelET.getText().toString()));
+            alzheimersData.setSocialEconomicStatus(Float.parseFloat(socioStatusET.getText().toString()));
+            alzheimersData.setMiniMentalStateExamination(Float.parseFloat(mmseET.getText().toString()));
+            alzheimersData.setClinicalDementiaRating(Float.parseFloat(cdrET.getText().toString()));
+            alzheimersData.setEstimatedTotalIntracranialVolume(Float.parseFloat(etivET.getText().toString()));
+            alzheimersData.setNormalizeHoleBrainVolume(Float.parseFloat(nwbvET.getText().toString()));
+
+            reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Patient patient = snapshot.getValue(Patient.class);
+                    if (patient != null){
+                        alzheimersData.setAge(Float.parseFloat(patient.getAge()));
+                        alzheimersData.setGender(Float.parseFloat(patient.getGender()));
+
+                        Intent intent = new Intent(DashboardDrawer.this, MediAIAlzheimers.class);
+                        intent.putExtra("inputs", alzheimersData);
+                        startActivity(intent);
+
+                        FirebaseDatabase.getInstance().getReference("Patient")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("alzheimers")
+                                .setValue(alzheimersData);
+
+                        Toast.makeText(DashboardDrawer.this, "Alzheimer's Data saved", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        });
+        popUpCancel.setOnClickListener(view -> dialog.dismiss());
     }
 
     private void createDiabetesPopupForm() {
@@ -201,26 +251,21 @@ public class DashboardDrawer extends AppCompatActivity {
             diabetesData.setBmi(Float.parseFloat(bmiET.getText().toString()));
             diabetesData.setDiabetesPedigreeFunction(Float.parseFloat(dpfET.getText().toString()));
 
-            FirebaseDatabase.getInstance().getReference("Patient")
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("age")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        diabetesData.setAge(Float.parseFloat(task.getResult().getValue().toString()));
-                        Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
-                        intent.putExtra("inputs", diabetesData);
-                        startActivity(intent);
+            reference.child(userID).child("age").get().addOnCompleteListener(task -> {
+                    diabetesData.setAge(Float.parseFloat(task.getResult().getValue().toString()));
+                    Intent intent = new Intent(DashboardDrawer.this, MediAIDiabetes.class);
+                    intent.putExtra("inputs", diabetesData);
+                    startActivity(intent);
 
-                        FirebaseDatabase.getInstance().getReference("Patient")
-                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child("diabetes")
-                                .setValue(diabetesData);
+                    FirebaseDatabase.getInstance().getReference("Patient")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                            .child("diabetes")
+                            .setValue(diabetesData);
 
-                        Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    });
+                    Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                });
         });
-
         popUpCancel.setOnClickListener(view -> dialog.dismiss());
     }
 
