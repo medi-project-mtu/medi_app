@@ -80,8 +80,19 @@ public class DashboardDrawer extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_dashboard_drawer);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.getMenu().findItem(R.id.nav_diabetes).setOnMenuItemClickListener(menuItem -> {
+            startActivity(new Intent(this, MediAIDiabetes.class));
+            return true;
+        });
+        navigationView.getMenu().findItem(R.id.nav_alzheimers).setOnMenuItemClickListener(menuItem -> {
+            startActivity(new Intent(this, MediAIAlzheimers.class));
+            return true;
+        });
+        navigationView.getMenu().findItem(R.id.nav_heartDisease).setOnMenuItemClickListener(menuItem -> {
+            startActivity(new Intent(this, MediAIHeartDisease.class));
+            return true;
+        });
         navigationView.getMenu().findItem(R.id.nav_logout).setOnMenuItemClickListener(menuItem -> {
-
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:

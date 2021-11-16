@@ -9,6 +9,18 @@
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:title="@string/menu_profile" />
         <item
+            android:id="@+id/nav_diabetes"
+            android:icon="@drawable/ic_baseline_medical_services_24"
+            android:title="Diabetes" />
+        <item
+            android:id="@+id/nav_alzheimers"
+            android:icon="@drawable/ic_baseline_medical_services_24"
+            android:title="Alzheimer's" />
+        <item
+            android:id="@+id/nav_heartDisease"
+            android:icon="@drawable/ic_baseline_medical_services_24"
+            android:title="Heart Disease" />
+        <item
             android:id="@+id/nav_contacts"
             android:icon="@drawable/ic_baseline_contacts_24"
             android:title="@string/menu_contacts" />

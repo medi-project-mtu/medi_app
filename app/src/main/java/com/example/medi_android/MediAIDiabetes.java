@@ -5,186 +5,114 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.medi_android.ml.Model;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.ml.modeldownloader.CustomModel;
-import com.google.firebase.ml.modeldownloader.CustomModelDownloadConditions;
-import com.google.firebase.ml.modeldownloader.DownloadType;
-import com.google.firebase.ml.modeldownloader.FirebaseModelDownloader;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-import org.tensorflow.lite.DataType;
-import org.tensorflow.lite.Interpreter;
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MediAIDiabetes extends AppCompatActivity {
 
-    private Button diabetesAIBtn;
-    private Interpreter interpreter;
     private TextView diabetesResultTV;
-    private float result;
+    private String url;
+    private DatabaseReference reference;
+    private String userID;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medi_aidiabetes);
+
+        reference = FirebaseDatabase.getInstance().getReference("Patient");
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getUid();
+
         DiabetesData inputs = (DiabetesData) getIntent().getSerializableExtra("inputs");
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.diabetesToolbar);
+        Toolbar toolbar = findViewById(R.id.diabetesToolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-//        getDiabetesModel();
-//        3,111,90,12,78,28.4,0.495,29, pred: 0.987
-//        17,163,72,41,114,40.9,0.817,47, 1.0
-//        2,100,64,23,0,29.7,0.368,21
-//        0,131,88,0,0,31.6,0.743,32
-//        1,153,82,42,485,40.6,0.687,23
-//        1,136,74,50,204,37.4,0.399,24, should be 0, pred: 0.975
-//        10,108,66,0,0,32.4,0.272,42 should be 1, pred: 0.99999999917
-
-
-//        2,108,52,26,63,32.5,0.318,22,0, pred: 0.987
-//        4,154,62,31,284,32.8,0.237,23,0 pred: 0.987
-
-//        3,170,64,37,225,34.5,0.356,30,1, pred: 0.985
         diabetesResultTV = findViewById(R.id.diabetes_result);
-        diabetesAIBtn = findViewById(R.id.diabetes_ai_btn);
-        diabetesAIBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                ai_result_tv.setText(inputs.toString());
-//                doAIMagic();
-                try {
-                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(8 * 4);
-                    byteBuffer.putFloat(inputs.pregnancies);
-                    byteBuffer.putFloat(inputs.glucose);
-                    byteBuffer.putFloat(inputs.bloodPressure);
-                    byteBuffer.putFloat(inputs.skinThickness);
-                    byteBuffer.putFloat(inputs.insulin);
-                    byteBuffer.putFloat(inputs.bmi);
-                    byteBuffer.putFloat(inputs.diabetesPedigreeFunction);
-                    byteBuffer.putFloat(inputs.age);
-
-
-
-
-                    Model model = Model.newInstance(MediAIDiabetes.this);
-
-                    // Creates inputs for reference.
-                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 8}, DataType.FLOAT32);
-                    inputFeature0.loadBuffer(byteBuffer);
-
-                    // Runs model inference and gets result.
-                    Model.Outputs outputs = model.process(inputFeature0);
-                    float[] outputFeature0 = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
-//                    TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-//                    System.out.println(outputFeature0.toString());
-//                    System.out.println(outputFeature0.getFloatValue(0));
-//                    System.out.println(Arrays.toString(outputFeature0.getShape()));
-//                    System.out.println(outputFeature0[0]);
-                    diabetesResultTV.setText(Float.toString(outputFeature0[0]));
-
-                    // Releases model resources if no longer used.
-                    model.close();
-                } catch (IOException e) {
-                    // TODO Handle the exception
-                }
-
-            }
-
-        });
-    }
-
-
-
-
-    private float doAIMagic() {
-        float[] input1 = new float[] {6,0,0,0,0,31.2f,0.00382f,0};
-        float[] input2 = new float[] {1f,130f,60f,23f,170f,28.6f,0.692f,21f};
-        float[] input3 = new float[] {2f,84f,50f,23f,76f,30.4f,0.968f,21f};
-        float[] input4 = new float[] {8f,120f,78f,0f,0f,25f,0.409f,64f};
-        float[] input5 = new float[] {6,102,82,0,0,30.8f,0.18f,36};
-        float[] input6 = new float[] {0,131,88,0,0,31.6f,0.743f,32};
-        float[] input7 = new float[] {8,179,72,42,130,32.7f,0.719f,36,1};
-        float[] input8 = new float[] {0,129,110,46,130,67.1f,0.319f,26,1};
-
-        float[][] output1 = new float[1][1];
-        float[][] output2 = new float[1][1];
-        float[][] output3 = new float[1][1];
-        float[][] output4 = new float[1][1];
-        float[][] output5 = new float[1][1];
-        float[][] output6 = new float[1][1];
-        float[][] output7 = new float[1][1];
-        float[][] output8 = new float[1][1];
-
-        interpreter.run(input1, output1);
-        interpreter.run(input2, output2);
-        interpreter.run(input3, output3);
-        interpreter.run(input4, output4);
-        interpreter.run(input5, output5);
-        interpreter.run(input6, output6);
-        interpreter.run(input7, output7);
-        interpreter.run(input8, output8);
-        System.out.println(Arrays.deepToString(output2));
-        Log.i("test1------------",Float.toString(output1[0][0]));
-        Log.i("test2------------",Float.toString(output2[0][0]));
-        Log.i("test3------------",Float.toString(output3[0][0]));
-        Log.i("test4------------",Float.toString(output4[0][0]));
-        Log.i("test5------------",Float.toString(output5[0][0]));
-        Log.i("test6------------",Float.toString(output6[0][0]));
-        Log.i("test7------------",Float.toString(output7[0][0]));
-        Log.i("test8------------",Float.toString(output8[0][0]));
-//        Map<String, Float> inputs = new HashMap<String, Float>();
-//        inputs.put("Pregnancies", 2f);
-//        inputs.put("Glucose", 138f);
-//        inputs.put("BloodPressure", 62f);
-//        inputs.put("SkinThickness", 35f);
-//        inputs.put("Insulin", 0f);
-//        inputs.put("BMI", 33.6f);
-//        inputs.put("DiabetesPedigreeFunction", 0.127f);
-//        inputs.put("Age", 47f);
-//
-//        Map<String, Float> outputs = new HashMap<String, Float>();
-//        outputs.put("Outcome", 0f);
-//
-//        interpreter.run(inputs, outputs);
-//        interpreter.runForMultipleInputsOutputs();
-
-//        System.out.println(outputs);
-
-        return 1.2f;
-    }
-
-
-    private void getDiabetesModel() {
-        CustomModelDownloadConditions conditions = new CustomModelDownloadConditions.Builder()
-                .requireWifi()  // Also possible: .requireCharging() and .requireDeviceIdle()
-                .build();
-        FirebaseModelDownloader.getInstance()
-                .getModel("Diabetes-Prediction", DownloadType.LOCAL_MODEL_UPDATE_IN_BACKGROUND, conditions)
-                .addOnSuccessListener(new OnSuccessListener<CustomModel>() {
-                    @Override
-                    public void onSuccess(CustomModel model) {
-                        File modelFile = model.getFile();
-                        if (modelFile != null) {
-                            interpreter = new Interpreter(modelFile);
-                            System.out.println(modelFile.getAbsoluteFile());
-                        }
-//                        Toast.makeText(TestDiabetesAI.this, "diabetesAI", Toast.LENGTH_SHORT).show();
+        Button diabetesAIBtn = findViewById(R.id.diabetes_ai_btn);
+        diabetesAIBtn.setOnClickListener(view -> {
+            url = "https://mtu-medi-ai.herokuapp.com/predictDiabetes";
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String diagnosis = jsonObject.getString("Diagnosis");
+                        diabetesResultTV.setText(diagnosis);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Cannot get JSON", Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams(){
+                    Map<String, String> params = new HashMap<>();
+//                    if (inputs == null){
+//                        reference.child(userID).child("diabetes").addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                DiabetesData diabetesData = snapshot.getValue(DiabetesData.class);
+//                                if (diabetesData != null){
+//                                    params.put("pregnancies", Float.toString(diabetesData.getPregnancies()));
+//                                    params.put("glucose", Float.toString(diabetesData.getGlucose()));
+//                                    params.put("bp", Float.toString(diabetesData.getBloodPressure()));
+//                                    params.put("skinThickness", Float.toString(diabetesData.getSkinThickness()));
+//                                    params.put("insulin", Float.toString(diabetesData.getInsulin()));
+//                                    params.put("bmi", Float.toString(diabetesData.getBmi()));
+//                                    params.put("dpf", Float.toString(diabetesData.getDiabetesPedigreeFunction()));
+//                                    params.put("age", Float.toString(diabetesData.getAge()));
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
+//
+//                    } else {
+                    params.put("pregnancies", Float.toString(inputs.getPregnancies()));
+                    params.put("glucose", Float.toString(inputs.getGlucose()));
+                    params.put("bp", Float.toString(inputs.getBloodPressure()));
+                    params.put("skinThickness", Float.toString(inputs.getSkinThickness()));
+                    params.put("insulin", Float.toString(inputs.getInsulin()));
+                    params.put("bmi", Float.toString(inputs.getBmi()));
+                    params.put("dpf", Float.toString(inputs.getDiabetesPedigreeFunction()));
+                    params.put("age", Float.toString(inputs.getAge()));
+//                    }
+                    return params;
+                }
+            };
+            RequestQueue queue = Volley.newRequestQueue(MediAIDiabetes.this);
+            queue.add(request);
+        });
     }
 }
