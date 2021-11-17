@@ -11,6 +11,15 @@ public class DiabetesData implements Serializable {
     float bmi;
     float diabetesPedigreeFunction;
     float age;
+    String diagnosis;
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 
     public float getPregnancies() {
         return pregnancies;
@@ -32,19 +41,6 @@ public class DiabetesData implements Serializable {
         return bloodPressure;
     }
 
-    @Override
-    public String toString() {
-        return "DiabetesData{" +
-                "pregnancies=" + pregnancies +
-                ", glucose=" + glucose +
-                ", bloodPressure=" + bloodPressure +
-                ", skinThickness=" + skinThickness +
-                ", insulin=" + insulin +
-                ", bmi=" + bmi +
-                ", diabetesPedigreeFunction=" + diabetesPedigreeFunction +
-                ", age=" + age +
-                '}';
-    }
 
     public void setBloodPressure(float bloodPressure) {
         this.bloodPressure = bloodPressure;
@@ -91,4 +87,19 @@ public class DiabetesData implements Serializable {
     }
 
     public DiabetesData(){}
+
+    @Override
+    public String toString() {
+        return "DiabetesData{" +
+                "pregnancies=" + pregnancies +
+                ", glucose=" + glucose +
+                ", bloodPressure=" + bloodPressure +
+                ", skinThickness=" + skinThickness +
+                ", insulin=" + insulin +
+                ", bmi=" + bmi +
+                ", diabetesPedigreeFunction=" + diabetesPedigreeFunction +
+                ", age=" + age +
+                ", diagnosis='" + diagnosis + '\'' +
+                '}';
+    }
 }
