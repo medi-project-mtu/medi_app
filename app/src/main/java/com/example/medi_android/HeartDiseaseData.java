@@ -1,8 +1,8 @@
 package com.example.medi_android;
 
-import androidx.annotation.NonNull;
+import java.io.Serializable;
 
-public class HeartDiseaseData {
+public class HeartDiseaseData implements Serializable {
     float chestPainType;
     float restingBloodPressure;
     float serumCholesterol;
@@ -16,8 +16,17 @@ public class HeartDiseaseData {
     float thal;
     float age;
     float gender;
+    String diagnosis;
 
     public HeartDiseaseData() {
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
     public float getChestPainType() {
@@ -124,7 +133,6 @@ public class HeartDiseaseData {
         this.gender = gender;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "HeartDiseaseData{" +
@@ -141,6 +149,7 @@ public class HeartDiseaseData {
                 ", thal=" + thal +
                 ", age=" + age +
                 ", gender=" + gender +
+                ", diagnosis='" + diagnosis + '\'' +
                 '}';
     }
 }

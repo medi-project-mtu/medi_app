@@ -140,20 +140,82 @@ public class DashboardDrawer extends AppCompatActivity {
 
     private void createHeartDiseasePopupForm() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final View formPopUpView = getLayoutInflater().inflate(R.layout.heart_disease_data_form_popup, null);
-        Button popUpSave = formPopUpView.findViewById(R.id.heart_disease_form_popup_save);
-        Button popUpCancel = formPopUpView.findViewById(R.id.heart_disease_form_popup_cancel);
+        final View heartDiseaseFormPopUpView = getLayoutInflater().inflate(R.layout.heart_disease_data_form_popup, null);
+
+        Button popUpSave = heartDiseaseFormPopUpView.findViewById(R.id.heart_disease_form_popup_save);
+        Button popUpCancel = heartDiseaseFormPopUpView.findViewById(R.id.heart_disease_form_popup_cancel);
+
+        EditText chestPainTypeET = heartDiseaseFormPopUpView.findViewById(R.id.hd_cp_editText);
+        EditText rbpET = heartDiseaseFormPopUpView.findViewById(R.id.hd_trestbps_editText);
+        EditText serumCholesterolET = heartDiseaseFormPopUpView.findViewById(R.id.hd_chol_editText);
+        EditText fastingBSET= heartDiseaseFormPopUpView.findViewById(R.id.hd_fbs_editText);
+        EditText restingECGET= heartDiseaseFormPopUpView.findViewById(R.id.hd_restecg_editText);
+        EditText maxHeartRateET= heartDiseaseFormPopUpView.findViewById(R.id.hd_thalach_editText);
+        EditText anginaET = heartDiseaseFormPopUpView.findViewById(R.id.hd_exang_editText);
+        EditText STDepressionET = heartDiseaseFormPopUpView.findViewById(R.id.hd_oldpeak_editText);
+        EditText peakExerciseSTET = heartDiseaseFormPopUpView.findViewById(R.id.hd_slope_editText);
+        EditText majorVesselsET= heartDiseaseFormPopUpView.findViewById(R.id.hd_ca_editText);
+        EditText thalET = heartDiseaseFormPopUpView.findViewById(R.id.hd_thal_editText);
+
+        dialogBuilder.setView(heartDiseaseFormPopUpView);
+        dialog = dialogBuilder.create();
+        dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            Toast.makeText(this, "Heart Disease Data saved", Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            if (checkEmptyField(chestPainTypeET)) return;
+            if (checkEmptyField(rbpET)) return;
+            if (checkEmptyField(serumCholesterolET)) return;
+            if (checkEmptyField(fastingBSET)) return;
+            if (checkEmptyField(restingECGET)) return;
+            if (checkEmptyField(maxHeartRateET)) return;
+            if (checkEmptyField(anginaET)) return;
+            if (checkEmptyField(STDepressionET)) return;
+            if (checkEmptyField(peakExerciseSTET)) return;
+            if (checkEmptyField(majorVesselsET)) return;
+            if (checkEmptyField(thalET)) return;
+
+            HeartDiseaseData heartDiseaseData = new HeartDiseaseData();
+            heartDiseaseData.setChestPainType(Float.parseFloat(chestPainTypeET.getText().toString()));
+            heartDiseaseData.setRestingBloodPressure(Float.parseFloat(rbpET.getText().toString()));
+            heartDiseaseData.setSerumCholesterol(Float.parseFloat(serumCholesterolET.getText().toString()));
+            heartDiseaseData.setFastingBloodSugar(Float.parseFloat(fastingBSET.getText().toString()));
+            heartDiseaseData.setRestingECG(Float.parseFloat(restingECGET.getText().toString()));
+            heartDiseaseData.setMaxHeartRateAchieved(Float.parseFloat(maxHeartRateET.getText().toString()));
+            heartDiseaseData.setExerciseInducedAngina(Float.parseFloat(anginaET.getText().toString()));
+            heartDiseaseData.setSTDepressionInduced(Float.parseFloat(STDepressionET.getText().toString()));
+            heartDiseaseData.setPeakExerciseSTSegment(Float.parseFloat(peakExerciseSTET.getText().toString()));
+            heartDiseaseData.setMajorVesselsNumber(Float.parseFloat(majorVesselsET.getText().toString()));
+            heartDiseaseData.setThal(Float.parseFloat(thalET.getText().toString()));
+
+            reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Patient patient = snapshot.getValue(Patient.class);
+                    if (patient != null){
+                        heartDiseaseData.setAge(Float.parseFloat(patient.getAge()));
+                        heartDiseaseData.setGender(Float.parseFloat(patient.getGender()));
+
+                        Intent intent = new Intent(DashboardDrawer.this, MediAIHeartDisease.class);
+                        intent.putExtra("inputs", heartDiseaseData);
+                        startActivity(intent);
+
+                        FirebaseDatabase.getInstance().getReference("Patient")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("heartDisease")
+                                .setValue(heartDiseaseData);
+
+                        Toast.makeText(DashboardDrawer.this, "Heart Disease Data saved", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
         });
 
         popUpCancel.setOnClickListener(view -> dialog.dismiss());
-
-        dialogBuilder.setView(formPopUpView);
-        dialog = dialogBuilder.create();
-        dialog.show();
     }
 
     private void createAlzheimersPopupform() {
@@ -215,7 +277,6 @@ public class DashboardDrawer extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
@@ -273,7 +334,7 @@ public class DashboardDrawer extends AppCompatActivity {
                             .child("diabetes")
                             .setValue(diabetesData);
 
-                    Toast.makeText(DashboardDrawer.this, "diabetes data saved", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DashboardDrawer.this, "Diabetes data saved", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 });
         });
