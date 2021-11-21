@@ -8,7 +8,7 @@
     tools:context=".MediAIAlzheimers">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/diabetesToolbar"
+        android:id="@+id/alzheimersToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
@@ -25,21 +25,34 @@
         android:id="@+id/alzheimers_ai_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Give me results"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:text="Predict"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/alzheimersToolbar" />
 
     <TextView
-        android:id="@+id/alzheimers_result"
+        android:id="@+id/alzheimersRiskTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="null"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Risk: N/A"
+        android:textColor="#FFFFFF"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alzheimersToolbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_alzheimers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alzheimers_ai_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/alzheimersRiskTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

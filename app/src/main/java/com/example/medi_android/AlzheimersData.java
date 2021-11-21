@@ -1,7 +1,5 @@
 package com.example.medi_android;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
 public class AlzheimersData implements Serializable {
@@ -14,8 +12,17 @@ public class AlzheimersData implements Serializable {
     float normalizeHoleBrainVolume;
     float age;
     float gender;
+    String diagnosis;
 
     public AlzheimersData() {
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
     }
 
     public float getDominantHand() {
@@ -86,7 +93,6 @@ public class AlzheimersData implements Serializable {
         return gender;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "AlzheimersData{" +
@@ -99,6 +105,7 @@ public class AlzheimersData implements Serializable {
                 ", normalizeHoleBrainVolume=" + normalizeHoleBrainVolume +
                 ", age=" + age +
                 ", gender=" + gender +
+                ", diagnosis='" + diagnosis + '\'' +
                 '}';
     }
 

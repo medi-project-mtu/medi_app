@@ -40,7 +40,7 @@ public class MediAIDiabetes extends AppCompatActivity {
     private TextView diabetesRiskTV;
     private String url;
     private DatabaseReference reference;
-    private ProfileRecyclerViewAdapter adapter;
+    private RecyclerViewAdapter adapter;
     private String userID;
     private FirebaseUser user;
     private DiabetesData diabetesData;
@@ -93,7 +93,7 @@ public class MediAIDiabetes extends AppCompatActivity {
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MediAIDiabetes.this, 2);
                     RecyclerView recyclerView = findViewById(R.id.rv_diabetes);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new ProfileRecyclerViewAdapter(MediAIDiabetes.this, diabestesDataTitles, diabetesDataContent);
+                    adapter = new RecyclerViewAdapter(MediAIDiabetes.this, diabestesDataTitles, diabetesDataContent);
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -110,14 +110,11 @@ public class MediAIDiabetes extends AppCompatActivity {
         }
 
         // user clicks on predict btn, reload diagnosis
-        diabetesAIBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(diabetesData != null){
-                    getDiagnosis(diabetesData);
-                } else {
-                    Toast.makeText(MediAIDiabetes.this, "No Data to predict", Toast.LENGTH_SHORT).show();
-                }
+        diabetesAIBtn.setOnClickListener(view -> {
+            if(diabetesData != null){
+                getDiagnosis(diabetesData);
+            } else {
+                Toast.makeText(MediAIDiabetes.this, "No Data to predict", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -160,5 +157,4 @@ public class MediAIDiabetes extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(MediAIDiabetes.this);
         queue.add(request);
     }
-
 }

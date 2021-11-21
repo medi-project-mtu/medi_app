@@ -9,17 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medi_android.ui.profile.ProfileFragment;
-
 import java.util.List;
 
-public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<String> profileDataTitle;
     private List<String> profileDataContent;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public ProfileRecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent){
+    public RecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent){
         this.mInflater = LayoutInflater.from(context);
         this.profileDataContent = profileDataContent;
         this.profileDataTitle = profileDataTitle;
@@ -31,14 +29,14 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     @NonNull
     @Override
-    public ProfileRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.cardview_row, parent, false);
         return new ViewHolder(view);
     }
 
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         String title = profileDataTitle.get(position);
         String content = profileDataContent.get(position);
         holder.profileDataTitleTV.setText(title);

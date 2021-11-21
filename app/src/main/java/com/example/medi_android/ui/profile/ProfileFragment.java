@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medi_android.ProfileRecyclerViewAdapter;
+import com.example.medi_android.RecyclerViewAdapter;
 import com.example.medi_android.R;
 import com.example.medi_android.Patient;
 import com.example.medi_android.databinding.FragmentProfileBinding;
@@ -30,14 +30,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdapter.ItemClickListener {
+public class ProfileFragment extends Fragment implements RecyclerViewAdapter.ItemClickListener {
 
     private FragmentProfileBinding binding;
     private Activity context;
     private FirebaseUser user;
     private DatabaseReference reference;
     private String userID;
-    private ProfileRecyclerViewAdapter adapter;
+    private RecyclerViewAdapter adapter;
     private TextView usernameTextView;
     private View root;
 
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment implements ProfileRecyclerViewAdap
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,2);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new ProfileRecyclerViewAdapter(context, profileDataTitle, profileDataContent);
+                    adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent);
                     recyclerView.setAdapter(adapter);
                 }
             }
