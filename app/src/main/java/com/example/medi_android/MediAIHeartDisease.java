@@ -138,7 +138,7 @@ public class MediAIHeartDisease extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String diagnosis = jsonObject.getString("Diagnosis");
-                    heartDiseaseRiskTV.setText(String.format("Risk: %s", diagnosis));
+                    heartDiseaseRiskTV.setText(String.format("Diagnosis: %s", diagnosis));
                     reference.child(userID).child("heartDisease").child("diagnosis").setValue(diagnosis);
                     Toast.makeText(MediAIHeartDisease.this, "Heart Disease Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
@@ -156,17 +156,17 @@ public class MediAIHeartDisease extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("chestPainType", Float.toString(data.getChestPainType()));
                 params.put("rbp", Float.toString(data.getRestingBloodPressure()));
-                params.put("serumCholesterol", Float.toString(data.getSerumCholesterol()));
-                params.put("fastingBloodSugar", Float.toString(data.getFastingBloodSugar()));
+                params.put("serumChol", Float.toString(data.getSerumCholesterol()));
+                params.put("fbs", Float.toString(data.getFastingBloodSugar()));
                 params.put("restingECG", Float.toString(data.getRestingECG()));
                 params.put("maxHeartRate", Float.toString(data.getMaxHeartRateAchieved()));
-                params.put("angina", Float.toString(data.getExerciseInducedAngina()));
-                params.put("STDepression", Float.toString(data.getSTDepressionInduced()));
-                params.put("peakExerciseST", Float.toString(data.getPeakExerciseSTSegment()));
-                params.put("majorVesselsNumber", Float.toString(data.getMajorVesselsNumber()));
+                params.put("exerciseInducedAngina", Float.toString(data.getExerciseInducedAngina()));
+                params.put("stDepression", Float.toString(data.getSTDepressionInduced()));
+                params.put("peakExerciseSTSegment", Float.toString(data.getPeakExerciseSTSegment()));
+                params.put("majorVessels", Float.toString(data.getMajorVesselsNumber()));
                 params.put("thal", Float.toString(data.getThal()));
                 params.put("age", Float.toString(data.getAge()));
-                params.put("gender", Float.toString(data.getGender()));
+                params.put("sex", Float.toString(data.getGender()));
                 return params;
             }
         };
