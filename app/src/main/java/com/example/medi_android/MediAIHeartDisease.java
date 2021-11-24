@@ -138,7 +138,12 @@ public class MediAIHeartDisease extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String diagnosis = jsonObject.getString("Diagnosis");
-                    heartDiseaseRiskTV.setText(String.format("Diagnosis: %s", diagnosis));
+                    if(diagnosis.equals("0")){
+                        diagnosis = "Absent";
+                    } else {
+                        diagnosis = "Present";
+                    }
+                    heartDiseaseRiskTV.setText(String.format("Risk: %s", diagnosis));
                     reference.child(userID).child("heartDisease").child("diagnosis").setValue(diagnosis);
                     Toast.makeText(MediAIHeartDisease.this, "Heart Disease Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
