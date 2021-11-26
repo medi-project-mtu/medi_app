@@ -72,20 +72,18 @@ public class MediAIAlzheimers extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 alzheimersData = snapshot.getValue(AlzheimersData.class);
                 if (alzheimersData != null){
-                    alzheimersDataTitles.add("Dominant Hand");
                     alzheimersDataTitles.add("Education Level");
                     alzheimersDataTitles.add("Socioeconomic Status");
                     alzheimersDataTitles.add("Mini Mental State Exam");
-                    alzheimersDataTitles.add("Clinical Dementia");
+                    alzheimersDataTitles.add("ASF");
                     alzheimersDataTitles.add("ETIV");
                     alzheimersDataTitles.add("NWBV");
                     alzheimersDataTitles.add("Age");
                     alzheimersDataTitles.add("Gender");
-                    alzheimersDataContent.add(Float.toString(alzheimersData.getDominantHand()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getEducationLevel()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getSocialEconomicStatus()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getMiniMentalStateExamination()));
-                    alzheimersDataContent.add(Float.toString(alzheimersData.getClinicalDementiaRating()));
+                    alzheimersDataContent.add(Float.toString(alzheimersData.getAsf()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getEstimatedTotalIntracranialVolume()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getNormalizeHoleBrainVolume()));
                     alzheimersDataContent.add(Float.toString(alzheimersData.getAge()));
@@ -96,7 +94,6 @@ public class MediAIAlzheimers extends AppCompatActivity {
                     recyclerView.setLayoutManager(mLayoutManager);
                     adapter = new RecyclerViewAdapter(MediAIAlzheimers.this, alzheimersDataTitles, alzheimersDataContent);
                     recyclerView.setAdapter(adapter);
-
                 }
             }
 
@@ -146,14 +143,14 @@ public class MediAIAlzheimers extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams(){
                 Map<String, String> params = new HashMap<>();
-                params.put("dominantHand", Float.toString(data.getDominantHand()));
-                params.put("educationLevel", Float.toString(data.getEducationLevel()));
-                params.put("socioeconomicStatus", Float.toString(data.getSocialEconomicStatus()));
-                params.put("miniMentalStateExam", Float.toString(data.getMiniMentalStateExamination()));
-                params.put("clinicalDementia", Float.toString(data.getClinicalDementiaRating()));
+//                params.put("dominantHand", Float.toString(data.getDominantHand()));
+                params.put("educ", Float.toString(data.getEducationLevel()));
+                params.put("ses", Float.toString(data.getSocialEconomicStatus()));
+                params.put("mmse", Float.toString(data.getMiniMentalStateExamination()));
+                params.put("asf", Float.toString(data.getAsf()));
                 params.put("etiv", Float.toString(data.getEstimatedTotalIntracranialVolume()));
                 params.put("nwbv", Float.toString(data.getNormalizeHoleBrainVolume()));
-                params.put("gender", Float.toString(data.getGender()));
+                params.put("mf", Float.toString(data.getGender()));
                 params.put("age", Float.toString(data.getAge()));
                 return params;
             }

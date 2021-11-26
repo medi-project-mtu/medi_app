@@ -3,11 +3,10 @@ package com.example.medi_android;
 import java.io.Serializable;
 
 public class AlzheimersData implements Serializable {
-    float dominantHand;
     float educationLevel;
     float socialEconomicStatus;
     float miniMentalStateExamination;
-    float clinicalDementiaRating;
+    float asf;
     float estimatedTotalIntracranialVolume;
     float normalizeHoleBrainVolume;
     float age;
@@ -23,14 +22,6 @@ public class AlzheimersData implements Serializable {
 
     public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
-    }
-
-    public float getDominantHand() {
-        return dominantHand;
-    }
-
-    public void setDominantHand(float dominantHand) {
-        this.dominantHand = dominantHand;
     }
 
     public float getEducationLevel() {
@@ -57,12 +48,12 @@ public class AlzheimersData implements Serializable {
         this.miniMentalStateExamination = miniMentalStateExamination;
     }
 
-    public float getClinicalDementiaRating() {
-        return clinicalDementiaRating;
+    public float getAsf() {
+        return asf;
     }
 
-    public void setClinicalDementiaRating(float clinicalDementiaRating) {
-        this.clinicalDementiaRating = clinicalDementiaRating;
+    public void setAsf(float asf) {
+        this.asf = asf;
     }
 
     public float getEstimatedTotalIntracranialVolume() {
@@ -96,11 +87,10 @@ public class AlzheimersData implements Serializable {
     @Override
     public String toString() {
         return "AlzheimersData{" +
-                "dominantHand=" + dominantHand +
-                ", educationLevel=" + educationLevel +
+                "educationLevel=" + educationLevel +
                 ", socialEconomicStatus=" + socialEconomicStatus +
                 ", miniMentalStateExamination=" + miniMentalStateExamination +
-                ", clinicalDementiaRating=" + clinicalDementiaRating +
+                ", ASF=" + asf +
                 ", estimatedTotalIntracranialVolume=" + estimatedTotalIntracranialVolume +
                 ", normalizeHoleBrainVolume=" + normalizeHoleBrainVolume +
                 ", age=" + age +

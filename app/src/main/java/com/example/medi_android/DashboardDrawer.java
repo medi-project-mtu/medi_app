@@ -225,11 +225,10 @@ public class DashboardDrawer extends AppCompatActivity {
         Button popUpSave = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_save);
         Button popUpCancel = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_cancel);
 
-        EditText dominantHandET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_dominant_hand);
         EditText eduLevelET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_education_level);
         EditText socioStatusET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_socioeconomic_status);
         EditText mmseET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_mini_mental_state_examination);
-        EditText cdrET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_clinical_demantia_rating);
+        EditText asfET = alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_asf);
         EditText etivET= alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_estimated_total_intracranial_volume);
         EditText nwbvET= alzheimersFormPopUpView.findViewById(R.id.alzheimers_form_popup_normalize_whole_brain_volume);
 
@@ -238,20 +237,18 @@ public class DashboardDrawer extends AppCompatActivity {
         dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            if (checkEmptyField(dominantHandET)) return;
             if (checkEmptyField(eduLevelET)) return;
             if (checkEmptyField(socioStatusET)) return;
             if (checkEmptyField(mmseET)) return;
-            if (checkEmptyField(cdrET)) return;
+            if (checkEmptyField(asfET)) return;
             if (checkEmptyField(etivET)) return;
             if (checkEmptyField(nwbvET)) return;
 
             AlzheimersData alzheimersData = new AlzheimersData();
-            alzheimersData.setDominantHand(Float.parseFloat(dominantHandET.getText().toString()));
             alzheimersData.setEducationLevel(Float.parseFloat(eduLevelET.getText().toString()));
             alzheimersData.setSocialEconomicStatus(Float.parseFloat(socioStatusET.getText().toString()));
             alzheimersData.setMiniMentalStateExamination(Float.parseFloat(mmseET.getText().toString()));
-            alzheimersData.setClinicalDementiaRating(Float.parseFloat(cdrET.getText().toString()));
+            alzheimersData.setAsf(Float.parseFloat(asfET.getText().toString()));
             alzheimersData.setEstimatedTotalIntracranialVolume(Float.parseFloat(etivET.getText().toString()));
             alzheimersData.setNormalizeHoleBrainVolume(Float.parseFloat(nwbvET.getText().toString()));
 

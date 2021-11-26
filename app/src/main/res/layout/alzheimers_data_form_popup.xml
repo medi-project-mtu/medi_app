@@ -26,20 +26,6 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/alzheimers_form_popup_dominant_hand"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/custom_input"
-            android:ems="10"
-            android:hint="@string/dominant_hand"
-            android:inputType="text"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textColor="@color/black"
-            android:textColorHint="#888888" />
-
-        <EditText
             android:id="@+id/alzheimers_form_popup_education_level"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -82,14 +68,14 @@
             android:textColorHint="#888888" />
 
         <EditText
-            android:id="@+id/alzheimers_form_popup_clinical_demantia_rating"
+            android:id="@+id/alzheimers_form_popup_asf"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/custom_input"
             android:ems="10"
-            android:hint="@string/clinical_dementia_rating"
-            android:inputType="number"
+            android:hint="@string/asf"
+            android:inputType="numberDecimal"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textColor="@color/black"

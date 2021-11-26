@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProfileFragment extends Fragment implements RecyclerViewAdapter.ItemClickListener {
+public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private Activity context;
@@ -105,10 +105,5 @@ public class ProfileFragment extends Fragment implements RecyclerViewAdapter.Ite
                 Toast.makeText(context, "Something wrong happened!", Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-
     }
 }
