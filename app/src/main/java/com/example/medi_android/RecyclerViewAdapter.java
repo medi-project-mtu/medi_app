@@ -16,11 +16,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<String> profileDataContent;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private int cardViewType;
 
-    public RecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent){
+    public RecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent, int cardViewType){
         this.mInflater = LayoutInflater.from(context);
         this.profileDataContent = profileDataContent;
         this.profileDataTitle = profileDataTitle;
+        this.cardViewType = cardViewType;
     }
 
     public void setClickListener(ItemClickListener itemClickListener){
@@ -30,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.cardview_row, parent, false);
+        View view = mInflater.inflate(cardViewType, parent, false);
         return new ViewHolder(view);
     }
 

@@ -57,6 +57,8 @@
         <entry key="..\:/medi_app/app/src/main/res/layout/alzheimers_data_form_popup.xml" value="0.1" />
         <entry key="..\:/medi_app/app/src/main/res/layout/app_bar_dashboard_drawer.xml" value="0.26766304347826086" />
         <entry key="..\:/medi_app/app/src/main/res/layout/cardview_row.xml" value="0.4" />
+        <entry key="..\:/medi_app/app/src/main/res/layout/cardview_row_big.xml" value="0.3175213675213675" />
+        <entry key="..\:/medi_app/app/src/main/res/layout/cardview_row_space_between.xml" value="0.5" />
         <entry key="..\:/medi_app/app/src/main/res/layout/content_dashboard_drawer.xml" value="0.2694746376811594" />
         <entry key="..\:/medi_app/app/src/main/res/layout/diabetes_data_form_popup.xml" value="0.18" />
         <entry key="..\:/medi_app/app/src/main/res/layout/form_popup.xml" value="0.25" />
@@ -74,6 +76,7 @@
         <entry key="..\:/medi_app/app/src/main/res/layout/switch_menu.xml" value="0.1819078947368421" />
         <entry key="..\:/medi_app/app/src/main/res/menu/activity_main_drawer.xml" value="0.2875" />
         <entry key="..\:/medi_app/app/src/main/res/menu/dashboard_drawer.xml" value="0.2875" />
+        <entry key="..\:/medi_app/app/src/main/res/menu/disease_menu.xml" value="0.26153846153846155" />
         <entry key="..\:/medi_app/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.403125" />
       </map>
     </option>

@@ -92,7 +92,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MediAIAlzheimers.this, 2);
                     RecyclerView recyclerView = findViewById(R.id.rv_alzheimers);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new RecyclerViewAdapter(MediAIAlzheimers.this, alzheimersDataTitles, alzheimersDataContent);
+                    adapter = new RecyclerViewAdapter(MediAIAlzheimers.this, alzheimersDataTitles, alzheimersDataContent, R.layout.cardview_row);
                     recyclerView.setAdapter(adapter);
                 }
             }

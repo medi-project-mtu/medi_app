@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medi_android.AlzheimersData;
 import com.example.medi_android.MediAIAlzheimers;
 import com.example.medi_android.MediAIDiabetes;
 import com.example.medi_android.MediAIHeartDisease;
@@ -96,7 +95,7 @@ public class HomeFragment extends Fragment {
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_home);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent);
+                    adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent, R.layout.cardview_row_big);
                     adapter.setClickListener((view, position) -> {
                         switch (position){
                             case 0:

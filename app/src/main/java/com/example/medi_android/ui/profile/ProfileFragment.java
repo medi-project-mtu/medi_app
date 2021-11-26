@@ -94,9 +94,9 @@ public class ProfileFragment extends Fragment {
                     profileDataContent.add(patientProfile.getHeight());
                     profileDataContent.add(patientProfile.getWeight());
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,2);
-                    RecyclerView recyclerView = context.findViewById(R.id.rv_home);
+                    RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent);
+                    adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent, R.layout.cardview_row);
                     recyclerView.setAdapter(adapter);
                 }
             }

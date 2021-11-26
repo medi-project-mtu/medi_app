@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#2A324B"
     android:padding="20dp"
-    tools:context=".ui.profile.ProfileFragment">
+    tools:context=".ui.home.HomeFragment">
 
     <TextView
         android:id="@+id/home_name_title"

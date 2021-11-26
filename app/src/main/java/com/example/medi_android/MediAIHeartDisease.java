@@ -104,7 +104,7 @@ public class MediAIHeartDisease extends AppCompatActivity {
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MediAIHeartDisease.this, 2);
                     RecyclerView recyclerView = findViewById(R.id.rv_heartDisease);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new RecyclerViewAdapter(MediAIHeartDisease.this, heartDiseaseDataTitles, heartDiseaseDataContent);
+                    adapter = new RecyclerViewAdapter(MediAIHeartDisease.this, heartDiseaseDataTitles, heartDiseaseDataContent, R.layout.cardview_row);
                     recyclerView.setAdapter(adapter);
                 }
             }

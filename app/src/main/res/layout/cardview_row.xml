@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     app:cardBackgroundColor="#FFFFFF"
-    app:cardCornerRadius="4dp">
+    app:cardCornerRadius="4dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
 
     <RelativeLayout
         android:layout_width="match_parent"

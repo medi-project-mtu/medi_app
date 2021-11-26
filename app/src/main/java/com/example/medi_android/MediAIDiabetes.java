@@ -93,7 +93,7 @@ public class MediAIDiabetes extends AppCompatActivity {
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(MediAIDiabetes.this, 2);
                     RecyclerView recyclerView = findViewById(R.id.rv_diabetes);
                     recyclerView.setLayoutManager(mLayoutManager);
-                    adapter = new RecyclerViewAdapter(MediAIDiabetes.this, diabestesDataTitles, diabetesDataContent);
+                    adapter = new RecyclerViewAdapter(MediAIDiabetes.this, diabestesDataTitles, diabetesDataContent, R.layout.cardview_row);
                     recyclerView.setAdapter(adapter);
                 }
             }
