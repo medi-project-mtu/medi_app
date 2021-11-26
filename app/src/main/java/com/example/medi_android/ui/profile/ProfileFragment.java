@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,6 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference reference;
     private String userID;
     private RecyclerViewAdapter adapter;
-    private TextView usernameTextView;
     private View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -67,12 +65,11 @@ public class ProfileFragment extends Fragment {
 
         //set fab visibility on
         com.github.clans.fab.FloatingActionMenu floatingActionMenu = context.findViewById(R.id.fab);
-        floatingActionMenu.setVisibility(View.VISIBLE);
+        floatingActionMenu.setVisibility(View.GONE);
 
         List<String> profileDataTitle = new ArrayList<>();
         List<String> profileDataContent = new ArrayList<>();
 
-        usernameTextView = root.findViewById(R.id.username_title);
 
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -80,20 +77,24 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Patient patientProfile = snapshot.getValue(Patient.class);
                 if(patientProfile != null){
-                    usernameTextView.setText(patientProfile.getName());
-
+                    profileDataTitle.add("Name");
                     profileDataTitle.add("Gender");
                     profileDataTitle.add("Date of Birth (dd/MM/yyyy)");
                     profileDataTitle.add("Age");
                     profileDataTitle.add("Height (cm)");
                     profileDataTitle.add("Weight (kg)");
-                    profileDataContent.add(patientProfile.getGender());
+                    profileDataContent.add(patientProfile.getName());
+                    if(patientProfile.getGender().equals("1")){
+                        profileDataContent.add("Male");
+                    } else {
+                        profileDataContent.add("Female");
+                    }
                     profileDataContent.add(patientProfile.getDob());
                     profileDataContent.add(patientProfile.getAge());
                     profileDataContent.add(patientProfile.getHeight());
                     profileDataContent.add(patientProfile.getWeight());
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,2);
-                    RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
+                    RecyclerView recyclerView = context.findViewById(R.id.rv_home);
                     recyclerView.setLayoutManager(mLayoutManager);
                     adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent);
                     recyclerView.setAdapter(adapter);

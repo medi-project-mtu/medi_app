@@ -23,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.profileDataTitle = profileDataTitle;
     }
 
-    void setClickListener(ItemClickListener itemClickListener){
+    public void setClickListener(ItemClickListener itemClickListener){
         this.mClickListener = itemClickListener;
     }
 

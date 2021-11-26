@@ -448,7 +448,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                     return;
                 } else if (gender.equals("Male")) {
                     patient.setGender("1");
-                } else if (gender.equals("Femail")){
+                } else if (gender.equals("Female")){
                     patient.setGender("0");
                 }
                 break;

@@ -5,21 +5,25 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_home_24"
+            android:title="@string/home" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:title="@string/menu_profile" />
         <item
             android:id="@+id/nav_diabetes"
             android:icon="@drawable/ic_baseline_medical_services_24"
-            android:title="Diabetes" />
+            android:title="@string/diabetes" />
         <item
             android:id="@+id/nav_alzheimers"
             android:icon="@drawable/ic_baseline_medical_services_24"
-            android:title="Alzheimer's" />
+            android:title="@string/alzheimer_s" />
         <item
             android:id="@+id/nav_heartDisease"
             android:icon="@drawable/ic_baseline_medical_services_24"
-            android:title="Heart Disease" />
+            android:title="@string/heart_disease" />
         <item
             android:id="@+id/nav_contacts"
             android:icon="@drawable/ic_baseline_contacts_24"

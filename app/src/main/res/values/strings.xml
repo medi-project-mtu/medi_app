@@ -63,5 +63,8 @@
     <string name="loading">Loading...</string>
     <string name="loadingRisk">Risk: Loading...</string>
     <string name="asf">ASF</string>
+    <string name="alzheimer_s">Alzheimer\'s</string>
+    <string name="heart_disease">Heart Disease</string>
+    <string name="home">Home</string>
 
 </resources>

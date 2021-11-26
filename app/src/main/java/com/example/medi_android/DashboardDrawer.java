@@ -23,8 +23,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.medi_android.databinding.ActivityDashboardDrawerBinding;
 import com.facebook.login.LoginManager;
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.checkerframework.checker.units.qual.A;
 
 
 public class DashboardDrawer extends AppCompatActivity {
@@ -74,7 +71,7 @@ public class DashboardDrawer extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_profile, R.id.nav_contacts, R.id.nav_ratings)
+                R.id.nav_home, R.id.nav_profile, R.id.nav_contacts, R.id.nav_ratings)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_dashboard_drawer);
