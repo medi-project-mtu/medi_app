@@ -89,9 +89,10 @@ public class HomeFragment extends Fragment {
                     profileDataTitle.add("Alzheimer's Risk");
                     profileDataTitle.add("Heart Disease Risk");
 
-                    profileDataContent.add(snapshot.child("diabetes").child("diagnosis").getValue().toString());
-                    profileDataContent.add(snapshot.child("alzheimers").child("diagnosis").getValue().toString());
-                    profileDataContent.add(snapshot.child("heartDisease").child("diagnosis").getValue().toString());
+                    getDiseaseRiskHome(snapshot, "diabetes");
+                    getDiseaseRiskHome(snapshot, "alzheimers");
+                    getDiseaseRiskHome(snapshot, "heartDisease");
+
                     RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_home);
                     recyclerView.setLayoutManager(mLayoutManager);
@@ -110,6 +111,14 @@ public class HomeFragment extends Fragment {
                         }
                     });
                     recyclerView.setAdapter(adapter);
+                }
+            }
+
+            private void getDiseaseRiskHome(DataSnapshot snapshot, String disease) {
+                if (snapshot.child(disease).child("diagnosis").getValue() != null){
+                    profileDataContent.add(snapshot.child(disease).child("diagnosis").getValue().toString());
+                } else {
+                    profileDataContent.add("N/A");
                 }
             }
 

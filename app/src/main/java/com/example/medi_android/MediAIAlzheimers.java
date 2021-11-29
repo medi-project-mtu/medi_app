@@ -127,6 +127,20 @@ public class MediAIAlzheimers extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String diagnosis = jsonObject.getString("Diagnosis");
+                    switch (diagnosis){
+                        case "0":
+                            diagnosis = "No Risk";
+                            break;
+                        case "1":
+                            diagnosis = "Mild";
+                            break;
+                        case "2":
+                            diagnosis = "Moderate";
+                            break;
+                        case "3":
+                            diagnosis = "Severe";
+                            break;
+                    }
                     alzheimersRiskTV.setText(String.format("Risk: %s", diagnosis));
                     reference.child(userID).child("alzheimers").child("diagnosis").setValue(diagnosis);
                     Toast.makeText(MediAIAlzheimers.this, "Alzheimer's Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
