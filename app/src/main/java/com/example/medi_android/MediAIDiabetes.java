@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -66,7 +69,6 @@ public class MediAIDiabetes extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         diabetesRiskTV = findViewById(R.id.diabetesRiskTV);
-        Button diabetesAIBtn = findViewById(R.id.diabetes_ai_btn);
 
         reference.child(userID).child("diabetes").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -108,15 +110,6 @@ public class MediAIDiabetes extends AppCompatActivity {
             diabetesRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
-
-        // user clicks on predict btn, reload diagnosis
-        diabetesAIBtn.setOnClickListener(view -> {
-            if(diabetesData != null){
-                getDiagnosis(diabetesData);
-            } else {
-                Toast.makeText(MediAIDiabetes.this, "No Data to predict", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void getDiagnosis(DiabetesData data) {
@@ -156,5 +149,27 @@ public class MediAIDiabetes extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(MediAIDiabetes.this);
         queue.add(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.predict_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.predict_menu:
+                if(diabetesData != null){
+                    getDiagnosis(diabetesData);
+                } else {
+                    Toast.makeText(MediAIDiabetes.this, "No Data to predict", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

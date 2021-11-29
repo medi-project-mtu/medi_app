@@ -21,24 +21,13 @@
         app:titleTextColor="@color/white"
         app:popupTheme="@style/Theme.Medi_Android.PopupOverlay" />
 
-    <Button
-        android:id="@+id/alzheimers_ai_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Predict"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alzheimersToolbar" />
-
     <TextView
         android:id="@+id/alzheimersRiskTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Risk: N/A"
+        android:text="@string/risk_undiagnosed"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
         android:textStyle="bold"

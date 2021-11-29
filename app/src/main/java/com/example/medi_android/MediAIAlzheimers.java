@@ -1,6 +1,9 @@
 package com.example.medi_android;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +68,6 @@ public class MediAIAlzheimers extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         alzheimersRiskTV = findViewById(R.id.alzheimersRiskTV);
-        Button alzheimersAIBtn = findViewById(R.id.alzheimers_ai_btn);
 
         reference.child(userID).child("alzheimers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -108,15 +110,6 @@ public class MediAIAlzheimers extends AppCompatActivity {
             alzheimersRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
-
-        // user clicks on predict btn, reload diagnosis
-        alzheimersAIBtn.setOnClickListener(view -> {
-            if(alzheimersData!= null){
-                getDiagnosis(alzheimersData);
-            } else {
-                Toast.makeText(MediAIAlzheimers.this, "No Data to predict", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void getDiagnosis(AlzheimersData data) {
@@ -171,5 +164,27 @@ public class MediAIAlzheimers extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(MediAIAlzheimers.this);
         queue.add(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.predict_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.predict_menu:
+                if(alzheimersData!= null){
+                    getDiagnosis(alzheimersData);
+                } else {
+                    Toast.makeText(MediAIAlzheimers.this, "No Data to predict", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

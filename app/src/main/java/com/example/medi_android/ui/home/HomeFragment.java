@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment {
                 if (snapshot.child(disease).child("diagnosis").getValue() != null){
                     profileDataContent.add(snapshot.child(disease).child("diagnosis").getValue().toString());
                 } else {
-                    profileDataContent.add("N/A");
+                    profileDataContent.add("Undiagnosed");
                 }
             }
 

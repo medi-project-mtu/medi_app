@@ -21,16 +21,6 @@
         app:title="Medi-AI: Heart Disease"
         app:titleTextColor="@color/white" />
 
-    <Button
-        android:id="@+id/heartDisease_ai_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Predict"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heartDiseaseToolbar" />
 
     <TextView
         android:id="@+id/heartDiseaseRiskTV"
@@ -38,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="Risk: N/A"
+        android:text="@string/risk_undiagnosed"
         android:textColor="#FFFFFF"
         android:textSize="34sp"
         android:textStyle="bold"

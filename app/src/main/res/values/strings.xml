@@ -66,5 +66,7 @@
     <string name="alzheimer_s">Alzheimer\'s</string>
     <string name="heart_disease">Heart Disease</string>
     <string name="home">Home</string>
+    <string name="predict">Predict</string>
+    <string name="risk_undiagnosed">Risk: Undiagnosed</string>
 
 </resources>

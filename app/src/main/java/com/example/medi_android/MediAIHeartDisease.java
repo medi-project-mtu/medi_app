@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +68,6 @@ public class MediAIHeartDisease extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         heartDiseaseRiskTV = findViewById(R.id.heartDiseaseRiskTV);
-        Button heartDiseaseAIBtn = findViewById(R.id.heartDisease_ai_btn);
 
         reference.child(userID).child("heartDisease").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -119,15 +121,6 @@ public class MediAIHeartDisease extends AppCompatActivity {
             heartDiseaseRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
-
-        // user clicks on predict btn, reload diagnosis
-        heartDiseaseAIBtn.setOnClickListener(view -> {
-            if(heartDiseaseData != null){
-                getDiagnosis(heartDiseaseData);
-            } else {
-                Toast.makeText(MediAIHeartDisease.this, "No Data to predict", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void getDiagnosis(HeartDiseaseData data) {
@@ -172,5 +165,27 @@ public class MediAIHeartDisease extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(MediAIHeartDisease.this);
         queue.add(request);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.predict_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.predict_menu:
+                if(heartDiseaseData != null){
+                    getDiagnosis(heartDiseaseData);
+                } else {
+                    Toast.makeText(MediAIHeartDisease.this, "No Data to predict", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
