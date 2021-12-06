@@ -171,7 +171,6 @@ public class DashboardDrawer extends AppCompatActivity {
             if (checkValidity(majorVesselsET,"0","3")) return;
             if (checkEmptyField(thalET)) return;
             if (thalET.getText().toString().matches("3|6|7")) {
-                thalET.setError("O!");
                 return;
             }
             else {
