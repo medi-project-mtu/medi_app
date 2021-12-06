@@ -159,17 +159,25 @@ public class DashboardDrawer extends AppCompatActivity {
         dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            if (checkEmptyField(chestPainTypeET)) return;
-            if (checkEmptyField(rbpET)) return;
-            if (checkEmptyField(serumCholesterolET)) return;
-            if (checkEmptyField(fastingBSET)) return;
-            if (checkEmptyField(restingECGET)) return;
-            if (checkEmptyField(maxHeartRateET)) return;
-            if (checkEmptyField(anginaET)) return;
-            if (checkEmptyField(STDepressionET)) return;
-            if (checkEmptyField(peakExerciseSTET)) return;
-            if (checkEmptyField(majorVesselsET)) return;
+            if (checkValidity(chestPainTypeET,"1","4")) return;
+            if (checkValidity(rbpET,"94","200")) return;
+            if (checkValidity(serumCholesterolET,"126","564")) return;
+            if (checkValidity(fastingBSET,"0","1")) return;
+            if (checkValidity(restingECGET,"0","2")) return;
+            if (checkValidity(maxHeartRateET,"71","202")) return;
+            if (checkValidity(anginaET,"0","1")) return;
+            if (checkValidity(STDepressionET,"0","6.2")) return;
+            if (checkValidity(peakExerciseSTET,"1","3")) return;
+            if (checkValidity(majorVesselsET,"0","3")) return;
             if (checkEmptyField(thalET)) return;
+            if (thalET.getText().toString().matches("3|6|7")) {
+                thalET.setError("O!");
+                return;
+            }
+            else {
+                thalET.setError("Valid input is 3,6,7");
+                thalET.requestFocus();
+            }
 
             HeartDiseaseData heartDiseaseData = new HeartDiseaseData();
             heartDiseaseData.setChestPainType(Float.parseFloat(chestPainTypeET.getText().toString()));
@@ -234,12 +242,12 @@ public class DashboardDrawer extends AppCompatActivity {
         dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            if (checkEmptyField(eduLevelET)) return;
-            if (checkEmptyField(socioStatusET)) return;
-            if (checkEmptyField(mmseET)) return;
-            if (checkEmptyField(asfET)) return;
-            if (checkEmptyField(etivET)) return;
-            if (checkEmptyField(nwbvET)) return;
+            if (checkValidity(eduLevelET,"1","5")) return;
+            if (checkValidity(socioStatusET,"1","5")) return;
+            if (checkValidity(mmseET,"14","30")) return;
+            if (checkValidity(asfET,"0","2")) return;
+            if (checkValidity(etivET,"1123","1992")) return;
+            if (checkValidity(nwbvET,"0.64","0.89")) return;
 
             AlzheimersData alzheimersData = new AlzheimersData();
             alzheimersData.setEducationLevel(Float.parseFloat(eduLevelET.getText().toString()));
@@ -299,13 +307,13 @@ public class DashboardDrawer extends AppCompatActivity {
         dialog.show();
 
         popUpSave.setOnClickListener(view -> {
-            if(checkEmptyField(pregnanciesET)) return;
-            if(checkEmptyField(glucoseET)) return;
-            if(checkEmptyField(bloodPressureET)) return;
-            if(checkEmptyField(skinThicknessET)) return;
-            if(checkEmptyField(insulinET)) return;
-            if(checkEmptyField(bmiET)) return;
-            if(checkEmptyField(dpfET)) return;
+            if(checkValidity(pregnanciesET,"0","17")) return;
+            if(checkValidity(glucoseET,"0","199")) return;
+            if(checkValidity(bloodPressureET,"0","122")) return;
+            if(checkValidity(skinThicknessET,"0","110")) return;
+            if(checkValidity(insulinET,"0","744")) return;
+            if(checkValidity(bmiET,"0","80.6")) return;
+            if(checkValidity(dpfET,"0.078","2.42")) return;
 
             DiabetesData diabetesData = new DiabetesData();
 
@@ -343,7 +351,16 @@ public class DashboardDrawer extends AppCompatActivity {
         }
         return false;
     }
-
+    private boolean checkValidity(EditText field,String min,String max) {
+        if (checkEmptyField(field)) return true;
+        float getFloat= Float.parseFloat(field.getText().toString());
+        if (getFloat>Float.parseFloat(max) || getFloat<Float.parseFloat(min)) {
+            field.setError("Out of range!");
+            field.requestFocus();
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
