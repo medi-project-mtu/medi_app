@@ -3,4 +3,7 @@
     <item
         android:id="@+id/predict_menu"
         android:title="@string/predict" />
+    <item
+        android:id="@+id/model_accuracy"
+        android:title="@string/model_info"/>
 </menu>

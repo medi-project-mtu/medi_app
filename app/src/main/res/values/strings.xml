@@ -68,5 +68,6 @@
     <string name="home">Home</string>
     <string name="predict">Predict</string>
     <string name="risk_undiagnosed">Risk: Undiagnosed</string>
+    <string name="model_info">Model Info</string>
 
 </resources>

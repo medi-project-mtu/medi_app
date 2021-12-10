@@ -2,11 +2,13 @@ package com.example.medi_android;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -184,6 +186,16 @@ public class MediAIHeartDisease extends AppCompatActivity {
                     Toast.makeText(MediAIHeartDisease.this, "No Data to predict", Toast.LENGTH_SHORT).show();
                 }
                 return true;
+            case R.id.model_accuracy:
+                DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                    switch (which) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            break;
+                    }
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Model Info");
+                builder.setMessage("Model Algorithm: SVM\nModel Accuracy: 80.32%").setPositiveButton("Ok", dialogClickListener).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
