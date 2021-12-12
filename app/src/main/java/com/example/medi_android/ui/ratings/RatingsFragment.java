@@ -61,9 +61,9 @@ public class RatingsFragment extends Fragment {
         com.github.clans.fab.FloatingActionMenu floatingActionMenu = context.findViewById(R.id.fab);
         floatingActionMenu.setVisibility(View.GONE);
 
-        Button submit = context.findViewById(R.id.submit_review_btn);
+        Button submit = context.findViewById(R.id.submit_support_btn);
         ratingBar= context.findViewById(R.id.ratingBar);
-        ratingText = context.findViewById(R.id.ratingTextView);
+        ratingText = context.findViewById(R.id.supportTextView);
         submit.setOnClickListener(view ->
                 FirebaseDatabase.getInstance().getReference("Patient")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -98,7 +98,7 @@ public class RatingsFragment extends Fragment {
     }
 
     public void createReview() {
-        Review review = new Review(String.valueOf(ratingBar.getRating()), ratingText.getText().toString());
+        Review review = new Review(String.valueOf(ratingBar.getRating()), ratingText.getText().toString().trim());
         FirebaseDatabase.getInstance().getReference("Patient")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("review").setValue(review);

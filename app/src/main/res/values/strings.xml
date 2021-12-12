@@ -69,5 +69,8 @@
     <string name="predict">Predict</string>
     <string name="risk_undiagnosed">Risk: Undiagnosed</string>
     <string name="model_info">Model Info</string>
+    <string name="support">Support</string>
+    <string name="enter_support_subject_here">Enter support subject here</string>
+    <string name="enter_support_message_here">Enter support message here</string>
 
 </resources>
