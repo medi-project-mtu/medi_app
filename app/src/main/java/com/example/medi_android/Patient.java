@@ -22,6 +22,8 @@ public class Patient {
     private Review review;
     private String gpUid;
     private String insuranceId;
+    private String walletAddress;
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getAge() {
@@ -67,10 +69,10 @@ public class Patient {
         this.gpUid = gpUid;
     }
 
-    public Patient(){
+    public Patient() {
     }
 
-    public Patient(String email){
+    public Patient(String email) {
         this.email = email;
     }
 
@@ -93,6 +95,14 @@ public class Patient {
     @Override
     public String toString() {
         return name;
+    }
+
+    public String getWalletAddress() {
+        return walletAddress;
+    }
+
+    public void setWalletAddress(String walletAddress) {
+        this.walletAddress = walletAddress;
     }
 
     public String getDob() {
@@ -127,11 +137,12 @@ public class Patient {
         this.weight = weight;
     }
 
-    public Review getReview(){
+    public Review getReview() {
         return review;
 
     }
-    public void setReview(Review review){
-        this.review =review;
+
+    public void setReview(Review review) {
+        this.review = review;
     }
 }

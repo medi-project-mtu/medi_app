@@ -103,8 +103,8 @@ public class mdtPortalFragment extends Fragment {
 
             TextView balanceTV = root.findViewById(R.id.balance);
             TextView walletTV = root.findViewById(R.id.wallet);
-            walletTV.setText("Wallet Address: " + walletAddress);
-            balanceTV.setText("Balance: " + scaledBalance.toString());
+            walletTV.setText("Wallet Address:\n" + walletAddress);
+            balanceTV.setText("Balance:\n" + scaledBalance.toString());
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -145,7 +145,7 @@ public class mdtPortalFragment extends Fragment {
                     if (patient != null){
                         FirebaseDatabase.getInstance().getReference("Patient")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .child("Wallet")
+                                .child("walletAddress")
                                 .setValue(walletAddressEt.getText().toString());
 
                         Toast.makeText(context, "Wallet Data Saved", Toast.LENGTH_SHORT).show();
