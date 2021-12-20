@@ -17,11 +17,32 @@
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/Main/medi_app/app/src/main/res/layout/fragment_profile.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/Main/medi_app/app/src/main/res/layout/fragment_ratings.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.403125" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.403125" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_dashboard.xml" value="0.38697916666666665" />
-        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_dashboard_drawer.xml" value="0.29483695652173914" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_dashboard_drawer.xml" value="0.33" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_medi_aialzheimers.xml" value="0.3328804347826087" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_medi_aidiabetes.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_medi_aiheart_disease.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_register.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/activity_reset_password.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/alzheimers_data_form_popup.xml" value="0.29483695652173914" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/app_bar_dashboard_drawer.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/cardview_row_big.xml" value="0.3536458333333333" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/content_dashboard_drawer.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/diabetes_data_form_popup.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/form_popup.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_contacts.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_home.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_mdt_portal.xml" value="0.3536458333333333" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_profile.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_ratings.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/fragment_support.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/heart_disease_data_form_popup.xml" value="0.33" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/mdt_form_popup.xml" value="0.3536458333333333" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/layout/nav_header_dashboard_drawer.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/menu/activity_main_drawer.xml" value="0.38697916666666665" />
+        <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/medi_app/app/src/main/res/menu/predict_menu.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/test/medi_app/app/src/main/res/layout/activity_dashboard.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/test/medi_app/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
         <entry key="..\:/2.School/Year3/Group Project/Medi_Andorid/test/medi_app/app/src/main/res/layout/activity_medi_ai_interface.xml" value="0.3729166666666667" />
@@ -69,11 +90,9 @@
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_contacts.xml" value="0.26766304347826086" />
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_gallery.xml" value="0.26766304347826086" />
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_home.xml" value="0.26766304347826086" />
-        <entry key="..\:/medi_app/app/src/main/res/layout/fragment_mdt_portal.xml" value="0.3175213675213675" />
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_profile.xml" value="0.2222222222222222" />
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_ratings.xml" value="0.38697916666666665" />
         <entry key="..\:/medi_app/app/src/main/res/layout/fragment_slideshow.xml" value="0.26766304347826086" />
-        <entry key="..\:/medi_app/app/src/main/res/layout/fragment_support.xml" value="0.3175213675213675" />
         <entry key="..\:/medi_app/app/src/main/res/layout/heart_disease_data_form_popup.xml" value="0.25" />
         <entry key="..\:/medi_app/app/src/main/res/layout/medical_data_form_popup.xml" value="0.2222222222222222" />
         <entry key="..\:/medi_app/app/src/main/res/layout/nav_header_dashboard_drawer.xml" value="0.26766304347826086" />
