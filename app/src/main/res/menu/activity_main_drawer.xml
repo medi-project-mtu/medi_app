@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_baseline_account_circle_24"
             android:title="@string/menu_profile" />
         <item
+            android:id="@+id/nav_mdt_portal"
+            android:icon="@drawable/ic_baseline_monetization_on_24"
+            android:title="@string/mdt_portal"/>
+        <item
             android:id="@+id/nav_diabetes"
             android:icon="@drawable/ic_baseline_medical_services_24"
             android:title="@string/diabetes" />

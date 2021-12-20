@@ -72,5 +72,6 @@
     <string name="support">Support</string>
     <string name="enter_support_subject_here">Enter support subject here</string>
     <string name="enter_support_message_here">Enter support message here</string>
+    <string name="mdt_portal">MDT Portal</string>
 
 </resources>
