@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mdt_portal_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#2A324B"
@@ -11,39 +12,104 @@
         android:id="@+id/mdt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:text="MDT Portal"
         android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/personal_wallet_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/wallet"
+        android:id="@+id/personal_wallet_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="60dp"
         android:text="Wallet Adress"
         android:textColor="@color/white"
         android:textSize="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/personal_mdt_balance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mdt_title" />
 
     <TextView
-        android:id="@+id/balance"
+        android:id="@+id/personal_mdt_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="70dp"
         android:text="Balance"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/mdt_topup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallet" />
+        app:layout_constraintTop_toBottomOf="@+id/personal_wallet_add" />
+
+    <Button
+        android:id="@+id/pay_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pay"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mdt_amount" />
+
+    <EditText
+        android:id="@+id/mdt_amount"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_input"
+        android:drawableTint="#888888"
+        android:ems="10"
+        android:hint="Amount (MDT)"
+        android:inputType="number"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/pay_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/receipient_wallet_add" />
+
+    <EditText
+        android:id="@+id/receipient_wallet_add"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/custom_input"
+        android:drawableTint="#888888"
+        android:ems="10"
+        android:hint="Receipient Wallet Address"
+        android:inputType="none|text"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/mdt_amount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mdt_topup" />
+
+    <Button
+        android:id="@+id/mdt_topup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Top Up (10MDT)"
+        app:layout_constraintBottom_toTopOf="@+id/receipient_wallet_add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personal_mdt_balance" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
