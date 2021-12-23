@@ -53,10 +53,10 @@ public class mdtPortalFragment extends Fragment {
     private FragmentMdtPortalBinding binding;
     private View root;
     private Activity context;
-    private DatabaseReference reference;
+    private DatabaseReference reference, gpReference, insuranceReference;
     private String userID;
-    private String walletAddress,pk;
-    private EditText walletAddressEt,pkEt, receipientAddET, amountET;
+    private String walletAddress, pk;
+    private EditText walletAddressEt, pkEt, receipientAddET, amountET;
     private Button topUp, pay, payGP, payIns, customTx;
     private Web3j client;
     private String contractAddress, mainAccAddress, mainAccPK;
@@ -91,6 +91,8 @@ public class mdtPortalFragment extends Fragment {
     public void onStart() {
         super.onStart();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        gpReference = FirebaseDatabase.getInstance().getReference("Gp");
+        insuranceReference = FirebaseDatabase.getInstance().getReference("Insurance");
         reference = FirebaseDatabase.getInstance().getReference("Patient");
         client = Web3j.build(new HttpService("https://ropsten.infura.io/v3/c4db87b143374a1093e3499dd15e795a"));
 
@@ -102,7 +104,7 @@ public class mdtPortalFragment extends Fragment {
         floatingActionMenu.setVisibility(View.GONE);
     }
 
-    private void viewAccount(){
+    private void viewAccount() {
 
 
         walletAddress = walletAddressEt.getText().toString();
@@ -145,7 +147,7 @@ public class mdtPortalFragment extends Fragment {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-
+                        payGpInsurance(gpReference,0,view);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -153,7 +155,7 @@ public class mdtPortalFragment extends Fragment {
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setMessage("Pay 5MDT to [GP Placeholder]?").setPositiveButton("Yes", dialogClickListener)
+            builder.setMessage("Pay 5MDT to GP?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         });
 
@@ -161,7 +163,7 @@ public class mdtPortalFragment extends Fragment {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-
+                        payGpInsurance(insuranceReference,1,view);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -169,11 +171,9 @@ public class mdtPortalFragment extends Fragment {
                 }
             };
             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-            builder.setMessage("Pay 5MDT to [Ins Placeholder]?").setPositiveButton("Yes", dialogClickListener)
+            builder.setMessage("Pay 5MDT to Insurance?").setPositiveButton("Yes", dialogClickListener)
                     .setNegativeButton("No", dialogClickListener).show();
         });
-
-
 
 
     }
@@ -194,11 +194,11 @@ public class mdtPortalFragment extends Fragment {
         pay.setOnClickListener(view -> {
             if (checkEmptyField(receipientAddET)) return;
             if (checkEmptyField(amountET)) return;
-            String receipientAddress = receipientAddET.getText().toString().trim();
+            String recipientAddress = receipientAddET.getText().toString().trim();
 
             try {
                 TransactionReceipt receipt = token.transfer(
-                        receipientAddress,
+                        recipientAddress,
                         new BigInteger(amountET.getText().toString().trim())
                                 .multiply(new BigInteger("1000000000000000000")))
                         .sendAsync().get();
@@ -210,8 +210,8 @@ public class mdtPortalFragment extends Fragment {
         });
     }
 
-    private void showTXSuccessDialog(View view, TransactionReceipt receipt){
-        System.out.println("Transaction hash: "+receipt.getTransactionHash());
+    private void showTXSuccessDialog(View view, TransactionReceipt receipt) {
+        System.out.println("Transaction hash: " + receipt.getTransactionHash());
         updateBalanceView(token);
         DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
             switch (which) {
@@ -219,7 +219,7 @@ public class mdtPortalFragment extends Fragment {
                     // view tx to etherscan
                     Uri link = Uri.parse("https://ropsten.etherscan.io/tx/" + receipt.getTransactionHash());
                     Intent intent = new Intent(Intent.ACTION_VIEW, link);
-                    if(intent.resolveActivity(context.getPackageManager()) != null){
+                    if (intent.resolveActivity(context.getPackageManager()) != null) {
                         startActivity(intent);
                     } else {
                         Toast.makeText(context, "Can't go to etherscan", Toast.LENGTH_SHORT).show();
@@ -235,7 +235,7 @@ public class mdtPortalFragment extends Fragment {
                 .setNegativeButton("No", dialogClickListener).show();
     }
 
-    private void updateBalanceView(ERC20 token){
+    private void updateBalanceView(ERC20 token) {
         try {
             BigInteger balance = token.balanceOf(walletAddress).sendAsync().get(10, TimeUnit.SECONDS);
             BigDecimal scaledBalance = new BigDecimal(balance)
@@ -273,7 +273,7 @@ public class mdtPortalFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Patient patient = snapshot.getValue(Patient.class);
-                    if (patient != null){
+                    if (patient != null) {
                         FirebaseDatabase.getInstance().getReference("Patient")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child("walletAddress")
@@ -282,6 +282,7 @@ public class mdtPortalFragment extends Fragment {
                         dialog.dismiss();
                     }
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
@@ -296,6 +297,7 @@ public class mdtPortalFragment extends Fragment {
             }
         });
     }
+
     private boolean checkEmptyField(EditText field) {
         if (field.getText().toString().isEmpty()) {
             field.setError("This field is required!");
@@ -303,5 +305,52 @@ public class mdtPortalFragment extends Fragment {
             return true;
         }
         return false;
+    }
+
+    private void payGpInsurance(DatabaseReference dbReference, int option,View view) {
+        Toast.makeText(context, "Transaction in Progress", Toast.LENGTH_SHORT).show();
+        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+            String recipientAddress;
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Patient patientProfile = snapshot.getValue(Patient.class);
+
+                dbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (option == 0) {
+                            recipientAddress = snapshot.child(patientProfile.getGpUid()).child("walletAddress").getValue(String.class);
+                        } else {
+                            recipientAddress = snapshot.child(patientProfile.getInsuranceId()).child("walletAddress").getValue(String.class);
+                        }
+
+
+                        try {
+                            TransactionReceipt receipt = token.transfer(
+                                    recipientAddress,
+                                    new BigInteger("5")
+                                            .multiply(new BigInteger("1000000000000000000")))
+                                    .sendAsync().get();
+                            dialog.dismiss();
+                            showTXSuccessDialog(view, receipt);
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
