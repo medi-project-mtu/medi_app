@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.medi_android.RecyclerViewAdapter;
-import com.example.medi_android.R;
 import com.example.medi_android.Patient;
+import com.example.medi_android.R;
+import com.example.medi_android.RecyclerViewAdapter;
 import com.example.medi_android.databinding.FragmentProfileBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,7 +76,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Patient patientProfile = snapshot.getValue(Patient.class);
-                if(patientProfile != null){
+                if (patientProfile != null) {
                     profileDataTitle.add("Name");
                     profileDataTitle.add("Gender");
                     profileDataTitle.add("Date of Birth (dd/MM/yyyy)");
@@ -84,7 +84,7 @@ public class ProfileFragment extends Fragment {
                     profileDataTitle.add("Height (cm)");
                     profileDataTitle.add("Weight (kg)");
                     profileDataContent.add(patientProfile.getName());
-                    if(patientProfile.getGender().equals("1")){
+                    if (patientProfile.getGender().equals("1")) {
                         profileDataContent.add("Male");
                     } else {
                         profileDataContent.add("Female");
@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment {
                     profileDataContent.add(patientProfile.getAge());
                     profileDataContent.add(patientProfile.getHeight());
                     profileDataContent.add(patientProfile.getWeight());
-                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_profile);
                     recyclerView.setLayoutManager(mLayoutManager);
                     adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent, R.layout.cardview_row);

@@ -22,8 +22,8 @@ import androidx.fragment.app.Fragment;
 import com.example.medi_android.DashboardDrawer;
 import com.example.medi_android.Patient;
 import com.example.medi_android.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.example.medi_android.databinding.FragmentMdtPortalBinding;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -147,7 +147,7 @@ public class mdtPortalFragment extends Fragment {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        payGpInsurance(gpReference,0,view);
+                        payGpInsurance(gpReference, 0, view);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -163,7 +163,7 @@ public class mdtPortalFragment extends Fragment {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        payGpInsurance(insuranceReference,1,view);
+                        payGpInsurance(insuranceReference, 1, view);
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -307,7 +307,7 @@ public class mdtPortalFragment extends Fragment {
         return false;
     }
 
-    private void payGpInsurance(DatabaseReference dbReference, int option,View view) {
+    private void payGpInsurance(DatabaseReference dbReference, int option, View view) {
         Toast.makeText(context, "Transaction in Progress", Toast.LENGTH_SHORT).show();
         reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             String recipientAddress;

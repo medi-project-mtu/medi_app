@@ -29,10 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 public class RatingsFragment extends Fragment {
 
 
-    private FragmentRatingsBinding binding;
     Activity context;
-    private EditText ratingText;
     RatingBar ratingBar;
+    private FragmentRatingsBinding binding;
+    private EditText ratingText;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,38 +62,39 @@ public class RatingsFragment extends Fragment {
         floatingActionMenu.setVisibility(View.GONE);
 
         Button submit = context.findViewById(R.id.submit_support_btn);
-        ratingBar= context.findViewById(R.id.ratingBar);
+        ratingBar = context.findViewById(R.id.ratingBar);
         ratingText = context.findViewById(R.id.supportTextView);
         submit.setOnClickListener(view ->
                 FirebaseDatabase.getInstance().getReference("Patient")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("review")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.getValue() == null) {
-                            createReview();
-                        } else {
-                            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        createReview();
-                                        break;
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child("review")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.getValue() == null) {
+                                    createReview();
+                                } else {
+                                    DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                                        switch (which) {
+                                            case DialogInterface.BUTTON_POSITIVE:
+                                                createReview();
+                                                break;
 
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        break;
+                                            case DialogInterface.BUTTON_NEGATIVE:
+                                                break;
+                                        }
+                                    };
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                    builder.setMessage("You already have left a review. Do you wish to update it ?").setPositiveButton("Yes", dialogClickListener)
+                                            .setNegativeButton("No", dialogClickListener).show();
                                 }
-                            };
-                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                            builder.setMessage("You already have left a review. Do you wish to update it ?").setPositiveButton("Yes", dialogClickListener)
-                                    .setNegativeButton("No", dialogClickListener).show();
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                            }
 
-                    }
-                }));
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        }));
 
     }
 

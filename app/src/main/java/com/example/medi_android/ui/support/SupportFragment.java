@@ -30,8 +30,8 @@ import java.util.UUID;
 public class SupportFragment extends Fragment {
 
 
-    private FragmentSupportBinding binding;
     Activity context;
+    private FragmentSupportBinding binding;
     private EditText supportMsgText;
     private EditText supportSubject;
 
@@ -70,6 +70,7 @@ public class SupportFragment extends Fragment {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 createSupportTicket();
                             }
+
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
@@ -80,8 +81,8 @@ public class SupportFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void createSupportTicket() {
-        if(checkEmptyField(supportSubject)) return;
-        if(checkEmptyField(supportMsgText)) return;
+        if (checkEmptyField(supportSubject)) return;
+        if (checkEmptyField(supportMsgText)) return;
 
         String subject = supportSubject.getText().toString().trim();
         String supportMsg = supportMsgText.getText().toString().trim();

@@ -1,5 +1,13 @@
 package com.example.medi_android;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -7,16 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -76,7 +74,7 @@ public class MediAIDiabetes extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 diabetesData = snapshot.getValue(DiabetesData.class);
-                if (diabetesData != null){
+                if (diabetesData != null) {
                     diabestesDataTitles.add("Pregnancies");
                     diabestesDataTitles.add("Glucose");
                     diabestesDataTitles.add("Blood Pressure");
@@ -108,7 +106,7 @@ public class MediAIDiabetes extends AppCompatActivity {
         });
 
         // user enters data first time, load diagnosis immediately
-        if (inputs != null){
+        if (inputs != null) {
             diabetesRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
@@ -124,7 +122,7 @@ public class MediAIDiabetes extends AppCompatActivity {
                     String diagnosis = jsonObject.getString("Diagnosis");
                     diabetesRiskTV.setText(String.format("Risk: %s", diagnosis));
                     reference.child(userID).child("diabetes").child("diagnosis").setValue(diagnosis);
-                    Toast.makeText(MediAIDiabetes.this, "Diabetes Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MediAIDiabetes.this, "Diabetes Risk: " + diagnosis, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -134,9 +132,9 @@ public class MediAIDiabetes extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Cannot get JSON", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("pregnancies", Float.toString(data.getPregnancies()));
                 params.put("glucose", Float.toString(data.getGlucose()));
@@ -164,7 +162,7 @@ public class MediAIDiabetes extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.predict_menu:
-                if(diabetesData != null){
+                if (diabetesData != null) {
                     getDiagnosis(diabetesData);
                 } else {
                     Toast.makeText(MediAIDiabetes.this, "No Data to predict", Toast.LENGTH_SHORT).show();

@@ -9,6 +9,11 @@ public class GP {
     private String phone;
     private String practice;
     private String specialization;
+    private String uid;
+
+    public GP() {
+
+    }
 
     public String getUid() {
         return uid;
@@ -18,23 +23,17 @@ public class GP {
         this.uid = uid;
     }
 
-    private String uid;
-
-    public GP(){
-
-    }
-
     public String getDob() {
         return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
     }
 
     @Override
     public String toString() {
         return name;
-    }
-
-    public void setDob(String dob) {
-        this.dob = dob;
     }
 
     public String getEirCode() {

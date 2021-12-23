@@ -6,7 +6,8 @@ public class Insurance {
     private String phone;
     private String id;
 
-    public Insurance(){}
+    public Insurance() {
+    }
 
     @Override
     public String toString() {

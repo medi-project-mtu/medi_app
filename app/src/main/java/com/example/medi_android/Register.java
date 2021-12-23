@@ -48,13 +48,12 @@ import java.util.List;
 
 public class Register extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, AdapterView.OnItemSelectedListener {
 
+    private final static int RC_SIGN_IN = 123;
+    private final static int PROVIDER_GOOGLE = 1;
+    private final static int PROVIDER_EMAIL = 0;
     private FirebaseAuth mAuth;
     private EditText editEmail, editPassword;
     private GoogleSignInClient mGoogleSignInClient;
-    private final static int RC_SIGN_IN = 123;
-    private final static int PROVIDER_GOOGLE = 1;
-    private final static int PROVIDER_EMAIL= 0;
-
     private AlertDialog dialog;
     private EditText popup_name, popup_height, popup_weight, popup_dob;
     private Spinner spinner_gender, spinner_gp, spinner_insurance;
@@ -82,12 +81,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         editPassword = findViewById(R.id.sign_up_pw);
 
         initGoogleSignIn();
-        if(getIntent().getBooleanExtra("Profile Setup", false)){
+        if (getIntent().getBooleanExtra("Profile Setup", false)) {
             registerGoogle();
         }
     }
 
-    private void initGoogleSignIn(){
+    private void initGoogleSignIn() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -95,9 +94,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
+
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.log_in_text:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
@@ -116,11 +116,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(Register.this, task -> {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         startActivity(new Intent(Register.this, DashboardDrawer.class));
                     } else {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -140,14 +140,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 //here i check if this email is new or not
                 //if the email has no signInMethods, it is new, else it exists
                 mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(task1 -> {
-                    if(task1.getResult().getSignInMethods().size() == 0){
+                    if (task1.getResult().getSignInMethods().size() == 0) {
                         createPopUpForm(account, null, null, PROVIDER_GOOGLE);
                     } else {
                         firebaseAuthWithGoogle(account);
                     }
                 }).addOnFailureListener(e -> Toast.makeText(Register.this, "Something went wrong with google sign-in", Toast.LENGTH_SHORT).show());
             } catch (ApiException e) {
-                Toast.makeText(this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -172,8 +172,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                 });
     }
 
-    private void showDatePickerDialog(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,this,
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this, this,
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
@@ -188,7 +188,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         popup_dob.setText(date);
     }
 
-    public void createPopUpForm(GoogleSignInAccount account, String email, String password, int provider){
+    public void createPopUpForm(GoogleSignInAccount account, String email, String password, int provider) {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         final View formPopUpView = getLayoutInflater().inflate(R.layout.form_popup, null);
 
@@ -234,13 +234,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
             String profileHeight = popup_height.getText().toString().trim();
             String profileWeight = popup_weight.getText().toString().trim();
 
-            if(checkEmptyField(popup_name)) return;
-            if(checkEmptyField(popup_dob)) return;
-            if(checkEmptyField(popup_height)) return;
-            if(checkEmptyField(popup_weight)) return;
+            if (checkEmptyField(popup_name)) return;
+            if (checkEmptyField(popup_dob)) return;
+            if (checkEmptyField(popup_height)) return;
+            if (checkEmptyField(popup_weight)) return;
             if (spinner_gender.getSelectedItem().toString().equals("Select gender")) return;
             if (spinner_gp.getSelectedItem().toString().equals("Select a GP")) return;
-            if (spinner_insurance.getSelectedItem().toString().equals("Select an Insurance")) return;
+            if (spinner_insurance.getSelectedItem().toString().equals("Select an Insurance"))
+                return;
 
             if (provider == PROVIDER_EMAIL) {
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -255,16 +256,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                                 FirebaseDatabase.getInstance().getReference("Patient")
                                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                         .setValue(patient).addOnCompleteListener(task1 -> {
-                                            if (task1.isSuccessful()) {
-                                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                                user.sendEmailVerification();
-                                                Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
-                                                FirebaseAuth.getInstance().signOut();
-                                                startActivity(new Intent(Register.this, MainActivity.class));
-                                            } else {
-                                                Log.w(TAG, "Google SignIn Error", task1.getException());
-                                            }
-                                        });
+                                    if (task1.isSuccessful()) {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        user.sendEmailVerification();
+                                        Toast.makeText(Register.this, "Registration successful, check email to verify account", Toast.LENGTH_LONG).show();
+                                        FirebaseAuth.getInstance().signOut();
+                                        startActivity(new Intent(Register.this, MainActivity.class));
+                                    } else {
+                                        Log.w(TAG, "Google SignIn Error", task1.getException());
+                                    }
+                                });
                             } else {
                                 Log.w(TAG, "Google SignIn Error", task.getException());
                             }
@@ -317,7 +318,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         FirebaseDatabase.getInstance().getReference("Insurance").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot insuranceSnapshot: snapshot.getChildren()){
+                for (DataSnapshot insuranceSnapshot : snapshot.getChildren()) {
                     Insurance insurance = insuranceSnapshot.getValue(Insurance.class);
                     assert insurance != null;
                     insurance.setId(insuranceSnapshot.getKey());
@@ -343,7 +344,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         FirebaseDatabase.getInstance().getReference("Gp").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot gpSnapshot: snapshot.getChildren()){
+                for (DataSnapshot gpSnapshot : snapshot.getChildren()) {
                     GP gp = gpSnapshot.getValue(GP.class);
                     assert gp != null;
                     gp.setUid(gpSnapshot.getKey());
@@ -359,27 +360,27 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         return gpList;
     }
 
-    private void registerUser(){
+    private void registerUser() {
         patient = new Patient(); //initialize new patient
         String email = editEmail.getText().toString().trim();
         String password = editPassword.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (email.isEmpty()) {
             editEmail.setError("Email is required!");
             editEmail.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editEmail.setError("Invalid email format!");
             editEmail.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             editPassword.setError("Password is required!");
             editPassword.requestFocus();
             return;
         }
-        if (password.length() < 6){
+        if (password.length() < 6) {
             editPassword.setError("Password length should be at least 6 characters!!!");
             editPassword.requestFocus();
             return;
@@ -390,7 +391,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         mAuth.fetchSignInMethodsForEmail(email).addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
             @Override
             public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                if(task.getResult().getSignInMethods().size() == 0){
+                if (task.getResult().getSignInMethods().size() == 0) {
                     createPopUpForm(null, email, password, PROVIDER_EMAIL);
                 } else {
                     Toast.makeText(Register.this, "User email already exist", Toast.LENGTH_SHORT).show();
@@ -402,25 +403,25 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
+        switch (parent.getId()) {
             case R.id.spinner_gender:
                 String gender = parent.getItemAtPosition(position).toString();
-                if(gender.equals("Select gender")){
-                    TextView errorTextGender = (TextView)spinner_gender.getSelectedView();
+                if (gender.equals("Select gender")) {
+                    TextView errorTextGender = (TextView) spinner_gender.getSelectedView();
                     errorTextGender.setError("Select gender");
                     errorTextGender.setTextColor(Color.GRAY);
                     return;
                 } else if (gender.equals("Male")) {
                     patient.setGender("1");
-                } else if (gender.equals("Female")){
+                } else if (gender.equals("Female")) {
                     patient.setGender("0");
                 }
                 break;
 
             case R.id.spinner_gp:
                 GP gp = (GP) parent.getItemAtPosition(position);
-                if (gp.getName().equals("Select a GP")){
-                    TextView errorTextGP = (TextView)spinner_gp.getSelectedView();
+                if (gp.getName().equals("Select a GP")) {
+                    TextView errorTextGP = (TextView) spinner_gp.getSelectedView();
                     errorTextGP.setError("Select a GP");
                     errorTextGP.setTextColor(Color.GRAY);
                     return;
@@ -430,7 +431,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
             case R.id.spinner_insurance:
                 Insurance insurance = (Insurance) parent.getItemAtPosition(position);
-                if(insurance.getName().equals("Select an Insurance")){
+                if (insurance.getName().equals("Select an Insurance")) {
                     TextView errorTextInsurance = (TextView) spinner_insurance.getSelectedView();
                     errorTextInsurance.setError("Select an Insurance");
                     errorTextInsurance.setTextColor(Color.GRAY);

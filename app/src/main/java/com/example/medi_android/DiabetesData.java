@@ -13,6 +13,9 @@ public class DiabetesData implements Serializable {
     float age;
     String diagnosis;
 
+    public DiabetesData() {
+    }
+
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -40,7 +43,6 @@ public class DiabetesData implements Serializable {
     public float getBloodPressure() {
         return bloodPressure;
     }
-
 
     public void setBloodPressure(float bloodPressure) {
         this.bloodPressure = bloodPressure;
@@ -85,8 +87,6 @@ public class DiabetesData implements Serializable {
     public void setAge(float age) {
         this.age = age;
     }
-
-    public DiabetesData(){}
 
     @Override
     public String toString() {

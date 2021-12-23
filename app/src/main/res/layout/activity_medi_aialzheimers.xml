@@ -17,9 +17,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.Medi_Android.PopupOverlay"
         app:title="Medi-AI: Alzheimer's"
-        app:titleTextColor="@color/white"
-        app:popupTheme="@style/Theme.Medi_Android.PopupOverlay" />
+        app:titleTextColor="@color/white" />
 
     <TextView
         android:id="@+id/alzheimersRiskTV"

@@ -29,12 +29,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private EditText editEmail, editPassword;
-    private FirebaseAuth mAuth;
-
-    private GoogleSignInClient mGoogleSignInClient;
     private final static int RC_SIGN_IN = 123;
     private static final String TAG = "FacebookLogin";
+    private EditText editEmail, editPassword;
+    private FirebaseAuth mAuth;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onStart() {
@@ -87,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account){
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(MainActivity.this, task -> {
-                    if (task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                     } else {
                         Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
                 mAuth.fetchSignInMethodsForEmail(account.getEmail()).addOnCompleteListener(task1 -> {
-                    if(task1.getResult().getSignInMethods().size() == 0){
+                    if (task1.getResult().getSignInMethods().size() == 0) {
                         Intent intent = new Intent(MainActivity.this, Register.class);
                         intent.putExtra("Profile Setup", true);
                         startActivity(intent);
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if(user.isEmailVerified()){
+                    if (user.isEmailVerified()) {
                         startActivity(new Intent(MainActivity.this, DashboardDrawer.class));
                     } else {
                         user.sendEmailVerification();

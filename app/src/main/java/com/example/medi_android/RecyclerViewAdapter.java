@@ -12,20 +12,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    private List<String> profileDataTitle;
-    private List<String> profileDataContent;
-    private LayoutInflater mInflater;
+    private final List<String> profileDataTitle;
+    private final List<String> profileDataContent;
+    private final LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private int cardViewType;
+    private final int cardViewType;
 
-    public RecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent, int cardViewType){
+    public RecyclerViewAdapter(Activity context, List<String> profileDataTitle, List<String> profileDataContent, int cardViewType) {
         this.mInflater = LayoutInflater.from(context);
         this.profileDataContent = profileDataContent;
         this.profileDataTitle = profileDataTitle;
         this.cardViewType = cardViewType;
     }
 
-    public void setClickListener(ItemClickListener itemClickListener){
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
@@ -51,11 +51,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return profileDataTitle.size();
     }
 
-    String getItem(int id){
+    String getItem(int id) {
         return profileDataTitle.get(id);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView profileDataTitleTV;
         TextView profileDataContentTV;
 
@@ -68,11 +72,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         @Override
         public void onClick(View view) {
-            if(mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
-    }
-
-    public interface ItemClickListener{
-        void onItemClick(View view, int position);
     }
 }

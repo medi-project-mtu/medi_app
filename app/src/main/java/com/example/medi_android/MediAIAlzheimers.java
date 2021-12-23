@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,7 +74,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 alzheimersData = snapshot.getValue(AlzheimersData.class);
-                if (alzheimersData != null){
+                if (alzheimersData != null) {
                     alzheimersDataTitles.add("Education Level");
                     alzheimersDataTitles.add("Socioeconomic Status");
                     alzheimersDataTitles.add("Mini Mental State Exam");
@@ -108,7 +107,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
         });
 
         // user enters data first time, load diagnosis immediately
-        if (inputs != null){
+        if (inputs != null) {
             alzheimersRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
@@ -122,7 +121,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String diagnosis = jsonObject.getString("Diagnosis");
-                    switch (diagnosis){
+                    switch (diagnosis) {
                         case "0":
                             diagnosis = "No Risk";
                             break;
@@ -138,7 +137,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
                     }
                     alzheimersRiskTV.setText(String.format("Risk: %s", diagnosis));
                     reference.child(userID).child("alzheimers").child("diagnosis").setValue(diagnosis);
-                    Toast.makeText(MediAIAlzheimers.this, "Alzheimer's Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MediAIAlzheimers.this, "Alzheimer's Risk: " + diagnosis, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -148,9 +147,9 @@ public class MediAIAlzheimers extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Cannot get JSON", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
 //                params.put("dominantHand", Float.toString(data.getDominantHand()));
                 params.put("educ", Float.toString(data.getEducationLevel()));
@@ -179,7 +178,7 @@ public class MediAIAlzheimers extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.predict_menu:
-                if(alzheimersData!= null){
+                if (alzheimersData != null) {
                     getDiagnosis(alzheimersData);
                 } else {
                     Toast.makeText(MediAIAlzheimers.this, "No Data to predict", Toast.LENGTH_SHORT).show();

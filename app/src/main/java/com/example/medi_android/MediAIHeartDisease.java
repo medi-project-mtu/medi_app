@@ -1,5 +1,13 @@
 package com.example.medi_android;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -7,15 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -119,7 +118,7 @@ public class MediAIHeartDisease extends AppCompatActivity {
         });
 
         // user enters data first time, load diagnosis immediately
-        if (inputs != null){
+        if (inputs != null) {
             heartDiseaseRiskTV.setText(R.string.loadingRisk);
             getDiagnosis(inputs);
         }
@@ -135,7 +134,7 @@ public class MediAIHeartDisease extends AppCompatActivity {
                     String diagnosis = jsonObject.getString("Diagnosis");
                     heartDiseaseRiskTV.setText(String.format("Risk: %s", diagnosis));
                     reference.child(userID).child("heartDisease").child("diagnosis").setValue(diagnosis);
-                    Toast.makeText(MediAIHeartDisease.this, "Heart Disease Risk: "+diagnosis, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MediAIHeartDisease.this, "Heart Disease Risk: " + diagnosis, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -145,9 +144,9 @@ public class MediAIHeartDisease extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), "Cannot get JSON", Toast.LENGTH_SHORT).show();
             }
-        }){
+        }) {
             @Override
-            protected Map<String, String> getParams(){
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("chestPainType", Float.toString(data.getChestPainType()));
                 params.put("rbp", Float.toString(data.getRestingBloodPressure()));
@@ -180,7 +179,7 @@ public class MediAIHeartDisease extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.predict_menu:
-                if(heartDiseaseData != null){
+                if (heartDiseaseData != null) {
                     getDiagnosis(heartDiseaseData);
                 } else {
                     Toast.makeText(MediAIHeartDisease.this, "No Data to predict", Toast.LENGTH_SHORT).show();

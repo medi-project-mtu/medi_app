@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Patient patientProfile = snapshot.getValue(Patient.class);
-                if(patientProfile != null){
+                if (patientProfile != null) {
                     homeNameTitle.setText(patientProfile.getName());
 
                     profileDataTitle.add("Diabetes Risk");
@@ -93,12 +93,12 @@ public class HomeFragment extends Fragment {
                     getDiseaseRiskHome(snapshot, "alzheimers");
                     getDiseaseRiskHome(snapshot, "heartDisease");
 
-                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context,1);
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
                     RecyclerView recyclerView = context.findViewById(R.id.rv_home);
                     recyclerView.setLayoutManager(mLayoutManager);
                     adapter = new RecyclerViewAdapter(context, profileDataTitle, profileDataContent, R.layout.cardview_row_big);
                     adapter.setClickListener((view, position) -> {
-                        switch (position){
+                        switch (position) {
                             case 0:
                                 startActivity(new Intent(context, MediAIDiabetes.class));
                                 break;
@@ -115,7 +115,7 @@ public class HomeFragment extends Fragment {
             }
 
             private void getDiseaseRiskHome(DataSnapshot snapshot, String disease) {
-                if (snapshot.child(disease).child("diagnosis").getValue() != null){
+                if (snapshot.child(disease).child("diagnosis").getValue() != null) {
                     profileDataContent.add(snapshot.child(disease).child("diagnosis").getValue().toString());
                 } else {
                     profileDataContent.add("Undiagnosed");

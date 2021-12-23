@@ -84,6 +84,10 @@ public class AlzheimersData implements Serializable {
         return gender;
     }
 
+    public void setGender(float gender) {
+        this.gender = gender;
+    }
+
     @Override
     public String toString() {
         return "AlzheimersData{" +
@@ -97,9 +101,5 @@ public class AlzheimersData implements Serializable {
                 ", gender=" + gender +
                 ", diagnosis='" + diagnosis + '\'' +
                 '}';
-    }
-
-    public void setGender(float gender) {
-        this.gender = gender;
     }
 }

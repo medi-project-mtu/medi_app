@@ -25,6 +25,13 @@ public class Patient {
     private String walletAddress;
 
 
+    public Patient() {
+    }
+
+    public Patient(String email) {
+        this.email = email;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public String getAge() {
         String s = getDob();
@@ -67,13 +74,6 @@ public class Patient {
 
     public void setGpUid(String gpUid) {
         this.gpUid = gpUid;
-    }
-
-    public Patient() {
-    }
-
-    public Patient(String email) {
-        this.email = email;
     }
 
     public String getEmail() {
