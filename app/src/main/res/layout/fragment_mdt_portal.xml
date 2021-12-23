@@ -16,100 +16,107 @@
         android:textColor="@color/white"
         android:textSize="48sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/personal_wallet_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="-5dp" />
 
     <TextView
         android:id="@+id/personal_wallet_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wallet Adress"
+        android:text="0x3D35A902540b681BD4953B7Aae3DcAE06bf226af"
         android:textColor="@color/white"
-        android:textSize="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/personal_mdt_balance"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mdt_title" />
+        app:layout_constraintTop_toBottomOf="@+id/pub_add_tv" />
 
     <TextView
         android:id="@+id/personal_mdt_balance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Balance"
+        android:text="2145.3444"
         android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/mdt_topup"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personal_wallet_add" />
+        app:layout_constraintTop_toBottomOf="@+id/balance_tv" />
 
     <Button
-        android:id="@+id/pay_btn"
+        android:id="@+id/mdt_topup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="pay"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="30dp"
+        android:text="Self Top Up (10MDT)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mdt_amount" />
+        app:layout_constraintTop_toBottomOf="@+id/personal_mdt_balance" />
 
-    <EditText
-        android:id="@+id/mdt_amount"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/custom_input"
-        android:drawableTint="#888888"
-        android:ems="10"
-        android:hint="Amount (MDT)"
-        android:inputType="number"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColor="#000000"
-        android:textColorHint="#888888"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/pay_btn"
+    <TextView
+        android:id="@+id/or_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="OR"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pay_ins_btn" />
+
+    <Button
+        android:id="@+id/pay_ins_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Pay Insurance (5MDT)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/receipient_wallet_add" />
+        app:layout_constraintTop_toBottomOf="@+id/pay_gp_btn" />
 
-    <EditText
-        android:id="@+id/receipient_wallet_add"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/custom_input"
-        android:drawableTint="#888888"
-        android:ems="10"
-        android:hint="Receipient Wallet Address"
-        android:inputType="none|text"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColor="#000000"
-        android:textColorHint="#888888"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/mdt_amount"
+    <Button
+        android:id="@+id/pay_gp_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Pay GP (5MDT)"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mdt_topup" />
 
     <Button
-        android:id="@+id/mdt_topup"
+        android:id="@+id/custom_tx_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Top Up (10MDT)"
-        app:layout_constraintBottom_toTopOf="@+id/receipient_wallet_add"
+        android:layout_marginTop="30dp"
+        android:text="Custom Transaction"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/personal_mdt_balance" />
+        app:layout_constraintTop_toBottomOf="@+id/or_tv" />
+
+    <TextView
+        android:id="@+id/pub_add_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Public Wallet Address"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mdt_title" />
+
+    <TextView
+        android:id="@+id/balance_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Balance"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/personal_wallet_add" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

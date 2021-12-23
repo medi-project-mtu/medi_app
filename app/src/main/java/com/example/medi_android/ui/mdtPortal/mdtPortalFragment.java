@@ -1,7 +1,6 @@
 package com.example.medi_android.ui.mdtPortal;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import com.example.medi_android.DashboardDrawer;
 import com.example.medi_android.Patient;
 import com.example.medi_android.R;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.medi_android.databinding.FragmentMdtPortalBinding;
 import com.google.firebase.auth.FirebaseUser;
@@ -60,7 +57,7 @@ public class mdtPortalFragment extends Fragment {
     private String userID;
     private String walletAddress,pk;
     private EditText walletAddressEt,pkEt, receipientAddET, amountET;
-    private Button topUp, pay;
+    private Button topUp, pay, payGP, payIns, customTx;
     private Web3j client;
     private String contractAddress, mainAccAddress, mainAccPK;
     private ERC20 bankToken, token;
@@ -74,7 +71,9 @@ public class mdtPortalFragment extends Fragment {
         root = binding.getRoot();
 
         topUp = root.findViewById(R.id.mdt_topup);
-        pay = root.findViewById(R.id.pay_btn);
+        payGP = root.findViewById(R.id.pay_gp_btn);
+        payIns = root.findViewById(R.id.pay_ins_btn);
+        customTx = root.findViewById(R.id.custom_tx_btn);
         contractAddress = "0x96603d01f1717c7692c2d244fc045f0398239102";
         mainAccAddress = "0x09F2278E1f81b481afFB813Ec07356B5C83003d3";
         mainAccPK = "f809526301afddd0ce9ae1f5034397aae964a099a923acb8885588ea2cfac821";
@@ -104,8 +103,7 @@ public class mdtPortalFragment extends Fragment {
     }
 
     private void viewAccount(){
-        receipientAddET = root.findViewById(R.id.receipient_wallet_add);
-        amountET = root.findViewById(R.id.mdt_amount);
+
 
         walletAddress = walletAddressEt.getText().toString();
         pk = pkEt.getText().toString();
@@ -113,6 +111,8 @@ public class mdtPortalFragment extends Fragment {
 
         // personal token access
         token = ERC20.load(contractAddress, client, credentials, new DefaultGasProvider());
+
+        //not sure about the limit, but works for now
         StaticGasProvider gasProvider = new StaticGasProvider(BigInteger.valueOf(4_100_000_000L), BigInteger.valueOf(100_000));
         token.setGasProvider(gasProvider);
 
@@ -124,7 +124,8 @@ public class mdtPortalFragment extends Fragment {
         // print patient wallet and balance info
         updateBalanceView(token);
         TextView walletTV = root.findViewById(R.id.personal_wallet_add);
-        walletTV.setText("Wallet Address:\n" + walletAddress);
+        walletTV.setText(walletAddress);
+
         // top up 10MDT
         topUp.setOnClickListener(view -> {
             try {
@@ -135,6 +136,60 @@ public class mdtPortalFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+
+        customTx.setOnClickListener(view -> {
+            customTxPopup();
+        });
+
+        payGP.setOnClickListener(view -> {
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setMessage("Pay 5MDT to [GP Placeholder]?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        });
+
+        payIns.setOnClickListener(view -> {
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setMessage("Pay 5MDT to [Ins Placeholder]?").setPositiveButton("Yes", dialogClickListener)
+                    .setNegativeButton("No", dialogClickListener).show();
+        });
+
+
+
+
+    }
+
+    private void customTxPopup() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+
+        final View customTxFormPopUpView = getLayoutInflater().inflate(R.layout.mdt_custom_tx_popup, null);
+
+        receipientAddET = customTxFormPopUpView.findViewById(R.id.receipient_wallet_add);
+        amountET = customTxFormPopUpView.findViewById(R.id.mdt_amount);
+        pay = customTxFormPopUpView.findViewById(R.id.mdt_form_pay_btn);
+
+        dialogBuilder.setView(customTxFormPopUpView);
+        dialog = dialogBuilder.create();
+        dialog.show();
 
         pay.setOnClickListener(view -> {
             if (checkEmptyField(receipientAddET)) return;
@@ -147,6 +202,7 @@ public class mdtPortalFragment extends Fragment {
                         new BigInteger(amountET.getText().toString().trim())
                                 .multiply(new BigInteger("1000000000000000000")))
                         .sendAsync().get();
+                dialog.dismiss();
                 showTXSuccessDialog(view, receipt);
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
@@ -183,10 +239,11 @@ public class mdtPortalFragment extends Fragment {
         try {
             BigInteger balance = token.balanceOf(walletAddress).sendAsync().get(10, TimeUnit.SECONDS);
             BigDecimal scaledBalance = new BigDecimal(balance)
-                    .divide(new BigDecimal(1000000000000000000L), 18, RoundingMode.HALF_UP);
+                    .divide(new BigDecimal(1000000000000000000L), 18, RoundingMode.HALF_UP)
+                    .setScale(2, BigDecimal.ROUND_HALF_EVEN);
 
             TextView balanceTV = root.findViewById(R.id.personal_mdt_balance);
-            balanceTV.setText("Balance:\n" + scaledBalance.toString());
+            balanceTV.setText(scaledBalance.toString() + "MDT");
         } catch (ExecutionException | InterruptedException | TimeoutException e) {
             e.printStackTrace();
         }
