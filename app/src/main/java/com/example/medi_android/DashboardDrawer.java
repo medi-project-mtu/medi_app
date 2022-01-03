@@ -169,11 +169,10 @@ public class DashboardDrawer extends AppCompatActivity {
             if (checkValidity(peakExerciseSTET, "1", "3")) return;
             if (checkValidity(majorVesselsET, "0", "3")) return;
             if (checkEmptyField(thalET)) return;
-            if (thalET.getText().toString().matches("3|6|7")) {
-                return;
-            } else {
+            if (!thalET.getText().toString().matches("3|6|7")) {
                 thalET.setError("Valid input is 3,6,7");
                 thalET.requestFocus();
+                return;
             }
 
             HeartDiseaseData heartDiseaseData = new HeartDiseaseData();
